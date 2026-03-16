@@ -1,9 +1,9 @@
 # ⚔️ Belagerungs-Atlas
 
-Interaktive Analyse von 51 historischen und Fantasy-Festungen.
+Interaktive Analyse von 62 historischen und Fantasy-Festungen.
 
 ## Features
-- 🏰 51 Burgen mit individuellen SVG-Grundrissen
+- 🏰 62 Burgen mit individuellen SVG-Grundrissen
 - ⚔️ Belagerungssimulator mit 14 Ressourcentypen
 - 🎭 Rollenspiel-Belagerung (KI als Verteidiger)
 - 🌍 Weltkarte & Zeitstrahl
@@ -11,6 +11,7 @@ Interaktive Analyse von 51 historischen und Fantasy-Festungen.
 - 🌀 „Was wäre wenn?"-Kontrafaktor-Analyse
 - 🗡️ Turniermodus
 - 📚 Historisches Lexikon
+- 📖 Kampagnenmodus
 
 ---
 
