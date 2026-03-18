@@ -8749,24 +8749,30 @@ function Lexikon({castle,onAsk}){
 // Plan type: 'round' = fantasy + ring-wall castles (concentric cylinders)
 //            'rect'  = real medieval castles (4 flat box-wall segments)
 //            'mesa'  = cliff/plateau castle (Masada etc.)
+// Features: spherical camera orbit, raycaster inspection, educational labels
 function CastleDiorama({castle}){
   const mountRef=useRef(null);
   const [ready,setReady]=useState(false);
+  const [info,setInfo]=useState(null);
+  const infoRef=useRef(null);
+  infoRef.current=setInfo;
   const ac=castle.theme.accent;
+
+  const zones=castle.zones||[];
+  const isRound=castle.type==='fantasy'||zones.some(z=>/ring/i.test(z.l||''));
 
   useEffect(()=>{
     let animId,renderer;
     const mount=mountRef.current;
     if(!mount) return;
+    infoRef.current(null);
 
     const init=()=>{try{
       const T=window.THREE;
       const W=mount.clientWidth||600;
-      const H=Math.min(Math.round(W*0.56),380);
-      setReady(true);
+      const H=Math.min(Math.round(W*0.62),440);
 
       // ── Zone analysis ─────────────────────────────────────────────────
-      const zones=castle.zones||[];
       const wallZones =zones.filter(z=>z.r>18&&z.r<=36);
       const innerZones=zones.filter(z=>z.r>10&&z.r<=18);
       const ptZones   =zones.filter(z=>z.r<=10);
@@ -8780,15 +8786,10 @@ function CastleDiorama({castle}){
       const hasMoat      =/wassergraben|burggraben/i.test(txt)
                          ||zones.some(z=>/graben/i.test(z.l||'')&&z.r>15);
 
-      // Round plan = fantasy OR has "Ring" labels (concentric circle castles like Krak)
-      // Rect plan  = real medieval castles with straight walls
-      const isRound =isFantasy||zones.some(z=>/ring/i.test(z.l||''));
-
-      // Aspect ratio from actual zone x,y spread → gives each rect castle unique proportions
+      // Aspect ratio from actual zone x,y spread
       const zxA=zones.map(z=>z.x||50), zyA=zones.map(z=>z.y||50);
       const xSp=zxA.length?Math.max(...zxA)-Math.min(...zxA):0;
       const ySp=zyA.length?Math.max(...zyA)-Math.min(...zyA):0;
-      // clamp 0.55–1.65; fallback to year-hash for castles with little spread
       const aspect=xSp>8&&ySp>8
         ? Math.min(1.65,Math.max(0.55,ySp/xSp))
         : 0.82+((Math.abs(castle.year||0)*17+(castle.id.charCodeAt(0)||0)*11)%15)/40;
@@ -8825,8 +8826,6 @@ function CastleDiorama({castle}){
       scene.background=bgCol;
       scene.fog=new T.FogExp2(bgCol.getHex(),0.054);
       const camera=new T.PerspectiveCamera(42,W/H,0.1,130);
-      camera.position.set(0,7,14.5);
-      camera.lookAt(0,isMesa?3.2:1.8,0);
       renderer=new T.WebGLRenderer({antialias:true});
       renderer.setSize(W,H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
@@ -8836,48 +8835,76 @@ function CastleDiorama({castle}){
       const grp=new T.Group();
       scene.add(grp);
 
+      // ── Spherical camera setup ────────────────────────────────────────
+      let autoTheta=Math.PI, manualTheta=0, phi_cam=0.52, camRadius=14.5;
+      const lookAt=new T.Vector3(0, topY+keepH*0.38, 0);
+      const positionCamera=()=>{
+        const sp=Math.sin(phi_cam), t=autoTheta+manualTheta;
+        camera.position.set(
+          lookAt.x+camRadius*sp*Math.sin(t),
+          lookAt.y+camRadius*Math.cos(phi_cam),
+          lookAt.z+camRadius*sp*Math.cos(t)
+        );
+        camera.lookAt(lookAt);
+      };
+      positionCamera();
+
+      // ── Educational tag helper ────────────────────────────────────────
+      // Attaches userData to mesh so raycaster can find it on click
+      const tag=(mesh,label,desc,extra)=>{
+        mesh.userData={label,desc,extra:extra||''};
+        return mesh;
+      };
+
       // ── Helpers ───────────────────────────────────────────────────────
-      // Wall segment along X or Z, with crenellations on top
-      const wallSeg=(cx,cz,axis,len,yB,h,thick,mat)=>{
+      const wallSeg=(cx,cz,axis,len,yB,h,thick,mat,lbl,desc)=>{
         const geo=axis==='x'?new T.BoxGeometry(len,h,thick):new T.BoxGeometry(thick,h,len);
-        const w=new T.Mesh(geo,mat);
+        const w=tag(new T.Mesh(geo,mat),lbl||'Ringmauer',
+          desc||'Die Außenmauer schützt den Burghof. Dicke Steinmauern widerhalten Rammen und Katapulten.',
+          `Höhe: ${(wallH*3.5).toFixed(1)}m · Dicke: ~${(thick*3.5).toFixed(1)}m · Wertung: ${castle.ratings.walls}/100`);
         w.position.set(cx,yB+h/2,cz);w.castShadow=true;grp.add(w);
         const n=Math.floor(len/0.33);
         for(let i=0;i<n;i+=2){
-          const t=(i+0.5)/n-0.5;
+          const t2=(i+0.5)/n-0.5;
           const m=new T.Mesh(new T.BoxGeometry(0.10,0.20,0.10),mat);
           m.position.set(
-            axis==='x'?cx+t*len:cx,
+            axis==='x'?cx+t2*len:cx,
             yB+h+0.12,
-            axis==='z'?cz+t*len:cz
+            axis==='z'?cz+t2*len:cz
           );grp.add(m);
         }
       };
-      // Round tower + cone roof
-      const tower=(x,z,yB,tH,seg,tMat,rH)=>{
-        // Vary height slightly per position using a deterministic hash
-        const tw=new T.Mesh(new T.CylinderGeometry(0.26,0.27,tH,seg||spireS),tMat||stoneMat);
+      const tower=(x,z,yB,tH,seg,tMat,rH,lbl,desc,extra)=>{
+        const tw=tag(new T.Mesh(new T.CylinderGeometry(0.26,0.27,tH,seg||spireS),tMat||stoneMat),
+          lbl||'Wehrturm',
+          desc||'Türme ermöglichen flankierendes Feuer entlang der Mauer. Bogenschützen und Armbrust­schützen verteidigen von oben.',
+          extra||`Turmhöhe: ~${(tH*3.5).toFixed(1)}m`);
         tw.position.set(x,yB+tH/2,z);tw.castShadow=true;grp.add(tw);
         const rof=new T.Mesh(new T.ConeGeometry(0.32,rH||spireH,seg||spireS),roofMat);
         rof.position.set(x,yB+tH+(rH||spireH)/2,z);grp.add(rof);
       };
 
       // ── Ground ───────────────────────────────────────────────────────
-      const gnd=new T.Mesh(new T.CircleGeometry(12,52),gndMat);
+      const gnd=tag(new T.Mesh(new T.CircleGeometry(12,52),gndMat),
+        'Burggelände','Das umliegende Gelände beeinflusst Versorgung und Zugangswege der Angreifer.',
+        `Positionswertung: ${castle.ratings.position}/100`);
       gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;grp.add(gnd);
 
       // ── Terrain ──────────────────────────────────────────────────────
       const hillMat=new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).lerp(new T.Color('#1e1408'),0.5)});
       if(isMesa){
-        // Masada-style flat mesa plateau
         const mesaCol=new T.Color(castle.theme.bg).lerp(new T.Color('#7a5a30'),0.5);
-        const mesa=new T.Mesh(new T.CylinderGeometry(outerR+1.0,outerR+2.2,terrainH*2,24),new T.MeshLambertMaterial({color:mesaCol}));
+        const mesa=tag(new T.Mesh(new T.CylinderGeometry(outerR+1.0,outerR+2.2,terrainH*2,24),new T.MeshLambertMaterial({color:mesaCol})),
+          'Tafelberg / Mesa','Ein steil abfallender Felstafel bietet natürlichen Schutz auf allen Seiten — kaum zu ersteigen, schwer zu untergraben.',
+          `Positionsvorteil: ${castle.ratings.position}/100`);
         mesa.position.y=terrainH;grp.add(mesa);
         const cap=new T.Mesh(new T.CircleGeometry(outerR+1.0,24),gndMat);
         cap.rotation.x=-Math.PI/2;cap.position.y=terrainH*2;grp.add(cap);
       } else if(terrainH>0.18){
-        // Organic hill: main cone + offset secondary lobe
-        const mnd=new T.Mesh(new T.ConeGeometry(outerR+2.5,terrainH*2.8,18),hillMat);
+        const mnd=tag(new T.Mesh(new T.ConeGeometry(outerR+2.5,terrainH*2.8,18),hillMat),
+          isMesa?'Felsklippe':'Burgberg',
+          'Höhenburgen nutzen natürliche Anhöhen als ersten Schutzring. Angreifer müssen bergauf kämpfen — erschöpft und im Nachteil.',
+          `Geländehöhe: ${(terrainH*3.5).toFixed(1)}m · Position: ${castle.ratings.position}/100`);
         mnd.position.y=terrainH*0.82;grp.add(mnd);
         if(terrainH>0.5){
           const mnd2=new T.Mesh(new T.ConeGeometry(outerR*0.55,terrainH*1.6,14),hillMat);
@@ -8891,14 +8918,16 @@ function CastleDiorama({castle}){
         for(let i=0;i<6;i++){
           const a=(i/6)*Math.PI*2;
           const sc=0.72+((Math.abs(castle.year||500)*13+i*47)%100)/100*0.62;
-          const pk=new T.Mesh(new T.ConeGeometry(sc,2.5+sc*1.6,7),mtnMat);
+          const pk=tag(new T.Mesh(new T.ConeGeometry(sc,2.5+sc*1.6,7),mtnMat),
+            'Gebirgssperre','Das Gebirge bildet eine natürliche Barriere — Pässe sind leicht zu verteidigen, Belagerungsmaschinen kaum passierbar.');
           pk.position.set(Math.cos(a)*(outerR+2.9),0.3,Math.sin(a)*(outerR+2.9));pk.castShadow=true;grp.add(pk);
         }
       }
       if(hasVolcano){
         for(let i=0;i<3;i++){
           const a=(i/3)*Math.PI*2,h=3.5+i*0.8;
-          const vol=new T.Mesh(new T.ConeGeometry(1.2,h,9),new T.MeshLambertMaterial({color:new T.Color('#160a04')}));
+          const vol=tag(new T.Mesh(new T.ConeGeometry(1.2,h,9),new T.MeshLambertMaterial({color:new T.Color('#160a04')})),
+            'Vulkan / Thangorodrim','Vulkanische Berge umgeben diese Festung. Feuer und Asche machen jede Belagerung zur Höllenfahrt.');
           vol.position.set(Math.cos(a)*5.0,h/2,Math.sin(a)*5.0);vol.castShadow=true;grp.add(vol);
           const lava=new T.Mesh(new T.CircleGeometry(0.32,9),lavaMat);
           lava.rotation.x=-Math.PI/2;lava.position.set(Math.cos(a)*5.0,h,Math.sin(a)*5.0);grp.add(lava);
@@ -8909,13 +8938,18 @@ function CastleDiorama({castle}){
       // ── Moat ─────────────────────────────────────────────────────────
       if(hasMoat){
         const mr=isRound?outerR+0.62:Math.hypot(outerR,outerR*aspect)*0.78+0.55;
-        const mt=new T.Mesh(new T.TorusGeometry(mr,0.50,6,44),moatMat);
+        const mt=tag(new T.Mesh(new T.TorusGeometry(mr,0.50,6,44),moatMat),
+          'Burggraben','Der Wassergraben verhindert das Untergraben der Mauern (Minengänge) und hält Sturmtruppen auf Abstand.',
+          'Breite: ~5–10m · Tiefe: ~3–5m');
         mt.rotation.x=Math.PI/2;mt.position.y=topY-0.06;grp.add(mt);
       }
 
       // ── ROUND plan walls (fantasy + ring castles) ─────────────────────
       if(isRound&&wallZones.length>0){
-        const owm=new T.Mesh(new T.CylinderGeometry(outerR,outerR,wallH,48,1,true),stoneMat);
+        const owm=tag(new T.Mesh(new T.CylinderGeometry(outerR,outerR,wallH,48,1,true),stoneMat),
+          'Äußerer Ringwall',
+          'Konzentrische Ringe aus Stein — jeder Ring ist eine eigenständige Verteidigungslinie. Fällt eine, kämpft man im nächsten Ring weiter.',
+          `Mauerwertung: ${castle.ratings.walls}/100 · Wandhöhe: ~${(wallH*3.5).toFixed(1)}m`);
         owm.position.y=topY+wallH/2;owm.castShadow=true;grp.add(owm);
         const crt=new T.Mesh(new T.CircleGeometry(outerR-0.1,48),new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).multiplyScalar(1.3)}));
         crt.rotation.x=-Math.PI/2;crt.position.y=topY+0.01;grp.add(crt);
@@ -8927,53 +8961,70 @@ function CastleDiorama({castle}){
         for(let i=0;i<towerN;i++){
           const a=(i/towerN)*Math.PI*2;
           const tH=wallH*(1.36+((i*37+castle.ratings.walls)%22)/100);
-          tower(Math.cos(a)*outerR,Math.sin(a)*outerR,topY,tH,spireS,stoneMat,spireH);
+          tower(Math.cos(a)*outerR,Math.sin(a)*outerR,topY,tH,spireS,stoneMat,spireH,
+            'Flankenturm','Rundum­sicht und flankierendes Feuer — Bogenschützen können die gesamte Mauer­fläche beschießen.',
+            `Turmhöhe: ~${(tH*3.5).toFixed(1)}m`);
         }
-        const gh=new T.Mesh(new T.BoxGeometry(0.70,wallH*1.24,0.54),innerMat);
+        const gh=tag(new T.Mesh(new T.BoxGeometry(0.70,wallH*1.24,0.54),innerMat),
+          'Torhaus','Das Haupttor ist oft der schwächste Punkt. Doppeltore, Fallgitter (Porkullis) und Schießscharten machen es zur tödlichen Falle.');
         gh.position.set(0,topY+wallH*0.63,outerR+0.02);gh.castShadow=true;grp.add(gh);
         const go=new T.Mesh(new T.BoxGeometry(0.27,wallH*0.54,0.58),darkMat);
         go.position.set(0,topY+wallH*0.28,outerR+0.02);grp.add(go);
       }
 
       // ── RECT plan walls (real medieval castles) ───────────────────────
-      // hw×hd rectangle; aspect ratio from zone spread → unique per castle
       if(!isRound&&wallZones.length>0){
         const hw=outerR, hd=outerR*aspect, wt=0.18;
         const courtMat=new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).multiplyScalar(1.3)});
-        const cf=new T.Mesh(new T.BoxGeometry(hw*2,0.04,hd*2),courtMat);
+        const cf=tag(new T.Mesh(new T.BoxGeometry(hw*2,0.04,hd*2),courtMat),
+          'Innenhof / Bailey','Der Burghof beherbergte Stallungen, Brunnen, Werkstätten und die Wohngebäude der Burgbesatzung.',
+          `Fläche: ~${(hw*2*3.5).toFixed(0)}m × ${(hd*2*3.5).toFixed(0)}m`);
         cf.position.set(0,topY+0.02,0);grp.add(cf);
-        // 4 straight wall segments with crenellations
-        wallSeg(0,-hd,'x',hw*2+wt,topY,wallH,wt,stoneMat);
-        wallSeg(0, hd,'x',hw*2+wt,topY,wallH,wt,stoneMat);
-        wallSeg(-hw,0,'z',hd*2,topY,wallH,wt,stoneMat);
-        wallSeg( hw,0,'z',hd*2,topY,wallH,wt,stoneMat);
-        // Corner towers — height varies per corner by a deterministic hash
+        wallSeg(0,-hd,'x',hw*2+wt,topY,wallH,wt,stoneMat,'Nordmauer',
+          'Gerade Steinmauern mit Zinnenkranz (Merlons). Verteidiger duckten sich hinter Zinnen; Angreifer zielten in die Scharten.',
+          `Höhe: ~${(wallH*3.5).toFixed(1)}m · Dicke: ~${(wt*3.5).toFixed(1)}m`);
+        wallSeg(0, hd,'x',hw*2+wt,topY,wallH,wt,stoneMat,'Südmauer',
+          'Gerade Steinmauern mit Zinnenkranz (Merlons). Verteidiger duckten sich hinter Zinnen; Angreifer zielten in die Scharten.',
+          `Höhe: ~${(wallH*3.5).toFixed(1)}m · Dicke: ~${(wt*3.5).toFixed(1)}m`);
+        wallSeg(-hw,0,'z',hd*2,topY,wallH,wt,stoneMat,'Westmauer',
+          'Gerade Steinmauern mit Zinnenkranz (Merlons). Die Mauerstärke entschied, wie lange die Burg einem Katapultbeschuss standhielt.',
+          `Höhe: ~${(wallH*3.5).toFixed(1)}m · Mauerwertung: ${castle.ratings.walls}/100`);
+        wallSeg( hw,0,'z',hd*2,topY,wallH,wt,stoneMat,'Ostmauer',
+          'Gerade Steinmauern mit Zinnenkranz (Merlons). Die Mauerstärke entschied, wie lange die Burg einem Katapultbeschuss standhielt.',
+          `Höhe: ~${(wallH*3.5).toFixed(1)}m · Mauerwertung: ${castle.ratings.walls}/100`);
         [[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]].forEach(([cx,cz],ci)=>{
           const tH=wallH*(1.38+((ci*29+castle.ratings.walls)%20)/100);
-          tower(cx,cz,topY,tH,8,stoneMat,spireH);
+          tower(cx,cz,topY,tH,8,stoneMat,spireH,'Eckturm',
+            'Ecktürme sichern die verwundbarsten Punkte. Von hier können Bogenschützen zwei Mauer­abschnitte gleichzeitig decken.',
+            `Höhe: ~${(tH*3.5).toFixed(1)}m`);
         });
-        // Extra mid-wall towers when towerN > 4
         if(towerN>4){
           const extra=Math.min(towerN-4,4);
           [[-hw*0.5,-hd],[hw*0.5,-hd],[-hw*0.5,hd],[hw*0.5,hd]].slice(0,extra).forEach(([cx,cz])=>{
-            tower(cx,cz,topY,wallH*1.28,8,stoneMat,spireH*0.8);
+            tower(cx,cz,topY,wallH*1.28,8,stoneMat,spireH*0.8,'Zwischenturm',
+              'Zwischentürme verkürzen den Abstand zwischen Eck­türmen — kein toter Winkel bleibt für Angreifer.');
           });
         }
-        // Gatehouse in south wall with flanking towers
         const ghH=wallH*1.30;
-        const gh=new T.Mesh(new T.BoxGeometry(0.74,ghH,0.58),innerMat);
+        const gh=tag(new T.Mesh(new T.BoxGeometry(0.74,ghH,0.58),innerMat),
+          'Torhaus / Gatehouse',
+          'Das Torhaus ist der gefährlichste Ort für Angreifer: Fallgitter (Porkullis), Schussöffnungen im Boden (Mordlöcher) und flankierende Türme machen es zur Todesfalle.',
+          'Merkmale: Zugbrücke · Fallgitter · Mordlöcher · Flankentürme');
         gh.position.set(0,topY+ghH/2,hd);gh.castShadow=true;grp.add(gh);
         const go=new T.Mesh(new T.BoxGeometry(0.28,ghH*0.52,0.62),darkMat);
         go.position.set(0,topY+ghH*0.27,hd);grp.add(go);
-        tower(-0.46,hd,topY,ghH*0.88,8,innerMat,spireH*0.7);
-        tower( 0.46,hd,topY,ghH*0.88,8,innerMat,spireH*0.7);
+        tower(-0.46,hd,topY,ghH*0.88,8,innerMat,spireH*0.7,'Torturm','Flankentürme am Torhaus beschossen Angreifer, die das Tor zu brechen versuchten.');
+        tower( 0.46,hd,topY,ghH*0.88,8,innerMat,spireH*0.7,'Torturm','Flankentürme am Torhaus beschossen Angreifer, die das Tor zu brechen versuchten.');
       }
 
       // ── Inner ward ────────────────────────────────────────────────────
       if(innerZones.length>0){
         const iH=wallH*1.36;
         if(isRound){
-          const iw=new T.Mesh(new T.CylinderGeometry(innerR,innerR,iH,32,1,true),innerMat);
+          const iw=tag(new T.Mesh(new T.CylinderGeometry(innerR,innerR,iH,32,1,true),innerMat),
+            'Innerer Ringwall',
+            'Der innere Ring ist höher als der äußere — ein zweites Verteidigungsband. Selbst wenn der Außenring fällt, kämpft man hier weiter.',
+            `Höhe: ~${(iH*3.5).toFixed(1)}m`);
           iw.position.y=topY+iH/2;iw.castShadow=true;grp.add(iw);
           const imN=Math.round(innerR*Math.PI*2/0.31);
           for(let i=0;i<imN;i+=2){const a=(i/imN)*Math.PI*2;
@@ -8983,17 +9034,22 @@ function CastleDiorama({castle}){
           const iTN=Math.min(4,innerZones.length+2);
           for(let i=0;i<iTN;i++){
             const a=(i/iTN)*Math.PI*2+Math.PI/4;
-            tower(Math.cos(a)*innerR,Math.sin(a)*innerR,topY,iH*1.28,spireS,innerMat,spireH*0.82);
+            tower(Math.cos(a)*innerR,Math.sin(a)*innerR,topY,iH*1.28,spireS,innerMat,spireH*0.82,
+              'Innerer Turm','Türme des inneren Rings kontrollierten den Burghof und sicherten den Rückzug, falls der äußere Ring fiel.');
           }
         } else {
-          // Rectangular inner ward
           const ihw=innerR, ihd=innerR*aspect, iwt=0.14;
-          wallSeg(0,-ihd,'x',ihw*2+iwt,topY,iH,iwt,innerMat);
-          wallSeg(0, ihd,'x',ihw*2+iwt,topY,iH,iwt,innerMat);
-          wallSeg(-ihw,0,'z',ihd*2,topY,iH,iwt,innerMat);
-          wallSeg( ihw,0,'z',ihd*2,topY,iH,iwt,innerMat);
+          wallSeg(0,-ihd,'x',ihw*2+iwt,topY,iH,iwt,innerMat,'Innere Nordmauer',
+            'Die innere Mauer ist typischerweise höher als die Außenmauer — von hier aus kann die Besatzung den gesamten Burghof kontrollieren.');
+          wallSeg(0, ihd,'x',ihw*2+iwt,topY,iH,iwt,innerMat,'Innere Südmauer',
+            'Die innere Mauer ist typischerweise höher als die Außenmauer — von hier aus kann die Besatzung den gesamten Burghof kontrollieren.');
+          wallSeg(-ihw,0,'z',ihd*2,topY,iH,iwt,innerMat,'Innere Westmauer',
+            'Innerwall-Abschnitt. Bildete zusammen mit dem Donjon die letzte Verteidigungsstellung.');
+          wallSeg( ihw,0,'z',ihd*2,topY,iH,iwt,innerMat,'Innere Ostmauer',
+            'Innerwall-Abschnitt. Bildete zusammen mit dem Donjon die letzte Verteidigungsstellung.');
           [[-ihw,-ihd],[ihw,-ihd],[ihw,ihd],[-ihw,ihd]].forEach(([cx,cz])=>{
-            tower(cx,cz,topY,iH*1.26,8,innerMat,spireH*0.80);
+            tower(cx,cz,topY,iH*1.26,8,innerMat,spireH*0.80,'Innerer Eckturm',
+              'Eckturm des Innenhofs — letzter Rückzugspunkt für die Besatzung nach dem Fall des äußeren Hofs.');
           });
         }
       }
@@ -9002,39 +9058,52 @@ function CastleDiorama({castle}){
       const ps=Math.min(innerR>0?innerR-0.3:outerR-0.4,outerR)*0.82;
       ptZones.forEach(z=>{
         const zx=(z.x-50)/50*ps, zz=(z.y-50)/50*ps;
-        const lbl    =z.l||'';
+        const lbl=z.l||'';
         const isWater=/zistern|cistern|brunnen|see|wasser/i.test(lbl);
-        const isWeak =lbl.includes('⚠');
-        const isSt   =(z.a||0)>=7&&!isWeak;
+        const isWeak=lbl.includes('⚠');
+        const isSt=(z.a||0)>=7&&!isWeak;
         if(isWater){
           const pr=Math.max(0.18,z.r/50*outerR*0.65);
-          const pool=new T.Mesh(new T.CylinderGeometry(pr,pr,0.09,14),moatMat);
+          const pool=tag(new T.Mesh(new T.CylinderGeometry(pr,pr,0.09,14),moatMat),
+            lbl||'Zisterne / Brunnen',
+            'Wasser­versorgung ist für eine Belagerung lebens­entscheidend. Eine Burg ohne eigenen Brunnen kapituliert meist nach wenigen Wochen.',
+            `Versorgungswertung: ${castle.ratings.supply}/100`);
           pool.position.set(zx,topY+0.06,zz);grp.add(pool);
         }
         if(isSt){
           const tH2=wallH*1.62+z.a*0.09;
-          const st=new T.Mesh(new T.CylinderGeometry(0.30,0.30,tH2,spireS),isFantasy?glowMat:innerMat);
+          const st=tag(new T.Mesh(new T.CylinderGeometry(0.30,0.30,tH2,spireS),isFantasy?glowMat:innerMat),
+            lbl||'Stärke­punkt',
+            'Dieser Bereich hat besonders hohe Verteidigungsstärke — gut befestigt, schwer einnehmbar.',
+            `Stärke: ${z.a||0}/10`);
           st.position.set(zx,topY+tH2/2,zz);st.castShadow=true;grp.add(st);
           const sr=new T.Mesh(new T.ConeGeometry(0.36,isFantasy?1.2:0.48,spireS),roofMat);
           sr.position.set(zx,topY+tH2+(isFantasy?0.64:0.26),zz);grp.add(sr);
         }
         if(isWeak){
-          const br=new T.Mesh(new T.BoxGeometry(0.36,0.09,0.36),new T.MeshLambertMaterial({color:new T.Color('#cc2222'),transparent:true,opacity:0.55}));
+          const br=tag(new T.Mesh(new T.BoxGeometry(0.36,0.09,0.36),new T.MeshLambertMaterial({color:new T.Color('#cc2222'),transparent:true,opacity:0.55})),
+            lbl||'Schwachstelle ⚠',
+            'Dieser Punkt ist strukturell schwach — dünne Mauern, schlechter Untergrund oder mangelnde Deckung machen ihn zur Zielscheibe.',
+            'Angriffstipp: Hier mit Rammbock oder Minen ansetzen!');
           br.position.set(zx,topY+0.07,zz);grp.add(br);
         }
       });
 
       // ── Keep / Donjon ─────────────────────────────────────────────────
-      // Round keep for round-plan castles; square keep for rect castles
       if(isRound){
-        const kp=new T.Mesh(new T.CylinderGeometry(0.40,0.45,keepH,spireS),keepMat);
+        const kp=tag(new T.Mesh(new T.CylinderGeometry(0.40,0.45,keepH,spireS),keepMat),
+          'Donjon / Bergfried',
+          'Der Bergfried ist der letzte Rückzugsturm. Hier stand die Besatzung bis zur Kapitulation. Er diente auch als Aussichts­posten und Statussymbol.',
+          `Höhe: ~${(keepH*3.5).toFixed(1)}m · Mauerwertung: ${castle.ratings.walls}/100`);
         kp.position.set(0,topY+keepH/2,0);kp.castShadow=true;grp.add(kp);
         const kr=new T.Mesh(new T.ConeGeometry(0.50,isFantasy?1.55:0.70,spireS),roofMat);
         kr.position.set(0,topY+keepH+(isFantasy?0.82:0.40),0);grp.add(kr);
       } else {
-        // Square keep whose footprint shares the castle's aspect ratio
         const kw=0.78, kd=kw*Math.min(aspect,1.3);
-        const kp=new T.Mesh(new T.BoxGeometry(kw,keepH,kd),keepMat);
+        const kp=tag(new T.Mesh(new T.BoxGeometry(kw,keepH,kd),keepMat),
+          'Donjon / Bergfried',
+          'Der quadratische Bergfried ist typisch für normannische und frühmittelalterliche Burgen. Dicke Mauern, wenige Fenster, schwere Eingangstür im ersten Obergeschoss — eine Miniatur­festung in der Festung.',
+          `Höhe: ~${(keepH*3.5).toFixed(1)}m · Grundriss: ${(kw*3.5).toFixed(0)}m × ${(kd*3.5).toFixed(0)}m`);
         kp.position.set(0,topY+keepH/2,0);kp.castShadow=true;grp.add(kp);
         [[kw/2,0],[-kw/2,0],[0,kd/2],[0,-kd/2]].forEach(([dx,dz])=>{
           const cm=new T.Mesh(new T.BoxGeometry(0.13,0.20,0.13),keepMat);
@@ -9047,7 +9116,10 @@ function CastleDiorama({castle}){
       // ── Eye of Sauron ─────────────────────────────────────────────────
       if(hasEye){
         const ey=topY+keepH+(isFantasy?2.2:1.5);
-        const eye=new T.Mesh(new T.SphereGeometry(0.40,14,14),glowMat);
+        const eye=tag(new T.Mesh(new T.SphereGeometry(0.40,14,14),glowMat),
+          'Auge Saurons',
+          'Das Auge des Dunklen Herrn — allsehend, niemals schlafend. Es durchdringt Lügen und findet jeden, der den Einen Ring trägt.',
+          'Typ: Fantasy-Festung · Tolkiens Mittelerde');
         eye.position.set(0,ey,0);grp.add(eye);
         const pupil=new T.Mesh(new T.SphereGeometry(0.16,10,10),darkMat);
         pupil.position.set(0,ey,0.32);grp.add(pupil);
@@ -9075,27 +9147,90 @@ function CastleDiorama({castle}){
         const mpl=new T.PointLight(acCol.getHex(),1.4,12);mpl.position.set(0,topY+keepH*0.5,0);grp.add(mpl);
       }
 
-      // ── Drag to rotate ────────────────────────────────────────────────
-      let drag=false,px=0,rotY=0;
+      // ── Raycaster + inspection state ──────────────────────────────────
+      const raycaster=new T.Raycaster();
+      const mouse2D=new T.Vector2();
+      let selectedMesh=null, savedEmissive=null, savedEmissiveI=0;
+      const highlightCol=new T.Color(ac);
+
+      const selectObj=(obj)=>{
+        // Restore previous highlight
+        if(selectedMesh&&selectedMesh.material){
+          selectedMesh.material.emissive=savedEmissive||new T.Color(0,0,0);
+          selectedMesh.material.emissiveIntensity=savedEmissiveI;
+        }
+        if(!obj||!obj.userData||!obj.userData.label){
+          selectedMesh=null;
+          infoRef.current(null);
+          return;
+        }
+        selectedMesh=obj;
+        if(obj.material){
+          savedEmissive=obj.material.emissive?obj.material.emissive.clone():new T.Color(0,0,0);
+          savedEmissiveI=obj.material.emissiveIntensity||0;
+          obj.material.emissive=highlightCol.clone();
+          obj.material.emissiveIntensity=0.55;
+        }
+        infoRef.current({label:obj.userData.label,desc:obj.userData.desc,extra:obj.userData.extra});
+      };
+
+      const doRaycast=(clientX,clientY)=>{
+        const rect=renderer.domElement.getBoundingClientRect();
+        mouse2D.x=((clientX-rect.left)/rect.width)*2-1;
+        mouse2D.y=-((clientY-rect.top)/rect.height)*2+1;
+        raycaster.setFromCamera(mouse2D,camera);
+        const hits=raycaster.intersectObjects(grp.children,true);
+        selectObj(hits.find(h=>h.object.userData&&h.object.userData.label)?.object||null);
+      };
+
+      // ── Pointer / touch controls ──────────────────────────────────────
       const el=renderer.domElement;
-      const dn=e=>{drag=true;px=e.clientX||(e.touches&&e.touches[0].clientX)||0;};
+      let drag=false,px=0,py=0,dragMoved=false;
+      const dn=e=>{
+        drag=true;dragMoved=false;
+        px=e.clientX||(e.touches&&e.touches[0].clientX)||0;
+        py=e.clientY||(e.touches&&e.touches[0].clientY)||0;
+      };
       const mv=e=>{
         if(!drag)return;
         const cx=e.clientX||(e.touches&&e.touches[0].clientX)||px;
-        rotY+=(cx-px)*0.009;px=cx;
+        const cy=e.clientY||(e.touches&&e.touches[0].clientY)||py;
+        const dx=cx-px, dy=cy-py;
+        if(Math.abs(dx)>2||Math.abs(dy)>2) dragMoved=true;
+        manualTheta-=dx*0.009;
+        phi_cam=Math.min(1.45,Math.max(0.08,phi_cam+dy*0.008));
+        px=cx;py=cy;
+        positionCamera();
       };
-      const up=()=>{drag=false;};
-      el.addEventListener('mousedown',dn);el.addEventListener('mousemove',mv);
-      el.addEventListener('mouseup',up);el.addEventListener('mouseleave',up);
+      const up=e=>{
+        if(!dragMoved&&drag){
+          const cx=e.clientX||(e.changedTouches&&e.changedTouches[0].clientX)||px;
+          const cy=e.clientY||(e.changedTouches&&e.changedTouches[0].clientY)||py;
+          doRaycast(cx,cy);
+        }
+        drag=false;
+      };
+      const onWheel=e=>{
+        e.preventDefault();
+        camRadius=Math.min(22,Math.max(4,camRadius+e.deltaY*0.025));
+        positionCamera();
+      };
+      el.addEventListener('mousedown',dn);
+      el.addEventListener('mousemove',mv);
+      el.addEventListener('mouseup',up);
+      el.addEventListener('mouseleave',()=>{drag=false;});
       el.addEventListener('touchstart',dn,{passive:true});
       el.addEventListener('touchmove',mv,{passive:true});
       el.addEventListener('touchend',up);
+      el.addEventListener('wheel',onWheel,{passive:false});
       el.style.cursor='grab';
 
-      let autoY=0;
+      // ── Animation loop ────────────────────────────────────────────────
+      setReady(true);
       const tick=()=>{
         animId=requestAnimationFrame(tick);
-        autoY+=0.0022;grp.rotation.y=autoY+rotY;
+        if(!drag) autoTheta+=0.0018;
+        positionCamera();
         renderer.render(scene,camera);
       };
       tick();
@@ -9124,15 +9259,47 @@ function CastleDiorama({castle}){
             <div style={{fontSize:"11px",color:ac,letterSpacing:"2px"}}>3D DIORAMA LÄDT …</div>
           </div>
         )}
+        {/* Hint overlay */}
+        {ready&&!info&&(
+          <div style={{position:"absolute",top:"8px",left:"50%",transform:"translateX(-50%)",
+            background:"rgba(0,0,0,0.55)",border:`1px solid ${ac}22`,borderRadius:"20px",
+            padding:"4px 12px",fontSize:"10px",color:`${ac}99`,letterSpacing:"1px",
+            pointerEvents:"none",whiteSpace:"nowrap"}}>
+            ↕↔ Drehen · Scrollen = Zoom · Klicken = Infos
+          </div>
+        )}
+        {/* Info overlay on click */}
+        {info&&(
+          <div style={{position:"absolute",bottom:0,left:0,right:0,
+            background:`linear-gradient(0deg,rgba(4,3,2,0.97) 0%,rgba(4,3,2,0.88) 80%,transparent 100%)`,
+            padding:"14px 16px 12px",animation:"fadeIn 0.18s ease"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"4px"}}>
+              <div style={{fontSize:"13px",fontWeight:"bold",color:ac,letterSpacing:"1px"}}>{info.label}</div>
+              <button onClick={()=>setInfo(null)} style={{background:"none",border:"none",color:`${ac}88`,
+                cursor:"pointer",fontSize:"16px",lineHeight:1,padding:"0 0 0 8px",flexShrink:0}}>✕</button>
+            </div>
+            <div style={{fontSize:"12px",color:"#c8b898",lineHeight:"1.55",marginBottom:info.extra?"5px":"0"}}>
+              {info.desc}
+            </div>
+            {info.extra&&(
+              <div style={{fontSize:"11px",color:`${ac}88`,marginTop:"4px",letterSpacing:"0.5px"}}>
+                {info.extra}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      <div style={{padding:"7px 14px",background:"rgba(0,0,0,0.55)",
+      {/* Footer bar */}
+      <div style={{padding:"6px 14px",background:"rgba(0,0,0,0.55)",
         borderTop:`1px solid ${ac}18`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{fontSize:"11px",color:`${ac}88`,letterSpacing:"1.5px"}}>
           🏰 {castle.name.toUpperCase().slice(0,28)}
         </div>
-        <div style={{fontSize:"10px",color:"#3a2a14"}}>↔ Ziehen zum Drehen</div>
-        <div style={{fontSize:"10px",color:"#3a2a14",textAlign:"right"}}>
-          Mauern {castle.ratings.walls}/100 · {castle.zones.length} Zonen
+        <div style={{fontSize:"10px",color:"#4a3820",textAlign:"center"}}>
+          {isRound?'Rundplan':'Rechteckplan'} · {zones.length} Zonen
+        </div>
+        <div style={{fontSize:"10px",color:"#4a3820",textAlign:"right"}}>
+          Mauern {castle.ratings.walls}/100
         </div>
       </div>
     </div>
