@@ -8762,144 +8762,266 @@ function CastleDiorama({castle}){
       const H=Math.min(Math.round(W*0.56),380);
       setReady(true);
 
-      // Scene
+      // ── Zone analysis ─ every castle gets its unique layout from data ──
+      const wallZones =castle.zones.filter(z=>z.r>18&&z.r<=36); // outer wall rings
+      const innerZones=castle.zones.filter(z=>z.r>10&&z.r<=18); // inner ward rings
+      const ptZones   =castle.zones.filter(z=>z.r<=10);          // specific features
+
+      const isFantasy =castle.type==='fantasy';
+      // Mesa = near-vertical cliff castle (Masada), real only
+      const isMesa    =castle.ratings.position>=95&&!isFantasy;
+      // Mountain barrier: large outer zone with very high armor
+      const hasMtnBarrier=castle.zones.some(z=>z.r>36&&z.a>=8)&&!isMesa;
+      // Three volcanic peaks (Angband's Thangorodrim)
+      const hasVolcano=castle.zones.some(z=>/vulkan|thangorodrim/i.test(z.l));
+      // Eye of Sauron glow
+      const hasEye    =castle.zones.some(z=>/auge/i.test(z.l));
+      // Moat
+      const txt=(castle.desc||'')+(castle.history||'');
+      const hasMoat   =/wassergraben|burggraben|burggraben/i.test(txt)
+                      ||castle.zones.some(z=>/graben/i.test(z.l)&&z.r>15);
+
+      // ── Geometry params from ratings + zone radii ──
+      // Outer wall radius: scale from largest wall-zone r, or fallback
+      const outerR  =wallZones.length>0 ? 1.7+(wallZones[0].r/36)*1.6 : 2.5;
+      const innerR  =innerZones.length>0? 0.8+(innerZones[0].r/18)*0.9: outerR*0.56;
+      const wallH   =0.4+(castle.ratings.walls/100)*2.0;
+      const keepH   =1.0+(castle.ratings.walls/100)*2.5;
+      // Tower count from zones with notable armor (capped 4–10)
+      const towerN  =Math.min(4+castle.zones.filter(z=>z.a>=4).length,10);
+      // Terrain base height
+      const terrainH=isMesa?1.6:(castle.ratings.position/100)*0.75;
+      const topY    =isMesa?terrainH*2:terrainH;
+
+      // Keep is round cylinder for fantasy/round-keep castles, box otherwise
+      const keepRound=isFantasy||castle.ratings.walls>=85;
+      // Fantasy towers get tall pointed spires
+      const spireH  =isFantasy?0.9:0.42;
+      const spireSegs=isFantasy?8:10;
+
+      // ── Colors derived from castle theme ──
+      const acCol=new T.Color(ac);
+      const hsl={};acCol.getHSL(hsl);
+      // Fantasy = saturated & glowing; real = muted stone
+      const sat=(l)=>isFantasy?Math.min(0.55,hsl.s*1.8):0.11+l*0.05;
+      const mkC=(l)=>new T.Color().setHSL(hsl.h,sat(l),l);
+      const bgCol=new T.Color(castle.theme.bg).multiplyScalar(0.6);
+
+      const stoneMat =new T.MeshLambertMaterial({color:mkC(0.20)});
+      const innerMat =new T.MeshLambertMaterial({color:mkC(0.28)});
+      const keepMat  =new T.MeshLambertMaterial({color:mkC(0.35)});
+      const groundMat=new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).lerp(new T.Color('#1a1208'),0.6)});
+      const roofMat  =new T.MeshLambertMaterial({color:acCol.clone().multiplyScalar(isFantasy?0.65:0.44)});
+      const moatMat  =new T.MeshLambertMaterial({color:new T.Color('#0c1c28'),transparent:true,opacity:0.85});
+      const darkMat  =new T.MeshLambertMaterial({color:new T.Color('#050302')});
+      const lavaMat  =new T.MeshLambertMaterial({color:new T.Color('#ff3a00'),emissive:new T.Color('#ff2200'),emissiveIntensity:1.3});
+      const glowMat  =new T.MeshLambertMaterial({color:acCol.clone(),emissive:acCol.clone(),emissiveIntensity:0.9});
+
+      // ── Scene ──────────────────────────────────────────────────────────
       const scene=new T.Scene();
-      scene.background=new T.Color('#07050b');
-      scene.fog=new T.FogExp2('#07050b',0.065);
-
-      const camera=new T.PerspectiveCamera(40,W/H,0.1,120);
-      camera.position.set(0,5.8,12.5);
-      camera.lookAt(0,1.4,0);
-
+      scene.background=bgCol;
+      scene.fog=new T.FogExp2(bgCol.getHex(),0.058);
+      const camera=new T.PerspectiveCamera(40,W/H,0.1,130);
+      camera.position.set(0,6.5,14);
+      camera.lookAt(0,isMesa?2.5:1.5,0);
       renderer=new T.WebGLRenderer({antialias:true});
       renderer.setSize(W,H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
       renderer.shadowMap.enabled=true;
       renderer.shadowMap.type=T.PCFSoftShadowMap;
       mount.appendChild(renderer.domElement);
-
-      // ── Castle params from data ──
-      const wallH=0.38+(castle.ratings.walls/100)*2.0;
-      const wallR=2.9,innerR=1.65;
-      const towerCount=4+Math.min(castle.zones.filter(z=>z.r<15&&z.a>=3).length,4);
-      const keepH=0.95+(castle.ratings.walls/100)*2.4;
-      const hasInner=castle.ratings.walls>=65;
-      const terrainH=(castle.ratings.position/100)*0.7;
-      const hasMoat=(castle.desc+castle.history).toLowerCase().match(/graben|moat|wassergraben/)!=null;
-      const acCol=new T.Color(ac);
-      const hsl={};acCol.getHSL(hsl);
-      const mkC=(l)=>new T.Color().setHSL(hsl.h,0.14+l*0.04,l);
-
-      const stoneMat=new T.MeshLambertMaterial({color:mkC(0.21)});
-      const innerMat=new T.MeshLambertMaterial({color:mkC(0.27)});
-      const keepMat=new T.MeshLambertMaterial({color:mkC(0.33)});
-      const groundMat=new T.MeshLambertMaterial({color:new T.Color('#17110a')});
-      const roofMat=new T.MeshLambertMaterial({color:acCol.clone().multiplyScalar(0.44)});
-      const moatMat=new T.MeshLambertMaterial({color:new T.Color('#0c1c28'),transparent:true,opacity:0.85});
-
-      // ── Scene group (for rotation) ──
       const grp=new T.Group();
       scene.add(grp);
 
-      // Ground
-      const gnd=new T.Mesh(new T.CircleGeometry(9.5,44),groundMat);
-      gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;
-      grp.add(gnd);
+      // ── Ground ──────────────────────────────────────────────────────────
+      const gnd=new T.Mesh(new T.CircleGeometry(11,48),groundMat);
+      gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;grp.add(gnd);
 
-      // Terrain mound
-      if(terrainH>0.18){
-        const mnd=new T.Mesh(new T.ConeGeometry(5.2,terrainH*2.6,14),new T.MeshLambertMaterial({color:new T.Color('#100d06')}));
-        mnd.position.y=terrainH*0.8;grp.add(mnd);
-      }
-      const base=terrainH;
-
-      // Outer wall
-      const owm=new T.Mesh(new T.CylinderGeometry(wallR,wallR,wallH,44,1,true),stoneMat);
-      owm.position.y=base+wallH/2;owm.castShadow=true;grp.add(owm);
-
-      // Courtyard floor
-      const crt=new T.Mesh(new T.CircleGeometry(wallR-0.1,44),new T.MeshLambertMaterial({color:new T.Color('#0e0a05')}));
-      crt.rotation.x=-Math.PI/2;crt.position.y=base+0.01;grp.add(crt);
-
-      // Outer wall merlons
-      const mN=Math.round(wallR*Math.PI*2/0.36);
-      for(let i=0;i<mN;i++){
-        const a=(i/mN)*Math.PI*2;
-        const m=new T.Mesh(new T.BoxGeometry(0.11,0.21,0.11),stoneMat);
-        m.position.set(Math.cos(a)*wallR,base+wallH+0.13,Math.sin(a)*wallR);grp.add(m);
+      // ── Terrain ──────────────────────────────────────────────────────────
+      if(isMesa){
+        // Flat plateau: cylinder with flat top
+        const mesaMat=new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).lerp(new T.Color('#7a5a30'),0.5)});
+        const mesa=new T.Mesh(new T.CylinderGeometry(outerR+1.1,outerR+2.2,terrainH*2,20),mesaMat);
+        mesa.position.y=terrainH;grp.add(mesa);
+        const cap=new T.Mesh(new T.CircleGeometry(outerR+1.1,20),groundMat);
+        cap.rotation.x=-Math.PI/2;cap.position.y=terrainH*2;grp.add(cap);
+      } else if(terrainH>0.18){
+        const mndCol=new T.Color(castle.theme.bg).lerp(new T.Color('#1e1408'),0.5);
+        const mnd=new T.Mesh(new T.ConeGeometry(outerR+2.6,terrainH*2.8,16),new T.MeshLambertMaterial({color:mndCol}));
+        mnd.position.y=terrainH*0.82;grp.add(mnd);
       }
 
-      // Outer wall towers
-      for(let i=0;i<towerCount;i++){
-        const a=(i/towerCount)*Math.PI*2;
-        const tH=wallH*1.42;
-        const t=new T.Mesh(new T.CylinderGeometry(0.25,0.25,tH,10),stoneMat);
-        t.position.set(Math.cos(a)*wallR,base+tH/2,Math.sin(a)*wallR);
-        t.castShadow=true;grp.add(t);
-        const r=new T.Mesh(new T.ConeGeometry(0.30,0.40,10),roofMat);
-        r.position.set(Math.cos(a)*wallR,base+tH+0.22,Math.sin(a)*wallR);grp.add(r);
+      // ── Mountain barrier peaks (Gondolin, Barad-dûr etc.) ──────────────
+      // Deterministic using castle year so peaks are always same shape
+      if(hasMtnBarrier&&!hasVolcano){
+        const mtnMat=new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).lerp(new T.Color('#282830'),0.45)});
+        const pN=6;
+        for(let i=0;i<pN;i++){
+          const a=(i/pN)*Math.PI*2;
+          const sc=0.7+((Math.abs(castle.year||500)*13+i*47)%100)/100*0.7;
+          const pk=new T.Mesh(new T.ConeGeometry(1.0*sc,2.6+sc*1.5,7),mtnMat);
+          pk.position.set(Math.cos(a)*(outerR+2.9),0.4,Math.sin(a)*(outerR+2.9));
+          pk.castShadow=true;grp.add(pk);
+        }
       }
 
-      // Gatehouse
-      const gh=new T.Mesh(new T.BoxGeometry(0.68,wallH*1.22,0.52),innerMat);
-      gh.position.set(0,base+wallH*0.62,wallR+0.02);gh.castShadow=true;grp.add(gh);
-      // Gate opening (dark box)
-      const go=new T.Mesh(new T.BoxGeometry(0.26,wallH*0.53,0.58),new T.MeshLambertMaterial({color:new T.Color('#050302')}));
-      go.position.set(0,base+wallH*0.28,wallR+0.02);grp.add(go);
+      // ── Volcanic peaks (Angband's Thangorodrim) ──────────────────────
+      if(hasVolcano){
+        const volMat=new T.MeshLambertMaterial({color:new T.Color('#160a04')});
+        for(let i=0;i<3;i++){
+          const a=(i/3)*Math.PI*2;
+          const h=3.6+i*0.7;
+          const vol=new T.Mesh(new T.ConeGeometry(1.2,h,9),volMat);
+          vol.position.set(Math.cos(a)*5.0,h/2,Math.sin(a)*5.0);vol.castShadow=true;grp.add(vol);
+          const lava=new T.Mesh(new T.CircleGeometry(0.32,9),lavaMat);
+          lava.rotation.x=-Math.PI/2;lava.position.set(Math.cos(a)*5.0,h,Math.sin(a)*5.0);grp.add(lava);
+          const lpl=new T.PointLight(0xff3a00,2.0,5);
+          lpl.position.set(Math.cos(a)*5.0,h+0.3,Math.sin(a)*5.0);grp.add(lpl);
+        }
+      }
 
-      // Moat
+      // ── Moat ─────────────────────────────────────────────────────────
       if(hasMoat){
-        const mt=new T.Mesh(new T.TorusGeometry(wallR+0.58,0.48,6,44),moatMat);
-        mt.rotation.x=Math.PI/2;mt.position.y=base-0.05;grp.add(mt);
+        const mt=new T.Mesh(new T.TorusGeometry(outerR+0.62,0.50,6,44),moatMat);
+        mt.rotation.x=Math.PI/2;mt.position.y=topY-0.06;grp.add(mt);
       }
 
-      // Inner wall
-      if(hasInner){
+      // ── Outer wall ring (only if wall zones exist) ────────────────────
+      if(wallZones.length>0){
+        const owm=new T.Mesh(new T.CylinderGeometry(outerR,outerR,wallH,44,1,true),stoneMat);
+        owm.position.y=topY+wallH/2;owm.castShadow=true;grp.add(owm);
+        // Courtyard floor
+        const crt=new T.Mesh(new T.CircleGeometry(outerR-0.1,44),new T.MeshLambertMaterial({color:new T.Color(castle.theme.bg).multiplyScalar(1.4)}));
+        crt.rotation.x=-Math.PI/2;crt.position.y=topY+0.01;grp.add(crt);
+        // Merlons (every other merlon gap = crenellations)
+        const mN=Math.round(outerR*Math.PI*2/0.35);
+        for(let i=0;i<mN;i+=2){
+          const a=(i/mN)*Math.PI*2;
+          const m=new T.Mesh(new T.BoxGeometry(0.11,0.21,0.11),stoneMat);
+          m.position.set(Math.cos(a)*outerR,topY+wallH+0.13,Math.sin(a)*outerR);grp.add(m);
+        }
+        // Outer towers — count and height from zone data
+        for(let i=0;i<towerN;i++){
+          const a=(i/towerN)*Math.PI*2;
+          const tH=wallH*1.42;
+          const tw=new T.Mesh(new T.CylinderGeometry(0.26,0.26,tH,spireSegs),stoneMat);
+          tw.position.set(Math.cos(a)*outerR,topY+tH/2,Math.sin(a)*outerR);tw.castShadow=true;grp.add(tw);
+          const rof=new T.Mesh(new T.ConeGeometry(0.32,spireH,spireSegs),roofMat);
+          rof.position.set(Math.cos(a)*outerR,topY+tH+spireH/2,Math.sin(a)*outerR);grp.add(rof);
+        }
+        // Gatehouse
+        const gh=new T.Mesh(new T.BoxGeometry(0.70,wallH*1.24,0.54),innerMat);
+        gh.position.set(0,topY+wallH*0.63,outerR+0.02);gh.castShadow=true;grp.add(gh);
+        const go=new T.Mesh(new T.BoxGeometry(0.27,wallH*0.54,0.58),darkMat);
+        go.position.set(0,topY+wallH*0.28,outerR+0.02);grp.add(go);
+      }
+
+      // ── Inner ward ring ───────────────────────────────────────────────
+      if(innerZones.length>0){
         const iH=wallH*1.38;
         const iw=new T.Mesh(new T.CylinderGeometry(innerR,innerR,iH,30,1,true),innerMat);
-        iw.position.y=base+iH/2;iw.castShadow=true;grp.add(iw);
+        iw.position.y=topY+iH/2;iw.castShadow=true;grp.add(iw);
         const imN=Math.round(innerR*Math.PI*2/0.32);
-        for(let i=0;i<imN;i++){
+        for(let i=0;i<imN;i+=2){
           const a=(i/imN)*Math.PI*2;
           const m=new T.Mesh(new T.BoxGeometry(0.09,0.18,0.09),innerMat);
-          m.position.set(Math.cos(a)*innerR,base+iH+0.12,Math.sin(a)*innerR);grp.add(m);
+          m.position.set(Math.cos(a)*innerR,topY+iH+0.12,Math.sin(a)*innerR);grp.add(m);
         }
-        for(let i=0;i<4;i++){
-          const a=(i/4)*Math.PI*2+Math.PI/4;
-          const itH=iH*1.28;
-          const it=new T.Mesh(new T.CylinderGeometry(0.20,0.20,itH,9),innerMat);
-          it.position.set(Math.cos(a)*innerR,base+itH/2,Math.sin(a)*innerR);grp.add(it);
-          const ir=new T.Mesh(new T.ConeGeometry(0.24,0.32,9),roofMat);
-          ir.position.set(Math.cos(a)*innerR,base+itH+0.18,Math.sin(a)*innerR);grp.add(ir);
+        const iTN=Math.min(4,innerZones.length+3);
+        for(let i=0;i<iTN;i++){
+          const a=(i/iTN)*Math.PI*2+Math.PI/4;
+          const itH=iH*1.3;
+          const it=new T.Mesh(new T.CylinderGeometry(0.21,0.21,itH,spireSegs),innerMat);
+          it.position.set(Math.cos(a)*innerR,topY+itH/2,Math.sin(a)*innerR);grp.add(it);
+          const ir=new T.Mesh(new T.ConeGeometry(0.26,spireH*0.82,spireSegs),roofMat);
+          ir.position.set(Math.cos(a)*innerR,topY+itH+spireH*0.42,Math.sin(a)*innerR);grp.add(ir);
         }
       }
 
-      // Keep / Donjon
-      const kp=new T.Mesh(new T.BoxGeometry(0.78,keepH,0.78),keepMat);
-      kp.position.set(0,base+keepH/2,0);kp.castShadow=true;grp.add(kp);
-      [[0.39,0],[-0.39,0],[0,0.39],[0,-0.39]].forEach(([dx,dz])=>{
-        const m=new T.Mesh(new T.BoxGeometry(0.14,0.21,0.14),keepMat);
-        m.position.set(dx,base+keepH+0.13,dz);grp.add(m);
+      // ── Point-zone features placed at their actual SVG x,y position ──
+      // Maps 2D plan coordinates → 3D xz using wall radius as scale
+      const scale=(r)=>Math.min(r,innerR>0?innerR-0.3:outerR-0.4);
+      ptZones.forEach(z=>{
+        const zx=(z.x-50)/50*scale(outerR)*0.85;
+        const zz=(z.y-50)/50*scale(outerR)*0.85;
+        const isWater=/zistern|cistern|brunnen|see|wasser/i.test(z.l);
+        const isWeak =z.l.includes('⚠');
+        const isStrong=z.a>=7&&!isWeak;
+        if(isWater){
+          // Cistern pool at mapped position
+          const pr=Math.max(0.25,z.r/50*outerR);
+          const pool=new T.Mesh(new T.CylinderGeometry(pr,pr,0.09,14),moatMat);
+          pool.position.set(zx,topY+0.06,zz);grp.add(pool);
+        }
+        if(isStrong){
+          // Prominent tower at specific mapped position
+          const tH2=wallH*1.6+z.a*0.09;
+          const mat2=isFantasy?glowMat:innerMat;
+          const st=new T.Mesh(new T.CylinderGeometry(0.30,0.30,tH2,spireSegs),mat2);
+          st.position.set(zx,topY+tH2/2,zz);st.castShadow=true;grp.add(st);
+          const sr=new T.Mesh(new T.ConeGeometry(0.36,isFantasy?1.1:0.48,spireSegs),roofMat);
+          sr.position.set(zx,topY+tH2+spireH*0.58,zz);grp.add(sr);
+        }
+        if(isWeak){
+          // Red breach marker at weak spot
+          const br=new T.Mesh(new T.BoxGeometry(0.38,0.09,0.38),new T.MeshLambertMaterial({color:new T.Color('#cc2222'),transparent:true,opacity:0.55}));
+          br.position.set(zx,topY+0.07,zz);grp.add(br);
+        }
       });
-      const kr=new T.Mesh(new T.ConeGeometry(0.58,0.65,4),roofMat);
-      kr.rotation.y=Math.PI/4;kr.position.set(0,base+keepH+0.41,0);grp.add(kr);
 
-      // Stars
+      // ── Keep / Donjon ─────────────────────────────────────────────────
+      const kGeo=keepRound
+        ? new T.CylinderGeometry(0.40,0.45,keepH,spireSegs)
+        : new T.BoxGeometry(0.84,keepH,0.84);
+      const kp=new T.Mesh(kGeo,keepMat);
+      kp.position.set(0,topY+keepH/2,0);kp.castShadow=true;grp.add(kp);
+      if(!keepRound){
+        [[0.42,0],[-0.42,0],[0,0.42],[0,-0.42]].forEach(([dx,dz])=>{
+          const m=new T.Mesh(new T.BoxGeometry(0.14,0.21,0.14),keepMat);
+          m.position.set(dx,topY+keepH+0.13,dz);grp.add(m);
+        });
+      }
+      const krGeo=new T.ConeGeometry(keepRound?0.50:0.64,isFantasy?1.4:0.68,keepRound?spireSegs:4);
+      const kr=new T.Mesh(krGeo,roofMat);
+      if(!keepRound)kr.rotation.y=Math.PI/4;
+      kr.position.set(0,topY+keepH+(isFantasy?0.78:0.42),0);grp.add(kr);
+
+      // ── Eye of Sauron ─────────────────────────────────────────────────
+      if(hasEye){
+        const eyeY=topY+keepH+(isFantasy?2.1:1.5);
+        const eye=new T.Mesh(new T.SphereGeometry(0.40,14,14),glowMat);
+        eye.position.set(0,eyeY,0);grp.add(eye);
+        const pupil=new T.Mesh(new T.SphereGeometry(0.16,10,10),darkMat);
+        pupil.position.set(0,eyeY,0.32);grp.add(pupil);
+        const epl=new T.PointLight(acCol.getHex(),4.0,9);
+        epl.position.set(0,eyeY,0);grp.add(epl);
+      }
+
+      // ── Stars (deterministic spiral — same per session) ───────────────
       const sv=[];
-      for(let i=0;i<200;i++) sv.push((Math.random()-.5)*70,Math.random()*22+7,(Math.random()-.5)*70);
+      for(let i=0;i<220;i++){
+        const phi=(i*137.508)*Math.PI/180;
+        const r=8+i*0.28;sv.push(Math.cos(phi)*Math.min(r,34),8+i*0.10,Math.sin(phi)*Math.min(r,34));
+      }
       const sg=new T.BufferGeometry();
       sg.setAttribute('position',new T.Float32BufferAttribute(sv,3));
-      scene.add(new T.Points(sg,new T.PointsMaterial({color:0xffffff,size:0.06})));
+      scene.add(new T.Points(sg,new T.PointsMaterial({color:0xffffff,size:0.065})));
 
-      // Lighting
-      scene.add(new T.AmbientLight(0x332211,0.8));
-      const sun=new T.DirectionalLight(0xfff0cc,1.6);
-      sun.position.set(7,10,5);sun.castShadow=true;
-      sun.shadow.mapSize.setScalar(1024);scene.add(sun);
-      const fill=new T.DirectionalLight(acCol,0.5);
+      // ── Lighting ──────────────────────────────────────────────────────
+      const ambCol=isFantasy?acCol.clone().multiplyScalar(0.45):new T.Color(0x332211);
+      scene.add(new T.AmbientLight(ambCol.getHex(),isFantasy?0.65:0.82));
+      const sunCol=isFantasy?acCol.getHex():0xfff0cc;
+      const sun=new T.DirectionalLight(sunCol,1.55);
+      sun.position.set(7,10,5);sun.castShadow=true;sun.shadow.mapSize.setScalar(1024);scene.add(sun);
+      const fill=new T.DirectionalLight(acCol.getHex(),0.52);
       fill.position.set(-5,3,-6);scene.add(fill);
+      if(isFantasy){
+        // Magical point light at castle centre
+        const mpl=new T.PointLight(acCol.getHex(),1.4,11);
+        mpl.position.set(0,topY+keepH*0.5,0);grp.add(mpl);
+      }
 
-      // ── Drag to rotate ──
+      // ── Drag to rotate ────────────────────────────────────────────────
       let drag=false,px=0,rotY=0;
       const el=renderer.domElement;
       const dn=e=>{drag=true;px=e.clientX||(e.touches&&e.touches[0].clientX)||0;};
@@ -8916,11 +9038,11 @@ function CastleDiorama({castle}){
       el.addEventListener('touchend',up);
       el.style.cursor='grab';
 
-      // ── Render loop ──
+      // ── Render loop ──────────────────────────────────────────────────
       let autoY=0;
       const tick=()=>{
         animId=requestAnimationFrame(tick);
-        autoY+=0.003;
+        autoY+=0.0025;
         grp.rotation.y=autoY+rotY;
         renderer.render(scene,camera);
       };
@@ -8946,7 +9068,7 @@ function CastleDiorama({castle}){
     <div style={{borderRadius:"8px",overflow:"hidden",
       border:`1px solid ${ac}22`,
       boxShadow:`0 4px 32px rgba(0,0,0,0.65), 0 0 60px ${ac}08`}}>
-      <div ref={mountRef} style={{width:"100%",minHeight:"300px",background:"#07050b",position:"relative"}}>
+      <div ref={mountRef} style={{width:"100%",minHeight:"300px",background:castle.theme.bg,position:"relative"}}>
         {!ready&&(
           <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",
             justifyContent:"center",flexDirection:"column",gap:"10px"}}>
