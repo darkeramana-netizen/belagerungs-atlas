@@ -8759,33 +8759,35 @@ function CastleDiorama({castle}){
     const mount=mountRef.current;
     if(!mount) return;
 
-    const init=()=>{
+    const init=()=>{try{
       const T=window.THREE;
       const W=mount.clientWidth||600;
       const H=Math.min(Math.round(W*0.56),380);
       setReady(true);
 
       // ── Zone analysis ─────────────────────────────────────────────────
-      const wallZones =castle.zones.filter(z=>z.r>18&&z.r<=36);
-      const innerZones=castle.zones.filter(z=>z.r>10&&z.r<=18);
-      const ptZones   =castle.zones.filter(z=>z.r<=10);
+      const zones=castle.zones||[];
+      const wallZones =zones.filter(z=>z.r>18&&z.r<=36);
+      const innerZones=zones.filter(z=>z.r>10&&z.r<=18);
+      const ptZones   =zones.filter(z=>z.r<=10);
 
       const isFantasy    =castle.type==='fantasy';
-      const isMesa       =castle.ratings.position>=95&&!isFantasy;
-      const hasMtnBarrier=castle.zones.some(z=>z.r>36&&z.a>=8)&&!isMesa;
-      const hasVolcano   =castle.zones.some(z=>/vulkan|thangorodrim/i.test(z.l));
-      const hasEye       =castle.zones.some(z=>/auge/i.test(z.l));
+      const isMesa       =(castle.ratings.position||0)>=95&&!isFantasy;
+      const hasMtnBarrier=zones.some(z=>z.r>36&&z.a>=8)&&!isMesa;
+      const hasVolcano   =zones.some(z=>/vulkan|thangorodrim/i.test(z.l||''));
+      const hasEye       =zones.some(z=>/auge/i.test(z.l||''));
       const txt          =(castle.desc||'')+(castle.history||'');
       const hasMoat      =/wassergraben|burggraben/i.test(txt)
-                         ||castle.zones.some(z=>/graben/i.test(z.l)&&z.r>15);
+                         ||zones.some(z=>/graben/i.test(z.l||'')&&z.r>15);
 
       // Round plan = fantasy OR has "Ring" labels (concentric circle castles like Krak)
       // Rect plan  = real medieval castles with straight walls
-      const isRound =isFantasy||castle.zones.some(z=>/ring/i.test(z.l));
+      const isRound =isFantasy||zones.some(z=>/ring/i.test(z.l||''));
 
       // Aspect ratio from actual zone x,y spread → gives each rect castle unique proportions
-      const zxA=castle.zones.map(z=>z.x), zyA=castle.zones.map(z=>z.y);
-      const xSp=Math.max(...zxA)-Math.min(...zxA), ySp=Math.max(...zyA)-Math.min(...zyA);
+      const zxA=zones.map(z=>z.x||50), zyA=zones.map(z=>z.y||50);
+      const xSp=zxA.length?Math.max(...zxA)-Math.min(...zxA):0;
+      const ySp=zyA.length?Math.max(...zyA)-Math.min(...zyA):0;
       // clamp 0.55–1.65; fallback to year-hash for castles with little spread
       const aspect=xSp>8&&ySp>8
         ? Math.min(1.65,Math.max(0.55,ySp/xSp))
@@ -8796,7 +8798,7 @@ function CastleDiorama({castle}){
       const innerR  =innerZones.length>0? 0.8+(innerZones[0].r/18)*0.85: outerR*0.54;
       const wallH   =0.42+(castle.ratings.walls/100)*1.95;
       const keepH   =1.1+(castle.ratings.walls/100)*2.3;
-      const towerN  =Math.min(4+castle.zones.filter(z=>z.a>=4).length,10);
+      const towerN  =Math.min(4+zones.filter(z=>(z.a||0)>=4).length,10);
       const terrainH=isMesa?1.55:(castle.ratings.position/100)*0.72;
       const topY    =isMesa?terrainH*2:terrainH;
       const spireH  =isFantasy?1.05:0.40;
@@ -9000,9 +9002,10 @@ function CastleDiorama({castle}){
       const ps=Math.min(innerR>0?innerR-0.3:outerR-0.4,outerR)*0.82;
       ptZones.forEach(z=>{
         const zx=(z.x-50)/50*ps, zz=(z.y-50)/50*ps;
-        const isWater=/zistern|cistern|brunnen|see|wasser/i.test(z.l);
-        const isWeak =z.l.includes('⚠');
-        const isSt   =z.a>=7&&!isWeak;
+        const lbl    =z.l||'';
+        const isWater=/zistern|cistern|brunnen|see|wasser/i.test(lbl);
+        const isWeak =lbl.includes('⚠');
+        const isSt   =(z.a||0)>=7&&!isWeak;
         if(isWater){
           const pr=Math.max(0.18,z.r/50*outerR*0.65);
           const pool=new T.Mesh(new T.CylinderGeometry(pr,pr,0.09,14),moatMat);
@@ -9034,8 +9037,8 @@ function CastleDiorama({castle}){
         const kp=new T.Mesh(new T.BoxGeometry(kw,keepH,kd),keepMat);
         kp.position.set(0,topY+keepH/2,0);kp.castShadow=true;grp.add(kp);
         [[kw/2,0],[-kw/2,0],[0,kd/2],[0,-kd/2]].forEach(([dx,dz])=>{
-          grp.add(Object.assign(new T.Mesh(new T.BoxGeometry(0.13,0.20,0.13),keepMat),
-            {position:{x:dx,y:topY+keepH+0.12,z:dz}}));
+          const cm=new T.Mesh(new T.BoxGeometry(0.13,0.20,0.13),keepMat);
+          cm.position.set(dx,topY+keepH+0.12,dz);grp.add(cm);
         });
         const kr=new T.Mesh(new T.ConeGeometry(Math.max(kw,kd)*0.72,0.68,4),roofMat);
         kr.rotation.y=Math.PI/4;kr.position.set(0,topY+keepH+0.43,0);grp.add(kr);
@@ -9046,7 +9049,8 @@ function CastleDiorama({castle}){
         const ey=topY+keepH+(isFantasy?2.2:1.5);
         const eye=new T.Mesh(new T.SphereGeometry(0.40,14,14),glowMat);
         eye.position.set(0,ey,0);grp.add(eye);
-        grp.add(Object.assign(new T.Mesh(new T.SphereGeometry(0.16,10,10),darkMat),{position:{x:0,y:ey,z:0.32}}));
+        const pupil=new T.Mesh(new T.SphereGeometry(0.16,10,10),darkMat);
+        pupil.position.set(0,ey,0.32);grp.add(pupil);
         const epl=new T.PointLight(acCol.getHex(),4.0,9);epl.position.set(0,ey,0);grp.add(epl);
       }
 
@@ -9095,7 +9099,7 @@ function CastleDiorama({castle}){
         renderer.render(scene,camera);
       };
       tick();
-    };
+    }catch(e){console.error('Diorama error:',e);}};  // end try+init
 
     if(window.THREE){init();}
     else{
