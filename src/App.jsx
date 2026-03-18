@@ -523,68 +523,81 @@ const CASTLES = [
  weaknesses:["Nordflankenzugang","Garnison oft 200 statt 2000","Nahrungsabhängig von außen"],
  attackTips:["Nordwall zuerst","Vollständige Einkreisung","Versorgung kappen","Brief-Fälschung!"],
  siegeCtx:"1271 — Du befehligst Baibars' 8.000 Mann. 200 erschöpfte Ritter halten die Burg.",defender:"Grandmaster Bertrand de Blanquefort",
- components:[
-  // ── ÄUSSERER MAUERRING (tiefer gelegen, h≈2.5) ──────────────────────────
-  {type:'WALL',x:-10,z:-9,x2:10,z2:-9,h:2.5,thick:0.8,
-   label:'Nordmauer (Außenring)',info:'Die nördliche Außenmauer schützte den Zutritt vom flacheren Nordhang — die einzige Seite, wo ein Angreifer tatsächlich Belagerungsmaschinen aufstellen konnte. Schwäche: flacheres Gelände.'},
-  {type:'WALL',x:10,z:-9,x2:10,z2:9,h:2.5,thick:0.8,
-   label:'Ostmauer (Außenring)',info:'Östliche Außenmauer mit Haupttor. Kaufleute und Pilger passierten hier — unter scharfer Bewachung der Flankentürme.'},
-  {type:'WALL',x:-10,z:9,x2:10,z2:9,h:2.5,thick:0.8,
-   label:'Südmauer (Außenring)',info:'Die Südseite der Außenmauer lag unterhalb der massiven inneren Schildmauer. Ein Durchbruch hier würde den Angreifer direkt vor die mächtigsten Türme des Krak bringen.'},
-  {type:'WALL',x:-10,z:-9,x2:-10,z2:9,h:2.5,thick:0.8,
-   label:'Westmauer (Außenring)',info:'Die Westmauer war in natürliches Felsgelände eingebettet — teilweise direkt aus dem Fels gehauen, was Minen unmöglich machte.'},
-  // Eck- und Zwischentürme Außenring
-  {type:'ROUND_TOWER',x:-10,z:-9,r:1.3,h:4.5,
-   label:'Eckturm NW (Außen)',info:'Nordwestturm mit Sichtlinie auf das Tal. Diente als Signalwachtposten.'},
-  {type:'ROUND_TOWER',x:10,z:-9,r:1.3,h:4.5,
-   label:'Eckturm NO (Außen)',info:'Nordostturm — gemeinsam mit dem NW-Turm überwachten sie den gesamten Nordhang.'},
-  {type:'ROUND_TOWER',x:10,z:9,r:1.3,h:4.5,
-   label:'Eckturm SO (Außen)',info:'Flankierte das Haupttor von Süden — enfilierender Beschuss entlang der Ost- und Südmauer.'},
-  {type:'ROUND_TOWER',x:-10,z:9,r:1.3,h:4.5,
-   label:'Eckturm SW (Außen)',info:'Kontrollierte den Zugangspfad von Südwesten und das Vorgelände des Berges.'},
-  {type:'ROUND_TOWER',x:0,z:-9,r:1.1,h:4.0,
-   label:'Nordturm (Außenring)',info:'Mittlerer Nordturm — Beobachtungsposten für heranrückende Truppen. Der flachere Nordhang machte ihn besonders wichtig.'},
-  {type:'ROUND_TOWER',x:10,z:0,r:1.1,h:4.0,
-   label:'Ostturm (Außenring)',info:'Flankierungsturm neben dem Haupttor — deckte den Torzugang von Norden ab.'},
-  {type:'ROUND_TOWER',x:-10,z:-2,r:1.1,h:4.0,
-   label:'Westturm Nord',info:'Nördlicher Westturm — ermöglichte enfilierenden Beschuss entlang der Westmauer.'},
-  {type:'ROUND_TOWER',x:-10,z:5,r:1.1,h:4.0,
-   label:'Westturm Süd',info:'Südlicher Westturm — Sichtlinie auf die talus-geschützte Südseite des Innenhofs.'},
-  // Haupttor (Ostseite)
-  {type:'GATE',x:10,z:4,w:3.0,d:2.5,h:5.5,rotation:-Math.PI/2,
-   label:'Haupttor (Barbakane)',info:'Der Zugang war absichtlich gewunden — ein Angreifer, der das äußere Tor durchbrach, fand sich in einem engen Korridor unter Beschuss von drei Seiten. Eine Fallbrücke, zwei Fallgatter und Bohrungen im Gewölbe für siedendes Öl machten diesen Gang zur Falle.'},
-  // ── INNERER MAUERRING (erhöht um 1.8, h≈4–5.5) ──────────────────────────
-  {type:'WALL',x:-5,z:-5.5,x2:5,z2:-5.5,h:4.2,y:1.8,thick:1.0,
-   label:'Innere Nordmauer',info:'Schützte den Konventsaal und die Kapelle. Mehrere Wehrgänge und zahlreiche Schießscharten ermöglichten Bogenschützen parallelen Beschuss.'},
-  {type:'WALL',x:5,z:-5.5,x2:5,z2:3.5,h:4.2,y:1.8,thick:1.0,
-   label:'Innere Ostmauer',info:'Die Verbindung zwischen dem Großen Turm und dem Nordostturm des Innenhofs — hier verlief der gedeckte Wehrgang.'},
-  {type:'WALL',x:-5,z:-5.5,x2:-5,z2:3.5,h:4.2,y:1.8,thick:1.0,
-   label:'Innere Westmauer',info:'Die Westseite des Innenhofs. Weniger exponiert als die Süd- oder Ostseite, diente aber als Verbindungsglied.'},
-  // Glacis / Schildmauer Süd (das mächtigste Element)
-  {type:'WALL',x:-5,z:3.5,x2:5,z2:3.5,h:6.0,y:1.8,thick:2.8,
-   label:'Schildmauer / Glacis (Süd)',info:'Das ikonischste Element des Krak — eine 6 Meter dicke, leicht geneigte Steinschale auf dem abfallenden Südhang. Sie verteilt den Aufprall von Katapultsteinen und macht Minen praktisch unmöglich. Schwäche: Erdbeben 1202 beschädigte die Fundamente. Nur Aushungern konnte sie überwinden.'},
-  // Innere Ecktürme (Nord)
-  {type:'ROUND_TOWER',x:-5,z:-5.5,r:1.5,h:7.0,y:1.8,
-   label:'Nordwestturm (Innen)',info:'Turm an der Nordwestecke des Innenhofs — kontrollierte den Übergang zwischen Nord- und Westmauer, mit Sichtlinie ins Vorland.'},
-  {type:'ROUND_TOWER',x:5,z:-5.5,r:1.5,h:7.0,y:1.8,
-   label:'Nordostturm (Innen)',info:'Überblickte das gesamte äußere Ostfeld und das Haupttor — ideal für Bogenschützen zur Unterstützung der Torverteidigung.'},
-  // Die drei massiven Südtürme (das Herzstück des Krak)
-  {type:'ROUND_TOWER',x:-5,z:3.5,r:2.0,h:9.5,y:1.8,
-   label:'Südwestturm (Wächterturm)',info:'Einer der drei mächtigen Südtürme — mit Maschikulierungen (Gusserker) an der Spitze, durch die Steine, Öl und Pech senkrecht auf Angreifer geworfen wurden. Dreistöckig mit eigener Wasserversorgung.'},
-  {type:'ROUND_TOWER',x:0,z:3.5,r:1.9,h:9.0,y:1.8,
-   label:'Südmittelturm',info:'Mittlerer Südturm der inneren Schildmauer. Die Maschikulierungsreihe entlang aller drei Südtürme ermöglichte lückenlosen vertikalen Beschuss — kein Angreifer konnte die Mauerfüße ungestraft erreichen.'},
-  {type:'ROUND_TOWER',x:5,z:3.5,r:2.3,h:11.0,y:1.8,
-   label:'Torre Grande (Großer Turm)',info:'Der mächtigste Turm des gesamten Krak des Chevaliers — dreistöckig, mit eigenem Brunnen und Lagerraum für Monate. Er konnte als völlig selbstständiger letzter Rückzugspunkt fungieren. 1271 hielten die Johanniter diesen Turm noch, als die äußere Festung bereits gefallen war. Erst ein gefälschter Brief des Sultans brachte ihn zur Übergabe.'},
-  // Konventsaal (Großer Saal entlang der Nordseite des Innenhofs)
-  {type:'SQUARE_TOWER',x:0,z:-4.3,w:8.0,d:2.4,h:3.5,y:1.8,
-   label:'Konventsaal (Großer Saal)',info:'Der gotische Konventsaal der Johanniter — über 36 Meter lang, mit eleganten Kreuzrippengewölben. Hier tagte der Ordensrat, wurden Entscheidungen über Verteidigung und Diplomatie getroffen. Die Fenster zeigen feine arabische Einflüsse — ein Zeugnis des kulturellen Austauschs trotz Krieg.'},
-  // Inneres Tor / Passage
-  {type:'GATE',x:5,z:-1.5,w:2.5,d:2.0,h:5.0,y:1.8,rotation:-Math.PI/2,
-   label:'Inneres Tor (Gewundener Korridor)',info:'Das Innentor war durch einen bewusst gewundenen, langen Korridor gesichert. Selbst bei Einbruch in den äußeren Hof war diese Passage ein eigenständiges Hindernis — eng, dunkel, mit Fallgattern und Schießscharten auf beiden Seiten.'},
-  // Zisternen (in der äußeren Ward, NW-Bereich)
-  {type:'SQUARE_TOWER',x:-7,z:4,w:5,d:3.5,h:0.6,y:0,
-   label:'Zisternen (Wasserspeicher)',info:'Die unterirdischen Zisternen des Krak konnten über 5 Jahre Wasser für die gesamte Garnison speichern. Das war die eigentliche Geheimwaffe — keine Belagerung durch Durst konnte die Festung bezwingen. 40.000 m³ Wasser, gesammelt aus Regenwasser und einer Quelle.'},
- ]},
+ components:(()=>{
+  // Koordinaten: Äußerer Achteck-Ring (Rx=11, Rz=9), Innerer Ring (Rx=6, Rz=5, y=3)
+  // Winkel i: α = -π/2 + i·π/4, x = Rx·cos(α), z = Rz·sin(α)
+  const O=[ // Äußere 8 Eckpunkte
+    [0,-9],[7.78,-6.36],[11,0],[7.78,6.36],[0,9],[-7.78,6.36],[-11,0],[-7.78,-6.36]
+  ];
+  const I=[ // Innere 8 Eckpunkte (auf Glacis-Niveau y=3)
+    [0,-5],[4.24,-3.54],[6,0],[4.24,3.54],[0,5],[-4.24,3.54],[-6,0],[-4.24,-3.54]
+  ];
+  // Info-Texte
+  const oWallInfo='Äußerer Mauerring — niedriger als der innere Ring, aber die erste Hürde für jeden Angreifer.';
+  const oTwrInfo ='Außenturm des unteren Rings — Flankierungsfeuer entlang der Außenmauer.';
+  const iWallInfo='Innerer Mauerring — deutlich höher und dicker als die Außenmauer. Ein Durchbruch des äußeren Rings ließ den Angreifer direkt vor dieser Wand stehen.';
+  const comp=[];
+
+  // ── GLACIS: angeschrägter Sockel unter dem Innenring ─────────────────────
+  comp.push({type:'GLACIS',x:0,z:0,y:0,rTop:6.8,rBot:10.0,h:3.5,
+    label:'Glacis (Massiver Sockel)',
+    info:'Das charakteristischste Merkmal des Krak: ein mächtiger, leicht nach außen geneigter Steinsockel unter dem gesamten Innenring. Die Schräge lässt Katapultsteine abprallen, macht Minen unmöglich und zwingt Sturmtrupps auf freiem, beschussgefährdetem Gelände. Nur kontinuierlicher Hunger bezwang diesen Sockel.'});
+
+  // ── ÄUSSERER RING: 8 Türme ────────────────────────────────────────────────
+  const outerNames=['Nordturm','Nordostturm','Ostturm','Südostturm','Südturm','Südwestturm','Westturm','Nordwestturm'];
+  O.forEach(([x,z],i)=>comp.push({type:'ROUND_TOWER',x,z,r:1.2,h:4.5,
+    label:`Außenring – ${outerNames[i]}`,info:oTwrInfo}));
+
+  // ── ÄUSSERER RING: 7 Mauern + 1 Tor (Segment 2→3 = Ost-Seite) ───────────
+  O.forEach(([x,z],i)=>{
+    const [x2,z2]=O[(i+1)%8];
+    if(i===2){
+      // Osttor statt Mauer
+      const mx=(x+x2)/2, mz=(z+z2)/2;
+      comp.push({type:'GATE',x:mx,z:mz,w:2.8,d:2.2,h:4.8,
+        rotation:Math.atan2(mx,mz), // Öffnung nach außen
+        label:'Haupttor (Barbakane)',
+        info:'Der einzige reguläre Eingang. Absichtlich gewunden: Wer das äußere Tor bezwang, fand sich in einem engen Korridor mit Fallgattern, Pfeillöchern und Öffnungen für siedendes Öl. Ein Angreifer hatte keinen Schwung mehr zum Rammen.'});
+    } else {
+      comp.push({type:'WALL',x,z,x2,z2,h:2.5,thick:0.8,label:'Außenmauer',info:oWallInfo});
+    }
+  });
+
+  // ── INNERER RING: 8 Türme (Südseite massiv) ──────────────────────────────
+  const iTwrData=[
+    {r:1.4,h:7.0, label:'Nordturm (Innen)',        info:'Schützte den Konventsaal. Wehrgang mit Schießscharten für Bogenschützen.'},
+    {r:1.5,h:7.5, label:'Nordostturm (Innen)',     info:'Überblickte das äußere Ostfeld und deckte das Haupttor — ideal für Bogenschützen-Support.'},
+    {r:1.4,h:7.5, label:'Ostturm (Innen)',         info:'Halbturm, der das Innentor flankierte. Der Korridor darunter war eine tödliche Falle.'},
+    {r:1.9,h:9.0, label:'Südostturm (Torre del Maestre)',
+      info:'Imposanter Südostturm mit Maschikulierungen — senkrechte Gusserker, durch die Steine und Öl auf Angreifer fallen konnten.'},
+    {r:2.3,h:11.5,label:'Torre Grande (Großer Turm)',
+      info:'Der mächtigste Turm des Krak — dreistöckig, mit eigenem Brunnen. Letzter Rückzugspunkt. 1271 hielten die Johanniter ihn noch, als die Außenmauer bereits gefallen war. Erst ein gefälschter Brief des Sultans brachte die Übergabe.'},
+    {r:2.0,h:10.0,label:'Südwestturm (Wächterturm)',
+      info:'Einer der drei massiven Südtürme. Seine Maschikulierungen deckten den gesamten Südhang — kein Angreifer konnte die Mauerfüße ungestraft erreichen.'},
+    {r:1.4,h:7.5, label:'Westturm (Innen)',        info:'Verbindungsturm West — weniger exponiert, aber wichtig für den gedeckten Wehrgang.'},
+    {r:1.5,h:7.5, label:'Nordwestturm (Innen)',    info:'Nordwestlicher Innenturm — kontrollierte den Übergang zwischen Nord- und Westmauer mit Sichtlinie ins Vorland.'},
+  ];
+  I.forEach(([x,z],i)=>comp.push({type:'ROUND_TOWER',x,z,y:3,...iTwrData[i]}));
+
+  // ── INNERER RING: 8 Mauern (Südwände dicker = Schildmauer) ──────────────
+  I.forEach(([x,z],i)=>{
+    const [x2,z2]=I[(i+1)%8];
+    const isSouth=(i===3||i===4); // Wände vor Torre Grande = Schildmauer
+    comp.push({type:'WALL',x,z,x2,z2,h:isSouth?6.0:4.5,y:3,
+      thick:isSouth?2.5:1.0,
+      label:isSouth?'Schildmauer (Glacis-Front)':'Innenmauer',
+      info:isSouth
+        ?'Die berühmte Schildmauer: 6 Meter dickes, leicht geneigtes Mauerwerk. Katapultfeuer prallte ab, Minen fanden keinen Halt. Nur jahrelange Aushungerung konnte diese Front brechen.'
+        :iWallInfo});
+  });
+
+  // ── KONVENTSAAL (Großer Saal im Nordteil des Innenhofs) ──────────────────
+  comp.push({type:'SQUARE_TOWER',x:0,z:-3.6,w:7.0,d:2.0,h:3.2,y:3,
+    label:'Konventsaal der Johanniter',
+    info:'Gotischer Saal, über 36 Meter lang, mit eleganten Kreuzrippengewölben. Hier tagte der Ordensrat, hier wurde Verteidigung und Diplomatie besprochen. Arabische Bogenformen an den Fenstern — Zeugnis des kulturellen Austauschs trotz Krieg.'});
+
+  return comp;
+ })()},
 
 {id:"masada",name:"Masada",sub:"Jüdische Bergfestung",era:"73 n.Chr.",year:73,loc:"Judäa",type:"real",epoch:"Antike",region:"nahost",icon:"🪨",
  theme:{bg:"#150c05",accent:"#c97a40",glow:"rgba(180,100,50,0.15)"},
@@ -8840,7 +8853,7 @@ const _MATS={
 // WALL: box stretched between (x,z)→(x2,z2) with battlements
 function buildWall(p,sm,dm){
   const dx=p.x2-p.x, dz=p.z2-p.z;
-  const len=Math.sqrt(dx*dx+dz*dz), ang=Math.atan2(dx,dz);
+  const len=Math.sqrt(dx*dx+dz*dz), ang=Math.atan2(-dz,dx);
   const h=p.h||3, thick=p.thick||0.75, y=p.y||0;
   const g=new THREE.Group();
   g.position.set((p.x+p.x2)/2, y, (p.z+p.z2)/2);
@@ -8927,12 +8940,24 @@ function buildGate(p,sm,dm){
   return g;
 }
 
+// GLACIS: angeschrägter Sockel (Zylinder mit unterschiedlichem Ober-/Unterradius)
+function buildGlacis(p,sm){
+  const rTop=p.rTop||6, rBot=p.rBot||9, h=p.h||3, y=p.y||0;
+  const g=new THREE.Group();
+  g.position.set(p.x||0, y, p.z||0);
+  g.userData={label:p.label||'',info:p.info||''};
+  const mesh=new THREE.Mesh(new THREE.CylinderGeometry(rTop,rBot,h,32),sm);
+  mesh.position.y=h/2; mesh.castShadow=true; mesh.receiveShadow=true; g.add(mesh);
+  return g;
+}
+
 function _buildComponent(comp,sm,dm,rm){
   switch(comp.type){
     case 'WALL':         return buildWall(comp,sm,dm);
     case 'ROUND_TOWER':  return buildRoundTower(comp,sm,dm,rm);
     case 'SQUARE_TOWER': return buildSquareTower(comp,sm,dm,rm);
     case 'GATE':         return buildGate(comp,sm,dm);
+    case 'GLACIS':       return buildGlacis(comp,sm);
     default: return null;
   }
 }
@@ -9060,8 +9085,10 @@ function CastleDiorama({castle}){
       });
 
       // ── Camera orbit ──────────────────────────────────────────────────
-      let theta=0.28, phi=0.82, camR=26;
-      const tgt=new T.Vector3(0,3.5,0);
+      // Anfangsposition: leicht von Süden (theta≈π), halbhoch, damit beide Ringe sichtbar
+      const hasComponents=!!(castle.components);
+      let theta=hasComponents?Math.PI*0.85:0.28, phi=0.78, camR=hasComponents?32:26;
+      const tgt=new T.Vector3(0,hasComponents?5:3.5,0);
       function syncCam(){
         camera.position.set(
           tgt.x+camR*Math.sin(phi)*Math.sin(theta),
