@@ -8750,6 +8750,21 @@ function Lexikon({castle,onAsk}){
 //            'rect'  = real medieval castles (4 flat box-wall segments)
 //            'mesa'  = cliff/plateau castle (Masada etc.)
 // Features: spherical camera orbit, raycaster inspection, educational labels,
+// Singleton WebGL renderer — browsers cap WebGL contexts at ~16 per page.
+// Reusing one renderer avoids "blank scene" after navigating many castles.
+let _dioramaRenderer=null;
+function _getRenderer(T){
+  if(_dioramaRenderer){
+    const ctx=_dioramaRenderer.getContext&&_dioramaRenderer.getContext();
+    if(ctx&&!ctx.isContextLost())return _dioramaRenderer;
+    try{_dioramaRenderer.dispose();}catch(_){}
+    _dioramaRenderer=null;
+  }
+  _dioramaRenderer=new T.WebGLRenderer({antialias:true});
+  _dioramaRenderer.shadowMap.enabled=true;
+  _dioramaRenderer.shadowMap.type=T.PCFSoftShadowMap;
+  return _dioramaRenderer;
+}
 //           animated siege machines, day/night, camera presets, build stages, screenshot
 function CastleDiorama({castle}){
   const mountRef=useRef(null);
@@ -8839,12 +8854,14 @@ function CastleDiorama({castle}){
       scene.background=bgCol.clone();
       scene.fog=new T.FogExp2(bgCol.getHex(),0.054);
       const camera=new T.PerspectiveCamera(42,W/H,0.1,130);
-      renderer=new T.WebGLRenderer({antialias:true});
+      renderer=_getRenderer(T);
       renderer.setSize(W,H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-      renderer.shadowMap.enabled=true;
-      renderer.shadowMap.type=T.PCFSoftShadowMap;
-      mount.appendChild(renderer.domElement);
+      // Move canvas to this castle's mount (detach from previous if needed)
+      if(renderer.domElement.parentNode&&renderer.domElement.parentNode!==mount){
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+      if(!mount.contains(renderer.domElement))mount.appendChild(renderer.domElement);
 
       // ── Stage groups ──────────────────────────────────────────────────
       // gT=terrain(always) gP=palisade(stage1) gW=stone walls(2+)
@@ -9515,7 +9532,8 @@ function CastleDiorama({castle}){
     return()=>{
       camCtrlRef.current=null;
       cancelAnimationFrame(animId);
-      if(renderer&&mount&&mount.contains(renderer.domElement)){mount.removeChild(renderer.domElement);renderer.dispose();}
+      // Remove canvas from mount but keep singleton renderer alive for next castle
+      if(renderer&&mount&&mount.contains(renderer.domElement)){mount.removeChild(renderer.domElement);}
     };
   },[castle.id]);
 
