@@ -8745,6 +8745,230 @@ function Lexikon({castle,onAsk}){
   );
 }
 
+// ── Castle 3D Diorama ─────────────────────────────────────────────────────
+function CastleDiorama({castle}){
+  const mountRef=useRef(null);
+  const [ready,setReady]=useState(false);
+  const ac=castle.theme.accent;
+
+  useEffect(()=>{
+    let animId,renderer;
+    const mount=mountRef.current;
+    if(!mount) return;
+
+    const init=()=>{
+      const T=window.THREE;
+      const W=mount.clientWidth||600;
+      const H=Math.min(Math.round(W*0.56),380);
+      setReady(true);
+
+      // Scene
+      const scene=new T.Scene();
+      scene.background=new T.Color('#07050b');
+      scene.fog=new T.FogExp2('#07050b',0.065);
+
+      const camera=new T.PerspectiveCamera(40,W/H,0.1,120);
+      camera.position.set(0,5.8,12.5);
+      camera.lookAt(0,1.4,0);
+
+      renderer=new T.WebGLRenderer({antialias:true});
+      renderer.setSize(W,H);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+      renderer.shadowMap.enabled=true;
+      renderer.shadowMap.type=T.PCFSoftShadowMap;
+      mount.appendChild(renderer.domElement);
+
+      // ── Castle params from data ──
+      const wallH=0.38+(castle.ratings.walls/100)*2.0;
+      const wallR=2.9,innerR=1.65;
+      const towerCount=4+Math.min(castle.zones.filter(z=>z.r<15&&z.a>=3).length,4);
+      const keepH=0.95+(castle.ratings.walls/100)*2.4;
+      const hasInner=castle.ratings.walls>=65;
+      const terrainH=(castle.ratings.position/100)*0.7;
+      const hasMoat=(castle.desc+castle.history).toLowerCase().match(/graben|moat|wassergraben/)!=null;
+      const acCol=new T.Color(ac);
+      const hsl={};acCol.getHSL(hsl);
+      const mkC=(l)=>new T.Color().setHSL(hsl.h,0.14+l*0.04,l);
+
+      const stoneMat=new T.MeshLambertMaterial({color:mkC(0.21)});
+      const innerMat=new T.MeshLambertMaterial({color:mkC(0.27)});
+      const keepMat=new T.MeshLambertMaterial({color:mkC(0.33)});
+      const groundMat=new T.MeshLambertMaterial({color:new T.Color('#17110a')});
+      const roofMat=new T.MeshLambertMaterial({color:acCol.clone().multiplyScalar(0.44)});
+      const moatMat=new T.MeshLambertMaterial({color:new T.Color('#0c1c28'),transparent:true,opacity:0.85});
+
+      // ── Scene group (for rotation) ──
+      const grp=new T.Group();
+      scene.add(grp);
+
+      // Ground
+      const gnd=new T.Mesh(new T.CircleGeometry(9.5,44),groundMat);
+      gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;
+      grp.add(gnd);
+
+      // Terrain mound
+      if(terrainH>0.18){
+        const mnd=new T.Mesh(new T.ConeGeometry(5.2,terrainH*2.6,14),new T.MeshLambertMaterial({color:new T.Color('#100d06')}));
+        mnd.position.y=terrainH*0.8;grp.add(mnd);
+      }
+      const base=terrainH;
+
+      // Outer wall
+      const owm=new T.Mesh(new T.CylinderGeometry(wallR,wallR,wallH,44,1,true),stoneMat);
+      owm.position.y=base+wallH/2;owm.castShadow=true;grp.add(owm);
+
+      // Courtyard floor
+      const crt=new T.Mesh(new T.CircleGeometry(wallR-0.1,44),new T.MeshLambertMaterial({color:new T.Color('#0e0a05')}));
+      crt.rotation.x=-Math.PI/2;crt.position.y=base+0.01;grp.add(crt);
+
+      // Outer wall merlons
+      const mN=Math.round(wallR*Math.PI*2/0.36);
+      for(let i=0;i<mN;i++){
+        const a=(i/mN)*Math.PI*2;
+        const m=new T.Mesh(new T.BoxGeometry(0.11,0.21,0.11),stoneMat);
+        m.position.set(Math.cos(a)*wallR,base+wallH+0.13,Math.sin(a)*wallR);grp.add(m);
+      }
+
+      // Outer wall towers
+      for(let i=0;i<towerCount;i++){
+        const a=(i/towerCount)*Math.PI*2;
+        const tH=wallH*1.42;
+        const t=new T.Mesh(new T.CylinderGeometry(0.25,0.25,tH,10),stoneMat);
+        t.position.set(Math.cos(a)*wallR,base+tH/2,Math.sin(a)*wallR);
+        t.castShadow=true;grp.add(t);
+        const r=new T.Mesh(new T.ConeGeometry(0.30,0.40,10),roofMat);
+        r.position.set(Math.cos(a)*wallR,base+tH+0.22,Math.sin(a)*wallR);grp.add(r);
+      }
+
+      // Gatehouse
+      const gh=new T.Mesh(new T.BoxGeometry(0.68,wallH*1.22,0.52),innerMat);
+      gh.position.set(0,base+wallH*0.62,wallR+0.02);gh.castShadow=true;grp.add(gh);
+      // Gate opening (dark box)
+      const go=new T.Mesh(new T.BoxGeometry(0.26,wallH*0.53,0.58),new T.MeshLambertMaterial({color:new T.Color('#050302')}));
+      go.position.set(0,base+wallH*0.28,wallR+0.02);grp.add(go);
+
+      // Moat
+      if(hasMoat){
+        const mt=new T.Mesh(new T.TorusGeometry(wallR+0.58,0.48,6,44),moatMat);
+        mt.rotation.x=Math.PI/2;mt.position.y=base-0.05;grp.add(mt);
+      }
+
+      // Inner wall
+      if(hasInner){
+        const iH=wallH*1.38;
+        const iw=new T.Mesh(new T.CylinderGeometry(innerR,innerR,iH,30,1,true),innerMat);
+        iw.position.y=base+iH/2;iw.castShadow=true;grp.add(iw);
+        const imN=Math.round(innerR*Math.PI*2/0.32);
+        for(let i=0;i<imN;i++){
+          const a=(i/imN)*Math.PI*2;
+          const m=new T.Mesh(new T.BoxGeometry(0.09,0.18,0.09),innerMat);
+          m.position.set(Math.cos(a)*innerR,base+iH+0.12,Math.sin(a)*innerR);grp.add(m);
+        }
+        for(let i=0;i<4;i++){
+          const a=(i/4)*Math.PI*2+Math.PI/4;
+          const itH=iH*1.28;
+          const it=new T.Mesh(new T.CylinderGeometry(0.20,0.20,itH,9),innerMat);
+          it.position.set(Math.cos(a)*innerR,base+itH/2,Math.sin(a)*innerR);grp.add(it);
+          const ir=new T.Mesh(new T.ConeGeometry(0.24,0.32,9),roofMat);
+          ir.position.set(Math.cos(a)*innerR,base+itH+0.18,Math.sin(a)*innerR);grp.add(ir);
+        }
+      }
+
+      // Keep / Donjon
+      const kp=new T.Mesh(new T.BoxGeometry(0.78,keepH,0.78),keepMat);
+      kp.position.set(0,base+keepH/2,0);kp.castShadow=true;grp.add(kp);
+      [[0.39,0],[-0.39,0],[0,0.39],[0,-0.39]].forEach(([dx,dz])=>{
+        const m=new T.Mesh(new T.BoxGeometry(0.14,0.21,0.14),keepMat);
+        m.position.set(dx,base+keepH+0.13,dz);grp.add(m);
+      });
+      const kr=new T.Mesh(new T.ConeGeometry(0.58,0.65,4),roofMat);
+      kr.rotation.y=Math.PI/4;kr.position.set(0,base+keepH+0.41,0);grp.add(kr);
+
+      // Stars
+      const sv=[];
+      for(let i=0;i<200;i++) sv.push((Math.random()-.5)*70,Math.random()*22+7,(Math.random()-.5)*70);
+      const sg=new T.BufferGeometry();
+      sg.setAttribute('position',new T.Float32BufferAttribute(sv,3));
+      scene.add(new T.Points(sg,new T.PointsMaterial({color:0xffffff,size:0.06})));
+
+      // Lighting
+      scene.add(new T.AmbientLight(0x332211,0.8));
+      const sun=new T.DirectionalLight(0xfff0cc,1.6);
+      sun.position.set(7,10,5);sun.castShadow=true;
+      sun.shadow.mapSize.setScalar(1024);scene.add(sun);
+      const fill=new T.DirectionalLight(acCol,0.5);
+      fill.position.set(-5,3,-6);scene.add(fill);
+
+      // ── Drag to rotate ──
+      let drag=false,px=0,rotY=0;
+      const el=renderer.domElement;
+      const dn=e=>{drag=true;px=e.clientX||(e.touches&&e.touches[0].clientX)||0;};
+      const mv=e=>{
+        if(!drag)return;
+        const cx=e.clientX||(e.touches&&e.touches[0].clientX)||px;
+        rotY+=(cx-px)*0.009;px=cx;
+      };
+      const up=()=>{drag=false;};
+      el.addEventListener('mousedown',dn);el.addEventListener('mousemove',mv);
+      el.addEventListener('mouseup',up);el.addEventListener('mouseleave',up);
+      el.addEventListener('touchstart',dn,{passive:true});
+      el.addEventListener('touchmove',mv,{passive:true});
+      el.addEventListener('touchend',up);
+      el.style.cursor='grab';
+
+      // ── Render loop ──
+      let autoY=0;
+      const tick=()=>{
+        animId=requestAnimationFrame(tick);
+        autoY+=0.003;
+        grp.rotation.y=autoY+rotY;
+        renderer.render(scene,camera);
+      };
+      tick();
+    };
+
+    if(window.THREE){init();}
+    else{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      s.onload=init;document.head.appendChild(s);
+    }
+
+    return()=>{
+      cancelAnimationFrame(animId);
+      if(renderer&&mount&&mount.contains(renderer.domElement)){
+        mount.removeChild(renderer.domElement);renderer.dispose();
+      }
+    };
+  },[castle.id]);
+
+  return(
+    <div style={{borderRadius:"8px",overflow:"hidden",
+      border:`1px solid ${ac}22`,
+      boxShadow:`0 4px 32px rgba(0,0,0,0.65), 0 0 60px ${ac}08`}}>
+      <div ref={mountRef} style={{width:"100%",minHeight:"300px",background:"#07050b",position:"relative"}}>
+        {!ready&&(
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",
+            justifyContent:"center",flexDirection:"column",gap:"10px"}}>
+            <div style={{fontSize:"26px",animation:"spin 0.9s linear infinite"}}>⚙️</div>
+            <div style={{fontSize:"11px",color:ac,letterSpacing:"2px"}}>3D DIORAMA LÄDT …</div>
+          </div>
+        )}
+      </div>
+      <div style={{padding:"7px 14px",background:"rgba(0,0,0,0.55)",
+        borderTop:`1px solid ${ac}18`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{fontSize:"11px",color:`${ac}88`,letterSpacing:"1.5px"}}>
+          🏰 {castle.name.toUpperCase().slice(0,28)}
+        </div>
+        <div style={{fontSize:"10px",color:"#3a2a14"}}>↔ Ziehen zum Drehen</div>
+        <div style={{fontSize:"10px",color:"#3a2a14",textAlign:"right"}}>
+          Mauern {castle.ratings.walls}/100 · {castle.zones.length} Zonen
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 //  MAIN APP
 // ══════════════════════════════════════════════════════════════════════════
@@ -8810,7 +9034,7 @@ export default function App(){
   }),[filter,epochFilter,regionFilter,search]);
 
   const sc=avg(sel);
-  const DTABS=[{id:"map",l:"🗺 Karte"},{id:"stats",l:"📊 Wertung"},{id:"roleplay",l:"🎭 Belagerung"},{id:"simulator",l:"⚔️ Simulator"},{id:"whatif",l:"🌀 Was wäre wenn"},{id:"ai",l:"🤖 Berater"},{id:"compare",l:"⚡ Vergleich"},{id:"history",l:"📜 Geschichte"},{id:"lexikon",l:"📚 Lexikon"}];
+  const DTABS=[{id:"map",l:"🗺 Karte"},{id:"diorama",l:"🏰 3D Diorama"},{id:"stats",l:"📊 Wertung"},{id:"roleplay",l:"🎭 Belagerung"},{id:"simulator",l:"⚔️ Simulator"},{id:"whatif",l:"🌀 Was wäre wenn"},{id:"ai",l:"🤖 Berater"},{id:"compare",l:"⚡ Vergleich"},{id:"history",l:"📜 Geschichte"},{id:"lexikon",l:"📚 Lexikon"}];
   const NAVTABS=[{id:"overview",l:"🏰 Übersicht"},{id:"worldmap",l:"🌍 Karte"},{id:"detail",l:`${sel.icon} ${sel.name.split(" ")[0]}`},{id:"campaign",l:"📖 Kampagne"},{id:"tournament",l:"🗡️ Turnier"},{id:"build",l:"🏗️ Bauen"},{id:"timeline",l:"📅 Zeit"},{id:"globalstats",l:"📊 Atlas"},{id:"achievements",l:"🏆 Erfolge"},{id:"highscores",l:"🎖️ Scores"}];
 
   return(
@@ -9029,6 +9253,7 @@ export default function App(){
             {/* Detail content */}
             <div style={{flex:1,padding:"14px 16px",animation:"fadeIn .2s ease",overflowY:"auto"}}>
               {dtab==="map"&&<CastleMapTab castle={sel}/>}
+              {dtab==="diorama"&&<CastleDiorama castle={sel}/>}
 
               {dtab==="stats"&&(
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
