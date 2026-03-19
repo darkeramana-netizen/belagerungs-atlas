@@ -4663,10 +4663,28 @@ function MiniLeafletMap({lat, lon, castle}){
         .openPopup();
       mapInstance.current=map;
     };
-    if(window.L){initMap();}
-    else{
-      const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
-      return()=>clearInterval(t);
+    if(window.L){
+      initMap();
+    } else {
+      // Leaflet CSS
+      if(!document.getElementById('leaflet-css')){
+        const link=document.createElement('link');
+        link.id='leaflet-css'; link.rel='stylesheet';
+        link.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+        document.head.appendChild(link);
+      }
+      // Leaflet JS — inject if not yet loading
+      if(!document.getElementById('leaflet-js')){
+        const script=document.createElement('script');
+        script.id='leaflet-js';
+        script.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+        script.onload=initMap;
+        document.head.appendChild(script);
+      } else {
+        // Script tag exists but not yet loaded — poll
+        const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
+        return()=>clearInterval(t);
+      }
     }
     return()=>{
       if(mapInstance.current){
@@ -5242,7 +5260,12 @@ function RealWorldMap({castles,onSelect,selected}){
       initMap();
       return;
     }
+    if(document.getElementById('leaflet-js')){
+      const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
+      return()=>clearInterval(t);
+    }
     const script = document.createElement('script');
+    script.id = 'leaflet-js';
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
     script.onload = initMap;
     document.head.appendChild(script);
