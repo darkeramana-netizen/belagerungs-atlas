@@ -523,81 +523,64 @@ const CASTLES = [
  weaknesses:["Nordflankenzugang","Garnison oft 200 statt 2000","Nahrungsabhängig von außen"],
  attackTips:["Nordwall zuerst","Vollständige Einkreisung","Versorgung kappen","Brief-Fälschung!"],
  siegeCtx:"1271 — Du befehligst Baibars' 8.000 Mann. 200 erschöpfte Ritter halten die Burg.",defender:"Grandmaster Bertrand de Blanquefort",
- components:(()=>{
-  // Koordinaten: Äußerer Achteck-Ring (Rx=11, Rz=9), Innerer Ring (Rx=6, Rz=5, y=3)
-  // Winkel i: α = -π/2 + i·π/4, x = Rx·cos(α), z = Rz·sin(α)
-  const O=[ // Äußere 8 Eckpunkte
-    [0,-9],[7.78,-6.36],[11,0],[7.78,6.36],[0,9],[-7.78,6.36],[-11,0],[-7.78,-6.36]
-  ];
-  const I=[ // Innere 8 Eckpunkte (auf Glacis-Niveau y=3)
-    [0,-5],[4.24,-3.54],[6,0],[4.24,3.54],[0,5],[-4.24,3.54],[-6,0],[-4.24,-3.54]
-  ];
-  // Info-Texte
-  const oWallInfo='Äußerer Mauerring — niedriger als der innere Ring, aber die erste Hürde für jeden Angreifer.';
-  const oTwrInfo ='Außenturm des unteren Rings — Flankierungsfeuer entlang der Außenmauer.';
-  const iWallInfo='Innerer Mauerring — deutlich höher und dicker als die Außenmauer. Ein Durchbruch des äußeren Rings ließ den Angreifer direkt vor dieser Wand stehen.';
-  const comp=[];
+ // ═══ KRAK DES CHEVALIERS — RING-LAYOUT ════════════════════════════════════
+ // Alle Koordinaten exakt vorberechnet: x=R·sin(α), z=-R·cos(α)
+ // INNER_RING: Pentagon (N=5), Radius 10, Startpunkt Süd → Torre Grande dominiert
+ // OUTER_RING: Oktagon (N=8), Radius 20, Gate bei Segment 2→3 (Ostseite)
+ // Mauern werden vom buildRing-System automatisch verbunden (letzter Turm → erster)
+ components:[
+  // ── Glacis: angeschrägter Sockel unter dem Innenring ─────────────────────
+  {type:'GLACIS', x:0, z:0, y:0, rTop:11, rBot:15, h:3.5,
+   label:'Glacis (Massiver Steinsockel)',
+   info:'Das ikonischste Merkmal des Krak: ein nach außen geneigter Sockel, über den der Innenring thront. Katapultsteine prallen ab, Minen finden keinen Ansatz. Dieser Sockel machte die Südmauer nahezu unzerstörbar — nur Hunger bezwang den Krak.'},
 
-  // ── GLACIS: angeschrägter Sockel unter dem Innenring ─────────────────────
-  comp.push({type:'GLACIS',x:0,z:0,y:0,rTop:6.8,rBot:10.0,h:3.5,
-    label:'Glacis (Massiver Sockel)',
-    info:'Das charakteristischste Merkmal des Krak: ein mächtiger, leicht nach außen geneigter Steinsockel unter dem gesamten Innenring. Die Schräge lässt Katapultsteine abprallen, macht Minen unmöglich und zwingt Sturmtrupps auf freiem, beschussgefährdetem Gelände. Nur kontinuierlicher Hunger bezwang diesen Sockel.'});
+  // ── INNENRING: 5 Türme (Pentagon, R=10), auf dem Glacis (y=3.5) ─────────
+  // α = π + i·(2π/5): i=0=Süd, i=1=SW, i=2=NW, i=3=NO, i=4=SO
+  // Mauern: buildRing verbindet automatisch alle Punkte (Ring schließt sich)
+  {type:'RING', y:3.5,
+   points:[
+    {x:0,    z:10,    r:2.3, h:11.5,
+     label:'Torre Grande (Großer Turm)',
+     info:'Der mächtigste Turm des Krak — dreistöckig, mit eigenem Brunnen. Letzter Rückzugspunkt der Johanniter. 1271 hielten sie ihn noch, als die äußere Mauer bereits gefallen war. Erst ein gefälschter Brief des Sultans brachte die Übergabe.'},
+    {x:-9.51,z:3.09,  r:2.0, h:10.0,
+     label:'Südwestturm (Wächterturm)',
+     info:'Einer der drei massiven Südtürme. Maschikulierungen (Gusserker) ermöglichten senkrechten Beschuss auf Angreifer am Mauerfuß — Steine, Öl und Pech.'},
+    {x:-5.88,z:-8.09, r:1.5, h:7.5,
+     label:'Nordwestturm (Innen)',
+     info:'Verbindungsturm zwischen Süd- und Nordmauer des Innenhofs — weniger exponiert, wichtig für den gedeckten Wehrgang.'},
+    {x:5.88, z:-8.09, r:1.5, h:7.5,
+     label:'Nordostturm (Innen)',
+     info:'Überblickte das äußere Ostfeld und deckte das Haupttor von oben — ideal für Bogenschützen, die Eindringlinge im Korridor beschossen.'},
+    {x:9.51, z:3.09,  r:1.9, h:9.5,
+     label:'Südostturm (Torre del Maestre)',
+     info:'Imposanter Südostturm mit Maschikulierungsreihe. Gemeinsam mit Torre Grande und Wächterturm bildete er die undurchdringliche Südfront des Innenhofs.'},
+   ],
+   wall:{h:6.0, thick:1.3}},
 
-  // ── ÄUSSERER RING: 8 Türme ────────────────────────────────────────────────
-  const outerNames=['Nordturm','Nordostturm','Ostturm','Südostturm','Südturm','Südwestturm','Westturm','Nordwestturm'];
-  O.forEach(([x,z],i)=>comp.push({type:'ROUND_TOWER',x,z,r:1.2,h:4.5,
-    label:`Außenring – ${outerNames[i]}`,info:oTwrInfo}));
+  // ── AUSSENRING: 8 Türme (Oktagon, R=20), Gate bei Segment 2→3 ───────────
+  // Türme (r=1.3) sind dicker als Außenmauern (thick=0.8) → stehen an Ecken hervor
+  // Gate-Mittelpunkt zwischen Turm 2 (20,0) und Turm 3 (14.14, 14.14): (17.07, 7.07)
+  {type:'RING', y:0,
+   gate:{atIndex:2, w:3.5, d:2.5, h:5.5,
+     label:'Haupttor (Barbakane)',
+     info:'Der einzige reguläre Eingang. Absichtlich gewunden: Wer durchbrach, stand in einem engen Korridor mit Fallgattern, Pfeillöchern und Gusserker-Öffnungen. Kein Schwung mehr zum Rammen — die perfekte Falle.'},
+   points:[
+    {x:0,     z:-20,    r:1.3, h:5.5, label:'Außenturm Nord',  info:'Beobachtungsposten für den Nordhang — die einzige Seite, die flach genug für schwere Belagerungsmaschinen war.'},
+    {x:14.14, z:-14.14, r:1.3, h:5.5, label:'Außenturm NO',    info:'Flankierungsturm — ermöglichte Kreuzfeuer zwischen Ost- und Nordmauer.'},
+    {x:20,    z:0,      r:1.3, h:5.5, label:'Außenturm Ost',   info:'Turm neben dem Haupttor — deckte den Torzugang von Norden.'},
+    {x:14.14, z:14.14,  r:1.3, h:5.5, label:'Außenturm SO',    info:'Südöstlicher Flankierungsturm — sicherte den Torbereich von Süden.'},
+    {x:0,     z:20,     r:1.3, h:5.5, label:'Außenturm Süd',   info:'Südturm des äußeren Rings — liegt direkt unter der mächtigen Glacis-Front.'},
+    {x:-14.14,z:14.14,  r:1.3, h:5.5, label:'Außenturm SW',    info:'Südwestturm — Sichtlinie auf das gesamte Vorgelände Richtung Tal.'},
+    {x:-20,   z:0,      r:1.3, h:5.5, label:'Außenturm West',  info:'Westturm, in Felsgelände eingebettet — die Westseite war teilweise aus dem Fels gehauen.'},
+    {x:-14.14,z:-14.14, r:1.3, h:5.5, label:'Außenturm NW',    info:'Nordwestturm — gemeinsam mit dem Nordturm bewachte er den kritischen Nordhang.'},
+   ],
+   wall:{h:3.0, thick:0.8}},
 
-  // ── ÄUSSERER RING: 7 Mauern + 1 Tor (Segment 2→3 = Ost-Seite) ───────────
-  O.forEach(([x,z],i)=>{
-    const [x2,z2]=O[(i+1)%8];
-    if(i===2){
-      // Osttor statt Mauer
-      const mx=(x+x2)/2, mz=(z+z2)/2;
-      comp.push({type:'GATE',x:mx,z:mz,w:2.8,d:2.2,h:4.8,
-        rotation:Math.atan2(mx,mz), // Öffnung nach außen
-        label:'Haupttor (Barbakane)',
-        info:'Der einzige reguläre Eingang. Absichtlich gewunden: Wer das äußere Tor bezwang, fand sich in einem engen Korridor mit Fallgattern, Pfeillöchern und Öffnungen für siedendes Öl. Ein Angreifer hatte keinen Schwung mehr zum Rammen.'});
-    } else {
-      comp.push({type:'WALL',x,z,x2,z2,h:2.5,thick:0.8,label:'Außenmauer',info:oWallInfo});
-    }
-  });
-
-  // ── INNERER RING: 8 Türme (Südseite massiv) ──────────────────────────────
-  const iTwrData=[
-    {r:1.4,h:7.0, label:'Nordturm (Innen)',        info:'Schützte den Konventsaal. Wehrgang mit Schießscharten für Bogenschützen.'},
-    {r:1.5,h:7.5, label:'Nordostturm (Innen)',     info:'Überblickte das äußere Ostfeld und deckte das Haupttor — ideal für Bogenschützen-Support.'},
-    {r:1.4,h:7.5, label:'Ostturm (Innen)',         info:'Halbturm, der das Innentor flankierte. Der Korridor darunter war eine tödliche Falle.'},
-    {r:1.9,h:9.0, label:'Südostturm (Torre del Maestre)',
-      info:'Imposanter Südostturm mit Maschikulierungen — senkrechte Gusserker, durch die Steine und Öl auf Angreifer fallen konnten.'},
-    {r:2.3,h:11.5,label:'Torre Grande (Großer Turm)',
-      info:'Der mächtigste Turm des Krak — dreistöckig, mit eigenem Brunnen. Letzter Rückzugspunkt. 1271 hielten die Johanniter ihn noch, als die Außenmauer bereits gefallen war. Erst ein gefälschter Brief des Sultans brachte die Übergabe.'},
-    {r:2.0,h:10.0,label:'Südwestturm (Wächterturm)',
-      info:'Einer der drei massiven Südtürme. Seine Maschikulierungen deckten den gesamten Südhang — kein Angreifer konnte die Mauerfüße ungestraft erreichen.'},
-    {r:1.4,h:7.5, label:'Westturm (Innen)',        info:'Verbindungsturm West — weniger exponiert, aber wichtig für den gedeckten Wehrgang.'},
-    {r:1.5,h:7.5, label:'Nordwestturm (Innen)',    info:'Nordwestlicher Innenturm — kontrollierte den Übergang zwischen Nord- und Westmauer mit Sichtlinie ins Vorland.'},
-  ];
-  I.forEach(([x,z],i)=>comp.push({type:'ROUND_TOWER',x,z,y:3,...iTwrData[i]}));
-
-  // ── INNERER RING: 8 Mauern (Südwände dicker = Schildmauer) ──────────────
-  I.forEach(([x,z],i)=>{
-    const [x2,z2]=I[(i+1)%8];
-    const isSouth=(i===3||i===4); // Wände vor Torre Grande = Schildmauer
-    comp.push({type:'WALL',x,z,x2,z2,h:isSouth?6.0:4.5,y:3,
-      thick:isSouth?2.5:1.0,
-      label:isSouth?'Schildmauer (Glacis-Front)':'Innenmauer',
-      info:isSouth
-        ?'Die berühmte Schildmauer: 6 Meter dickes, leicht geneigtes Mauerwerk. Katapultfeuer prallte ab, Minen fanden keinen Halt. Nur jahrelange Aushungerung konnte diese Front brechen.'
-        :iWallInfo});
-  });
-
-  // ── KONVENTSAAL (Großer Saal im Nordteil des Innenhofs) ──────────────────
-  comp.push({type:'SQUARE_TOWER',x:0,z:-3.6,w:7.0,d:2.0,h:3.2,y:3,
-    label:'Konventsaal der Johanniter',
-    info:'Gotischer Saal, über 36 Meter lang, mit eleganten Kreuzrippengewölben. Hier tagte der Ordensrat, hier wurde Verteidigung und Diplomatie besprochen. Arabische Bogenformen an den Fenstern — Zeugnis des kulturellen Austauschs trotz Krieg.'});
-
-  return comp;
- })()},
+  // ── Konventsaal (Großer Saal, Nordteil des Innenhofs) ────────────────────
+  {type:'SQUARE_TOWER', x:0, z:-5.5, w:9, d:2.0, h:3.2, y:3.5,
+   label:'Konventsaal der Johanniter',
+   info:'Über 36 Meter langer gotischer Saal mit Kreuzrippengewölben — das kulturelle Herz des Krak. Hier tagte der Ordensrat, wurden Verträge geschlossen und Schlachten geplant. Arabische Bogenformen an den Fenstern zeugen vom kulturellen Austausch trotz Krieg.'},
+ ]},
 
 {id:"masada",name:"Masada",sub:"Jüdische Bergfestung",era:"73 n.Chr.",year:73,loc:"Judäa",type:"real",epoch:"Antike",region:"nahost",icon:"🪨",
  theme:{bg:"#150c05",accent:"#c97a40",glow:"rgba(180,100,50,0.15)"},
@@ -8951,6 +8934,35 @@ function buildGlacis(p,sm){
   return g;
 }
 
+// RING: Array von Turm-Punkten, automatisch durch Mauern verbunden (letzter→erster schließt den Ring).
+// gate:{atIndex,w,d,h,label,info} ersetzt ein Mauersegment durch ein Tor.
+// Math hinter jedem Wandstück:
+//   Länge   = Math.sqrt(dx²+dz²)        (Distanz Turm A → Turm B)
+//   Position = Mittelpunkt A+B           (center of segment)
+//   Rotation = Math.atan2(-dz,dx)        (lokale X-Achse zeigt exakt von A nach B)
+function buildRing(p,sm,dm,rm){
+  const pts=p.points||[], n=pts.length, y=p.y||0;
+  if(n<2) return null;
+  const wH=p.wall?.h||3, wT=p.wall?.thick||0.8, gt=p.gate;
+  const g=new THREE.Group();
+  g.userData={label:p.label||'',info:p.info||''};
+  pts.forEach((pt,i)=>{
+    // Turm an diesem Punkt
+    g.add(buildRoundTower({...pt, y:y+(pt.y||0)}, sm,dm,rm));
+    // Mauer oder Tor zum nächsten Punkt (Modulo schließt den Ring)
+    const nx=pts[(i+1)%n];
+    const mx=(pt.x+nx.x)/2, mz=(pt.z+nx.z)/2;
+    if(gt&&gt.atIndex===i){
+      // Tor statt Mauer: Position=Mittelpunkt, Rotation=nach außen
+      g.add(buildGate({...gt, x:mx, z:mz, y:y, rotation:Math.atan2(mx,mz)}, sm,dm));
+    } else {
+      g.add(buildWall({x:pt.x,z:pt.z,x2:nx.x,z2:nx.z,h:pt.wallH||wH,y:y,thick:wT,
+        label:'',info:''}, sm,dm));
+    }
+  });
+  return g;
+}
+
 function _buildComponent(comp,sm,dm,rm){
   switch(comp.type){
     case 'WALL':         return buildWall(comp,sm,dm);
@@ -8958,51 +8970,72 @@ function _buildComponent(comp,sm,dm,rm){
     case 'SQUARE_TOWER': return buildSquareTower(comp,sm,dm,rm);
     case 'GATE':         return buildGate(comp,sm,dm);
     case 'GLACIS':       return buildGlacis(comp,sm);
+    case 'RING':         return buildRing(comp,sm,dm,rm);
     default: return null;
   }
 }
 
-// ── Procedural fallback (castles without hand-crafted components) ──────────
+// ── Master-Template: prozedurales RING-System für alle 100 Burgen ──────────
+// Jede Burg bekommt: optionalen Glacis + Außenring (8 Türme, R=20) + Innenring (5 Türme, R=10)
+// Türme sind dicker als Mauern → stehen an Ecken sichtbar hervor.
 function generateComponents(castle){
-  const zones=castle.zones||[];
-  const wz=zones.filter(z=>z.r>18&&z.r<=36);
   const walls=castle.ratings?.walls||50;
-  const pos=castle.ratings?.position||50;
-  const isF=castle.type==='fantasy';
-  // Outer ring size proportional to zone count
-  const oR=9+Math.min(wz.length,6)*0.5;
-  const iR=oR*0.52;
-  const oH=2+walls*0.014;
-  const iH=oH*1.5;
-  const keepH=3.5+walls*0.02;
-  const yOff=(pos>=90&&!isF)?2:1;
-  const tR=isF?1.4:1.2;
+  const pos  =castle.ratings?.position||50;
+  const isF  =castle.type==='fantasy';
+  const outerR=20, innerR=10;
+  // Skalierung basierend auf Mauerstärke (walls-Rating)
+  const oTowerH = 2.8 + walls*0.018;   // Außenturm-Höhe
+  const oWallH  = oTowerH*0.55;         // Außenmauer-Höhe (Türme stehen hervor)
+  const iTowerH = 4.5 + walls*0.030;   // Innenturm-Höhe
+  const iWallH  = iTowerH*0.60;         // Innenmauer-Höhe
+  const oTowerR = 1.2 + walls*0.002;   // Außenturm-Radius
+  const iTowerR = 1.5 + walls*0.003;   // Innenturm-Radius
+  const glacisH = (pos>=85&&!isF) ? 3.5 : 0;
+  const innerY  = glacisH;
+
   const cs=[];
-  // Outer walls
-  [[-oR,-oR,oR,-oR,'N'],[ oR,-oR,oR, oR,'O'],[-oR,oR,oR,oR,'S'],[-oR,-oR,-oR,oR,'W']]
-    .forEach(([x,z,x2,z2,dir])=>
-      cs.push({type:'WALL',x,z,x2,z2,h:oH,thick:0.7,
-        label:`Außenmauer ${dir}`,info:'Äußere Verteidigungslinie.'}));
-  // Outer corner towers
-  [[-oR,-oR],[oR,-oR],[oR,oR],[-oR,oR]].forEach(([x,z])=>
-    cs.push({type:'ROUND_TOWER',x,z,r:tR,h:oH*1.7,
-      label:'Eckturm (Außenring)',info:'Flankierungsturm.'}));
-  // Inner walls (elevated)
-  [[-iR,-iR,iR,-iR,'N'],[iR,-iR,iR,iR,'O'],[-iR,iR,iR,iR,'S'],[-iR,-iR,-iR,iR,'W']]
-    .forEach(([x,z,x2,z2,dir])=>
-      cs.push({type:'WALL',x,z,x2,z2,h:iH,y:yOff,thick:0.85,
-        label:`Innenmauer ${dir}`,info:'Innerer Mauerring.'}));
-  // Inner corner towers
-  [[-iR,-iR],[iR,-iR],[iR,iR],[-iR,iR]].forEach(([x,z])=>
-    cs.push({type:'ROUND_TOWER',x,z,r:tR*1.15,h:iH*1.5,y:yOff,
-      label:'Turm (Innenring)',info:'Innerer Wehrturm.'}));
-  // Gate
-  cs.push({type:'GATE',x:oR,z:0,w:3,d:2,h:oH*1.2,rotation:-Math.PI/2,
-    label:`Haupttor – ${castle.name}`,info:'Einziger regulärer Zugang.'});
-  // Keep
-  cs.push({type:'SQUARE_TOWER',x:0,z:0,w:3,d:3,h:keepH,y:yOff,
-    label:`Bergfried – ${castle.name}`,
-    info:`Letzter Rückzugspunkt der Garnison. Mauerstärke: ${walls}/100 Punkte.`});
+
+  // ── Glacis (nur bei Hochlagen) ─────────────────────────────────────────
+  if(glacisH>0) cs.push({
+    type:'GLACIS', x:0, z:0, y:0, rTop:innerR*1.12, rBot:innerR*1.65, h:glacisH,
+    label:`Glacis – ${castle.name}`,
+    info:`Angeschrägter Felssockel unter dem Innenring. Position-Rating: ${pos}/100.`
+  });
+
+  // ── Außenring: 8 Türme (Oktagon, R=20) mit Tor auf Ostseite ────────────
+  const dirN=['N','NO','O','SO','S','SW','W','NW'];
+  cs.push({
+    type:'RING', y:0,
+    gate:{atIndex:2, w:3.0, d:2.2, h:oTowerH*0.95,
+      label:`Haupttor – ${castle.name}`,
+      info:`Einziger regulärer Eingang zu ${castle.name}. Bewacht von zwei Flankentürmen.`},
+    points: Array.from({length:8}, (_,i)=>{
+      const α=i*Math.PI/4;
+      return {x:+(outerR*Math.sin(α)).toFixed(2), z:+(- outerR*Math.cos(α)).toFixed(2),
+        r:oTowerR, h:oTowerH,
+        label:`Außenturm ${dirN[i]} – ${castle.name}`,
+        info:'Flankierungsturm des äußeren Rings — ermöglichte Kreuzfeuer entlang der Mauern.'};
+    }),
+    wall:{h:oWallH, thick:0.75}
+  });
+
+  // ── Innenring: 5 Türme (Pentagon, R=10, gedreht so Süd=Hauptturm) ──────
+  // α = π + i·(2π/5): Startpunkt Süd, damit Bergfried die Südseite dominiert.
+  cs.push({
+    type:'RING', y:innerY,
+    points: Array.from({length:5}, (_,i)=>{
+      const α=Math.PI+i*2*Math.PI/5;
+      const isSouth=i===0;
+      return {x:+(innerR*Math.sin(α)).toFixed(2), z:+(-innerR*Math.cos(α)).toFixed(2),
+        r:isSouth ? iTowerR*1.25 : iTowerR, h:isSouth ? iTowerH*1.4 : iTowerH,
+        label:isSouth ? `Bergfried – ${castle.name}` : `Innenturm ${['S','SW','NW','NO','SO'][i]}`,
+        info:isSouth
+          ? `Bergfried von ${castle.name} — letzter Rückzugspunkt. Mauerstärke: ${walls}/100.`
+          : 'Innerer Wehrturm.'};
+    }),
+    wall:{h:iWallH, thick:1.0}
+  });
+
   return cs;
 }
 
@@ -9086,9 +9119,14 @@ function CastleDiorama({castle}){
 
       // ── Camera orbit ──────────────────────────────────────────────────
       // Anfangsposition: leicht von Süden (theta≈π), halbhoch, damit beide Ringe sichtbar
-      const hasComponents=!!(castle.components);
-      let theta=hasComponents?Math.PI*0.85:0.28, phi=0.78, camR=hasComponents?32:26;
-      const tgt=new T.Vector3(0,hasComponents?5:3.5,0);
+      // Auto-scale camera based on RING radius
+      const rings=components.filter(c=>c.type==='RING');
+      const maxRingR=rings.length>0
+        ?Math.max(...rings.flatMap(r=>(r.points||[]).map(pt=>Math.sqrt((pt.x||0)**2+(pt.z||0)**2))))
+        :0;
+      let theta=Math.PI*0.85, phi=0.78;
+      let camR=maxRingR>0?Math.max(26,maxRingR*2.4):(castle.components?32:26);
+      const tgt=new T.Vector3(0,maxRingR>12?8:4,0);
       function syncCam(){
         camera.position.set(
           tgt.x+camR*Math.sin(phi)*Math.sin(theta),
