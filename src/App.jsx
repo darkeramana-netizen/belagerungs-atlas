@@ -8996,65 +8996,137 @@ function _buildComponent(comp,sm,dm,rm){
 }
 
 // ── Master-Template: prozedurales RING-System für alle 100 Burgen ──────────
-// Jede Burg bekommt: optionalen Glacis + Außenring (8 Türme, R=20) + Innenring (5 Türme, R=10)
-// Türme sind dicker als Mauern → stehen an Ecken sichtbar hervor.
+// Variation nach Epoche, Ratings und deterministischem Hash aus castle.id.
 function generateComponents(castle){
-  const walls=castle.ratings?.walls||50;
-  const pos  =castle.ratings?.position||50;
-  const isF  =castle.type==='fantasy';
-  const outerR=20, innerR=10;
-  // Skalierung basierend auf Mauerstärke (walls-Rating)
-  const oTowerH = 2.8 + walls*0.018;   // Außenturm-Höhe
-  const oWallH  = oTowerH*0.55;         // Außenmauer-Höhe (Türme stehen hervor)
-  const iTowerH = 4.5 + walls*0.030;   // Innenturm-Höhe
-  const iWallH  = iTowerH*0.60;         // Innenmauer-Höhe
-  const oTowerR = 1.2 + walls*0.002;   // Außenturm-Radius
-  const iTowerR = 1.5 + walls*0.003;   // Innenturm-Radius
-  const glacisH = (pos>=85&&!isF) ? 3.5 : 0;
+  const walls    = castle.ratings?.walls    || 50;
+  const pos      = castle.ratings?.position || 50;
+  const garrison = castle.ratings?.garrison || 50;
+  const epoch    = castle.epoch || 'Mittelalter';
+  const isF      = castle.type === 'fantasy';
+
+  // Deterministischer Hash → visuelle Variation ohne Zufall
+  const hv = (castle.id||'x').split('').reduce((a,c)=>a+c.charCodeAt(0), 0);
+  const h1 = hv%7, h2 = hv%5, h3 = hv%3;
+
+  // Epoche-Flags
+  const isAncient = epoch==='Antike' || epoch==='Spätantike';
+  const isHigh    = epoch==='Hochmittelalter';
+  const isModern  = epoch==='Neuzeit';
+  const isJapan   = epoch==='Feudaljapan';
+
+  // ── Turmanzahl ────────────────────────────────────────────────────────────
+  const nOuter = isAncient ? 6 : isModern ? 6 : isHigh ? 10 : isF ? 8+h1%3 : 8;
+  const nInner = isAncient ? 4 : isHigh   ? 6 : isF    ? 5+h2%2 : 5;
+
+  // ── Radien ────────────────────────────────────────────────────────────────
+  const outerR = isAncient ? 22 : isModern ? 18 : 20;
+  const innerR = walls>75 ? 11 : walls<40 ? 9 : 10;
+
+  // ── Höhen & Stärken ───────────────────────────────────────────────────────
+  const oTowerH = (isAncient?3.5 : isModern?2.8 : isF?5.5 : 3.0) + walls*0.020;
+  const oWallH  = oTowerH * (isModern ? 0.70 : 0.55);
+  const iTowerH = (isAncient?5.0 : isF?8.0 : 4.5) + walls*0.032;
+  const iWallH  = iTowerH * 0.60;
+  const oTowerR = (isModern?1.6 : 1.2) + walls*0.002;
+  const iTowerR = 1.5 + walls*0.003;
+
+  // ── Glacis: glatte Skalierung ab pos≥65 ─────────────────────────────────
+  const glacisH = !isF && pos>=80 ? 2.0+(pos-80)*0.12 : !isF && pos>=65 ? 1.5 : 0;
   const innerY  = glacisH;
 
-  const cs=[];
+  // ── Variation: Tor-Index & Ring-Startwinkel ───────────────────────────────
+  const gateIdx   = 1 + (h2 % (nOuter-2));          // nicht immer Ost
+  const ringOff   = h3 * Math.PI / nOuter;           // leichte Drehung pro Burg
+  const dir16     = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSW','SW','WSW','W','WNW','NW','NNW'];
 
-  // ── Glacis (nur bei Hochlagen) ─────────────────────────────────────────
+  const cs = [];
+
+  // ── Glacis ────────────────────────────────────────────────────────────────
   if(glacisH>0) cs.push({
-    type:'GLACIS', x:0, z:0, y:0, rTop:innerR*1.12, rBot:innerR*1.65, h:glacisH,
+    type:'GLACIS', x:0, z:0, y:0,
+    rTop:innerR*1.1, rBot:innerR*1.6+pos*0.015, h:glacisH,
     label:`Glacis – ${castle.name}`,
-    info:`Angeschrägter Felssockel unter dem Innenring. Position-Rating: ${pos}/100.`
+    info:`Angeschrägter ${isAncient?'Stein':'Fels'}sockel — erschwert Belagerungsmaschinen erheblich. Geländevorteil: ${pos}/100.`
   });
 
-  // ── Außenring: 8 Türme (Oktagon, R=20) mit Tor auf Ostseite ────────────
-  const dirN=['N','NO','O','SO','S','SW','W','NW'];
+  // ── Außenring ─────────────────────────────────────────────────────────────
   cs.push({
     type:'RING', y:0,
-    gate:{atIndex:2, w:3.0, d:2.2, h:oTowerH*0.95,
-      label:`Haupttor – ${castle.name}`,
-      info:`Einziger regulärer Eingang zu ${castle.name}. Bewacht von zwei Flankentürmen.`},
-    points: Array.from({length:8}, (_,i)=>{
-      const α=i*Math.PI/4;
-      return {x:+(outerR*Math.sin(α)).toFixed(2), z:+(- outerR*Math.cos(α)).toFixed(2),
-        r:oTowerR, h:oTowerH,
-        label:`Außenturm ${dirN[i]} – ${castle.name}`,
-        info:'Flankierungsturm des äußeren Rings — ermöglichte Kreuzfeuer entlang der Mauern.'};
+    gate:{
+      atIndex: gateIdx,
+      w: 2.8+walls*0.012, d: 1.8+walls*0.010, h: oTowerH*0.95,
+      label:`${isAncient?'Stadttor':isModern?'Bastion-Torwerk':isJapan?'Masugata-Tor':'Haupttor'} – ${castle.name}`,
+      info: isModern
+        ? 'Bastioniertes Torwerk — optimiert für Artilleriefeuer und seitliche Flankenverteidigung.'
+        : isJapan
+          ? 'Masugata: Doppeltes Torwerk mit Richtungswechsel — Angreifer stehen im Kreuzfeuer.'
+          : isAncient
+            ? 'Monumentaltor — Symbol der Macht. Flankiert von massiven Quadrattürmen.'
+            : 'Bewacht von Flankentürmen — Fallgatter, Pfeillöcher, enger Tordurchgang.'
+    },
+    points: Array.from({length:nOuter}, (_,i)=>{
+      const α = ringOff + i*2*Math.PI/nOuter;
+      // Elliptisch bei Hochlagen (Kamm-Burgen strecken sich entlang des Grats)
+      const rx = pos>80 ? outerR*1.15 : outerR;
+      const rz = pos>80 ? outerR*0.85 : outerR;
+      return {
+        x: +(rx*Math.sin(α)).toFixed(2),
+        z: +(-rz*Math.cos(α)).toFixed(2),
+        r: oTowerR, h: oTowerH,
+        label:`${isModern?'Bastion':isAncient?'Wachturm':'Außenturm'} ${dir16[Math.round(i*16/nOuter)%16]} – ${castle.name}`,
+        info: isModern
+          ? 'Artillerie-Bastion — abgeschrägte Flanken lenken Kanonenkugeln ab.'
+          : isAncient
+            ? 'Massiver antiker Wachturm — breitere Basis, weniger Höhe als mittelalterliche Typen.'
+            : 'Flankierungsturm — ermöglichte Kreuzfeuer entlang der Mauerstrecke.'
+      };
     }),
-    wall:{h:oWallH, thick:0.75}
+    wall:{h:oWallH, thick:isModern?1.0:0.75}
   });
 
-  // ── Innenring: 5 Türme (Pentagon, R=10, gedreht so Süd=Hauptturm) ──────
-  // α = π + i·(2π/5): Startpunkt Süd, damit Bergfried die Südseite dominiert.
+  // ── Innenring ─────────────────────────────────────────────────────────────
+  const bfLabel = isAncient?'Zentralturm' : isJapan?'Tenshu (Hauptturm)' : isF?`${castle.name.split(' ')[0]}-Turm` : 'Bergfried';
   cs.push({
     type:'RING', y:innerY,
-    points: Array.from({length:5}, (_,i)=>{
-      const α=Math.PI+i*2*Math.PI/5;
-      const isSouth=i===0;
-      return {x:+(innerR*Math.sin(α)).toFixed(2), z:+(-innerR*Math.cos(α)).toFixed(2),
-        r:isSouth ? iTowerR*1.25 : iTowerR, h:isSouth ? iTowerH*1.4 : iTowerH,
-        label:isSouth ? `Bergfried – ${castle.name}` : `Innenturm ${['S','SW','NW','NO','SO'][i]}`,
-        info:isSouth
-          ? `Bergfried von ${castle.name} — letzter Rückzugspunkt. Mauerstärke: ${walls}/100.`
-          : 'Innerer Wehrturm.'};
+    points: Array.from({length:nInner}, (_,i)=>{
+      const α = Math.PI + i*2*Math.PI/nInner;
+      const isBF = i===0;
+      return {
+        x: +(innerR*Math.sin(α)).toFixed(2),
+        z: +(-innerR*Math.cos(α)).toFixed(2),
+        r: isBF ? iTowerR*1.3 : iTowerR,
+        h: isBF ? iTowerH*(isF?1.7:isJapan?1.6:1.4) : iTowerH,
+        label: isBF ? `${bfLabel} – ${castle.name}` : `Innenturm ${i}`,
+        info: isBF
+          ? (isJapan
+              ? `Tenshu — mehrstöckiger Hauptturm, Symbol der Macht des Daimyō. Höhe: ${walls}/100.`
+              : isF
+                ? 'Zentralturm des dunklen Herrn — kein Licht dringt durch seine Mauern.'
+                : `Bergfried — letzter Rückzugspunkt. Hier fiel die Entscheidung. Mauerstärke: ${walls}/100.`)
+          : `Innerer Wehrturm. Garrison: ${garrison}/100.`
+      };
     }),
     wall:{h:iWallH, thick:1.0}
   });
+
+  // ── Palas / Innenhalle (bei starker Garnison oder dicken Mauern) ──────────
+  if(garrison>60 || walls>75){
+    const palα = ringOff + h1*2*Math.PI/8;
+    const palR = innerR*0.42;
+    cs.push({
+      type:'SQUARE_TOWER',
+      x: +(palR*Math.sin(palα)).toFixed(2),
+      z: +(-palR*Math.cos(palα)).toFixed(2),
+      w: 4.0+garrison*0.025, d:2.0, h:iTowerH*0.50,
+      y: innerY,
+      label:`${isAncient?'Palast':isJapan?'Ninomaru':isF?'Thronsaal':'Palas'} – ${castle.name}`,
+      info: isJapan
+        ? 'Ninomaru — Sekundärburg mit Palastbereich, Residenz des Herrn.'
+        : isAncient
+          ? 'Repräsentationsbau — hier residierte der Herrscher und empfing Gesandte.'
+          : `Wohn- und Verwaltungsbau im Kernwerk. Garrison: ${garrison}/100.`
+    });
+  }
 
   return cs;
 }
