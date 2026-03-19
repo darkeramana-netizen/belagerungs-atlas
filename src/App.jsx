@@ -8816,8 +8816,8 @@ function _getRenderer(){
     _dioramaRenderer=new THREE.WebGLRenderer({antialias:true,logarithmicDepthBuffer:false});
     _dioramaRenderer.shadowMap.enabled=true;
     _dioramaRenderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    _dioramaRenderer.toneMapping=THREE.ACESFilmicToneMapping;
-    _dioramaRenderer.toneMappingExposure=1.55;
+    _dioramaRenderer.toneMapping=THREE.ReinhardToneMapping;
+    _dioramaRenderer.toneMappingExposure=1.8;
   }
   return _dioramaRenderer;
 }
@@ -9115,8 +9115,8 @@ function CastleDiorama({castle}){
       }
 
       // Lighting
-      const amb=new T.AmbientLight(0x5a4f40,1.1); scene.add(amb);
-      const sun=new T.DirectionalLight(0xfff5e0,3.2);
+      const amb=new T.AmbientLight(0xc8b89a,2.8); scene.add(amb);
+      const sun=new T.DirectionalLight(0xfff8e8,5.5);
       sun.position.set(22,32,14);
       sun.castShadow=true;
       sun.shadow.mapSize.set(2048,2048);
@@ -9124,7 +9124,7 @@ function CastleDiorama({castle}){
       sun.shadow.camera.left=-40; sun.shadow.camera.right=40;
       sun.shadow.camera.top=40; sun.shadow.camera.bottom=-40;
       scene.add(sun);
-      const fill=new T.DirectionalLight(0x607090,0.65);
+      const fill=new T.DirectionalLight(0x9ab0cc,1.8);
       fill.position.set(-18,12,-22); scene.add(fill);
 
       // Build castle from components
