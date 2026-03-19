@@ -174,11 +174,9 @@ const LEXIKON_OFFLINE = {
   dol_guldur:["Tolkien schrieb Dol Guldur zuerst als geheimnisvolles 'Hill of Sorcery' — erst später wurde klar dass Sauron dort residierte.","Gandalf brach dreimal in Dol Guldur ein — beim dritten Mal fand er Thráin II., Thorins Vater, wahnsinnig aber noch lebend.","'Dol Guldur' bedeutet auf Sindarin 'Hügel des dunklen Zauberers' — ein Euphemismus der den wahren Bewohner verschleierte.","Galadriel zerstörte Dol Guldur persönlich in der Nacht der Ringkrieg begann — eine der wenigen Momente wo sie ihre volle Macht zeigte.","Der Düsterwald selbst war Dol Guldurs beste Verteidigung — er verwandelte sich durch Saurons Einfluss in ein mörderisches Labyrinth."],
   storms_end:["Sturmkap wurde laut Legende von Durran Donnergott mit Hilfe der Götter gebaut — der Turm hat keine Ecken oder Kanten damit der Wind keinen Halt findet.","Stannis Baratheon hielt Sturmkap ein Jahr lang mit einer hungernden Garnison — gerettet durch Davos Seaworth der als Zwiebelschmuggler Nahrung durchschleuste.","Die Architektur ist magisch begründet: Runde Türme ohne Winkel lassen Katapultsteine abgleiten statt eindringen.","Jon Connington verteidigte Sturmkap in Roberts Rebellion — und verlor sie letztlich, was seine Verbannung bedeutete.","Das Kap des Zorns ist für seine tödlichen Stürme bekannt — selbst feindliche Flotten verloren mehr Schiffe an Stürmen als an Verteidigern."],
   // Persönliche Burg
-  schwarzer_bergfried:["Ca. 800–850 als einfacher Wachturm errichtet — Großmeister Aldric von Dunmoor (ca. 890–921) versiegelte das Archiv persönlich und schwor: 'Was hier liegt, bleibt hier bis die Welt bereit ist.'","Das Archiv enthält Karten zu Ruinen einer untergegangenen Zivilisation. Ihre Wiederentdeckung würde beweisen, dass drei heutige Königreiche auf geraubtem Land stehen — Dynastien würden fallen.","'In silentio vigilamus' — Im Schweigen wachen wir. Neue Ritter schwören einen Schweigeeid. Wer bricht ist für den Orden nicht mehr existent.","Die verbotenen Karten sind hinter einer Doppelwand eingemauert. Nur der Ordensrat kennt den genauen Ort — und selbst sie kennen nur Fragmente des Ganzen.","Gerüchte über die Karten existieren in drei Königreichen. Keine Beweise, aber genug um den Orden zum Ziel politischer Intrigen zu machen."],
-  castle_sorrow:["Gegründet von Großmeister Harwin dem Gründer im 10.–11. Jahrhundert — er erkannte dass ein einzelner Turm den Orden nicht schützen kann.","1389 versuchte Bischof Aldous von Veldrath den Orden durch päpstlichen Erlass aufzulösen. Großmeisterin Sera von Dunmoor hielt Castle Sorrow 11 Monate gegen ein kirchliches Heer — und gewann.","Der Ordensrat trägt kollektiv das Geheimnis. Stirbt ein Ratsmitglied, überträgt es sein Wissen auf einen Nachfolger — in einem Ritual das niemand außerhalb bezeugt hat.","Die Kirche des Ewigen Lichts betrachtet den Orden als Ketzer — nicht wegen Häresie, sondern weil sie weiß dass das Archiv Wahrheiten enthält die ihr schaden würden.","Notfallplan: Sollte Castle Sorrow fallen, verschwinden Karten und Ritter nach Gravecrest. Drei Ritter wissen den Weg — nur sie."],
-  gravecrest:["Erbaut von Großmeister Talvyn dem Stillen — er sagte: 'Eine Burg die man nicht sehen kann, kann man nicht nehmen.' Gravecrest ist auf keiner offiziellen Karte verzeichnet.","1312 flohen die überlebenden Ritter nach der Niederlage von Castle Sorrow nach Gravecrest — und organisierten von dort den Gegenangriff der die Burg in 40 Tagen zurückholte.","Ritterhauptmann Oswin von Gravecrest ist seit 22 Jahren im Amt und hat die Festung nie verlassen. Er kennt jeden Stein, jeden Windschatten, jeden Moment wenn der Pfad rutschig wird.","Das Signalfeuer von Gravecrest kann beide anderen Burgen gleichzeitig sehen — es ist das Herz des Kommunikationssystems. Wer Gravecrest kontrolliert, kontrolliert die Information.","Kein Feind der Geschichte hat Gravecrest je eingenommen. Nicht durch Stärke — durch Unsichtbarkeit. Wer nicht auf der Karte steht, wird nicht belagert."],
-  castle_sorrow:["Castle Sorrow wurde im 10.–11. Jahrhundert als Ordenshauptquartier errichtet — erste feste Heimat des Ordo Custodum Sorrowland.","Im 15.–16. Jahrhundert um einen Kanonen-Bastionsturm erweitert — eine frühe Anpassung an Schwarzpulverwaffen, ähnlich wie bei der Marienburg in Polen.","Hier tagt der Ordensrat, hier lagern die Waffen, hier leben die meisten Ritter. Castle Sorrow ist das Herz des Ordens.","Die größte Schwäche ist die Größe selbst — mehr Fläche bedeutet mehr zu verteidigen, und bei zu kleiner Garnison entstehen tote Winkel.","Das strategische Konzept: Castle Sorrow hält den Hauptangriff, Gravecrest sammelt Verstärkung, der Schwarze Bergfried bleibt letzter Rückzugsort. Ein Feind muss alle drei isolieren."],
-  gravecrest:["Gravecrest wurde im 12. Jahrhundert erbaut und ähnelt in seiner Berglagen-Strategie dem Hochosterwitz in Kärnten — nur ein schmaler Pfad führt hinauf.","Von Gravecrest aus sieht man Castle Sorrow und den Schwarzen Bergfried gleichzeitig — ideal für das Signalfeuer-System des Ordens.","Rauchsignale am Tag, Feuerzeichen in der Nacht, Hornsignale bei Alarm — das Drei-Burgen-System verhindert jeden Überraschungsangriff.","Die Bergfestung dient als Sammelplatz wenn Castle Sorrow unter Druck steht — überlebende Ritter reorganisieren sich hier für den Gegenangriff.","Fast unmöglich zu stürmen: Ein Dutzend Mann kann auf dem Pfad Hunderte aufhalten. Hunger bleibt die einzige echte Waffe gegen Gravecrest."],
+  schwarzer_bergfried:["Ca. 800–850 als einfacher Wachturm errichtet — Großmeister Aldric von Dunmoor versiegelte das Archiv persönlich: 'Was hier liegt, bleibt bis die Welt bereit ist.'","Das Archiv enthält Karten zu Ruinen einer untergegangenen Zivilisation — ihre Entdeckung würde beweisen dass drei heutige Königreiche auf geraubtem Land stehen.","'In silentio vigilamus' — Im Schweigen wachen wir. Neue Ritter schwören einen Schweigeeid. Wer bricht ist für den Orden nicht mehr existent.","Die verbotenen Karten sind hinter einer Doppelwand eingemauert. Nur der Ordensrat kennt den genauen Ort — und selbst sie kennen nur Fragmente.","Gerüchte in drei Königreichen. Keine Beweise — aber genug um den Orden zur Zielscheibe politischer Intrigen zu machen."],
+  castle_sorrow:["Gegründet von Großmeister Harwin dem Gründer — 1389 hielt Großmeisterin Sera von Dunmoor die Burg 11 Monate gegen ein kirchliches Heer und gewann.","Im 15.–16. Jahrhundert um einen Kanonen-Bastionsturm erweitert — frühe Anpassung an Schwarzpulverwaffen ähnlich der Marienburg.","Der Ordensrat trägt das Geheimnis kollektiv. Stirbt ein Mitglied, überträgt es sein Wissen in einem Ritual das niemand außerhalb bezeugt hat.","Sollte Castle Sorrow fallen, verschwinden Karten und Ritter nach Gravecrest. Drei Ritter kennen den Weg — nur sie.","Die größte Schwäche ist die Größe: Mehr Fläche bedeutet mehr zu verteidigen. Bei kleiner Garnison entstehen tote Winkel."],
+  gravecrest:["Erbaut von Großmeister Talvyn dem Stillen: 'Eine Burg die man nicht sehen kann, kann man nicht nehmen.' Gravecrest steht auf keiner offiziellen Karte.","1312 flohen Ritter nach der Niederlage von Castle Sorrow nach Gravecrest — von dort organisierten sie den Gegenangriff der die Burg in 40 Tagen zurückholte.","Das Signalfeuer von Gravecrest sieht beide anderen Burgen gleichzeitig — Rauchsignale am Tag, Feuerzeichen nachts, Hornsignale bei Alarm.","Von Gravecrest aus sieht man Castle Sorrow und den Schwarzen Bergfried zugleich — wer Gravecrest kontrolliert, kontrolliert die Information des Ordens.","Nie eingenommen. Nicht durch Stärke — durch Unsichtbarkeit. Ein Dutzend Mann kann auf dem einzigen Pfad Hunderte aufhalten."],
   // Batch 3
   kerak:["Saladin belagerte Kerak 1183 während einer Hochzeitsfeier — der Bräutigam schickte ihm Speisen, er fragte welches Gemach das Brautpaar bewohne um es beim Beschuss zu verschonen.","Kerak kontrollierte die gesamte Handelsroute zwischen Kairo und Damaskus — wer die Burg hielt, beschnitt buchstäblich das wirtschaftliche Rückgrat eines Reiches.","Raynald de Châtillon, der Verteidiger 1183, war berüchtigt für seine Vertragsbrüche — er griff arabische Handelskarawanen trotz Waffenstillstand an, was Saladin zur Rache trieb.","1188 fiel Kerak nicht durch Sturm sondern durch puren Hunger — nach monatelanger Belagerung ohne Entsatz.","Kerak ist eine der am besten erhaltenen Kreuzfahrerburgen und heute noch besuchbar — mit Tunneln und Gewölben aus dem 12. Jahrhundert."],
   sigiriya:["Die Fresken am Fels zeigen 'Wolkenmädchen' — rätselhafte Figuren deren Identität bis heute diskutiert wird.","Kassapa I. baute eine hydraulische Anlage die Wasser 200m auf den Gipfel pumpte — eine ingenieurstechnische Meisterleistung des 5. Jahrhunderts.","Der 'Spiegelwall' aus poliertem Kalkstein reflektierte das Gesicht des Betrachters — und trug Graffiti von Besuchern aus dem 7. bis 14. Jahrhundert.","Kassapa stieg 495 freiwillig herunter um gegen seinen Bruder zu kämpfen. Er verlor — seine stärkste Burg blieb oben, er starb unten.","Sigiriya ist heute UNESCO-Weltkulturerbe und das meistbesuchte Monument Sri Lankas."],
@@ -192,6 +190,29 @@ const LEXIKON_OFFLINE = {
   orthanc:["Orthanc bedeutet auf Sindarin 'Gespaltene Spitze' — aber im Rohirrim bedeutet 'orthanc' auch 'gerissener Verstand'.","Tolkien beschreibt Orthanc als aus schwarzem Stein gebaut der weder durch Feuer noch durch Eisen beschädigt werden kann.","Sarumans Verrat begann mit dem Palantir — er schaute in den Sehstein um mehr Macht zu erlangen und wurde von Sauron korrumpiert.","Die Ents zerstörten Isengard vollständig in einer Nacht — aber Orthanc selbst blieb unberührt, was selbst die Ents in Erstaunen versetzte.","Nach Saurons Fall übergab Aragorn Orthanc an Treebeard — der alte Ent bewachte den eingesperrten Saruman."],
   casterly_rock:["'Ein Lannister zahlt immer seine Schulden' ist kein Ziel, sondern eine Warnung — die Goldminen ermöglichten unbegrenzte Rache.","Lann der Listige soll Casterly Rock durch das Einlassen von Ratten und das Verbreiten von Gerüchten übernommen haben — ohne einen Schwerthieb.","Die Goldminen von Casterly Rock wurden kurz vor dem Krieg der Fünf Könige erschöpft — Cersei schwieg darüber um die Illusion der Macht aufrechtzuerhalten.","Tyrion leitete als Stadtverwalter die Abwasserversorgung — dieses Wissen ermöglichte später den einzigen erfolgreichen Angriff auf die Burg.","GRRM basierte das Lannister-Imperium auf die Fugger-Familie — die reichsten Bankiers des 15./16. Jahrhunderts, die Kaiser finanzierten."],
   black_gate:["Das Schwarze Tor wurde in der Zweiten Ära von Mordors Kriegern als nördliche Grenze Mordors errichtet — eine der ältesten Bauwerke Mittelerdes.","'Ash nazg durbatulûk' — ein Ring sie zu knechten. Als Sauron diese Worte im Feuer sprach, erschauderten alle Elben die Ringe trugen.","Aragorns Armee vor dem Schwarzen Tor zählte nur 7.000 Mann — gegen zig Tausende in Mordor. Die Ablenkung war alles.","Als der Eine Ring zerstört wurde, kollabierte das Tor nicht mechanisch — Saurons Wille der es zusammenhielt, verschwand einfach.","Tolkien beschrieb die Szene vor dem Schwarzen Tor als seine emotionalste zu schreiben — Aragorn wusste er führte seine Männer in den Tod."],
+  // Batch 4 — fehlende historische Burgen
+  akkon:["1191 belagerten Richard Löwenherz und Philipp II. Akkon gemeinsam — zwei Könige die sich hassten, vereint gegen Saladin.","Die Tunnelstadt unter Akkon wurde erst 1994 wiederentdeckt — ein komplettes Netzwerk aus Templer-Gängen unter der Altstadt.","1291 fiel Akkon als letzte Kreuzfahrerstadt — der Großmeister der Templer starb kämpfend auf der Bresche.","Akkons Doppelmauern waren so stark dass Saladin 1189 zwei Jahre brauchte um nur die äußere Mauer zu durchbrechen.","Der Hafen war Akkons Lebensader: Solange Schiffe anlegen konnten, war die Stadt unbesiegbar — sein Verlust bedeutete das Ende."],
+  himeji:["Himeji-jō überlebte den Zweiten Weltkrieg durch pures Glück — eine Brandbombe fiel auf den Tenshu, zündete aber nicht.","Das Labyrinth aus 83 Toren war so verwirrend dass selbst Burgbewohner sich verirrten — absichtliches Chaos als Verteidigung.","Die weißen Wände bestehen aus einer Mischung mit gebranntem Muschelkalk — sie reflektieren Sonnenlicht und blenden Angreifer.","Toyotomi Hideyoshi baute Himeji 1580 zur Machtdemonstration — die größte Holzburg der Welt, sichtbar aus 50km Entfernung.","Der Tenshu hat geheime Waffenkammern in jeder Etage — von außen unsichtbar, von innen sofort zugänglich."],
+  alamut:["Hassan-i Sabbāh eroberte Alamut 1090 ohne einen einzigen Schwerthieb — er konvertierte die Garnison durch jahrelange Predigt.","Die Assassinen-Bibliothek von Alamut galt als eine der größten der islamischen Welt — Hülegü verbrannte sie 1256 vollständig.","Marco Polo beschrieb den 'Garten der Lüste' in Alamut — historisch umstritten, aber die Legende überlebte Jahrhunderte.","Hülegü Khan brauchte 30.000 Mongolen und drei Jahre um das Assassinen-Netzwerk zu zerschlagen — Alamut fiel zuletzt.","Der Name 'Assassine' kommt möglicherweise von 'Haschischin' — oder von 'Asās' (Fundament). Historiker streiten noch heute."],
+  coucy:["Der Donjon von Coucy war mit 54m Höhe und 31m Durchmesser der größte jemals gebaute Burgturm Europas.","Enguerrand III. ließ den Donjon als Provokation gegen den König bauen — sein Motto: 'Ich bin weder König noch Prinz noch Graf — ich bin der Herr von Coucy.'","Die deutsche Armee sprengte den Donjon 1917 absichtlich — nicht aus militärischer Notwendigkeit sondern als Akt kultureller Zerstörung.","Die Mauern des Donjons waren 7,5m dick — kein mittelalterliches Geschoss konnte sie durchdringen.","Coucy kontrollierte die Straße Paris–Laon — wer Coucy hielt, kontrollierte den Zugang zur Île-de-France."],
+  alhambra:["Die Alhambra ist keine Burg im europäischen Sinne — sie ist eine Palaststadt mit Festungsring, einzigartig in der Welt.","Die Nasriden-Paläste enthalten über 10.000 arabische Inschriften — die Wände selbst erzählen Geschichten und Gebete.","Boabdil weinte beim Verlassen der Alhambra 1492 — seine Mutter sagte: 'Weine wie eine Frau um das was du als Mann nicht verteidigen konntest.'","Das Wassersystem der Alhambra leitet Schmelzwasser der Sierra Nevada über 6km — Schwerkraft allein trieb Brunnen und Bäder an.","Napoleon nutzte die Alhambra als Kaserne und wollte sie sprengen — ein Soldat entschärfte die Lunten und rettete das Monument."],
+  mehrangarh:["Mehrangarh thront auf einem 122m hohen senkrechten Felsen — kein Belagerungsturm der Welt reicht auch nur halb so hoch.","Am Eingangstor sind bis heute Handabdrücke von Frauen sichtbar die sich 1843 bei der Sati-Zeremonie verbrannten.","Nur ein einziger Angriff durchbrach je ein Tor: Akbar schoss mit Kanonen auf das Jayapol-Tor — die Narben sind noch sichtbar.","Die Mauern sind bis zu 36m hoch und 21m dick — gebaut aus dem gleichen roten Sandstein auf dem die Burg steht.","Mehrangarh wurde nie vollständig eingenommen — jeder Eroberer verhandelte, statt zu stürmen."],
+  caernarvon:["Edward I. modellierte Caernarvon bewusst nach Konstantinopel — die polygonalen Türme und gestreiften Mauern sind eine direkte Kopie.","Der Eagle Tower hat drei Adlertürme auf dem Dach — Symbol der englischen Herrschaft über Wales.","1284 wurde Edward II. in Caernarvon geboren — absichtlich, damit der erste 'Prince of Wales' ein Engländer auf walisischem Boden war.","Caernarvon kostete das Äquivalent von 250 Millionen heutigen Pfund — die teuerste Burg die Edward I. je baute.","Owain Glyndŵr belagerte Caernarvon 1401 zweimal — beide Male scheiterte er an den massiven Mauern."],
+  rhodes:["Die Johanniter verteidigten Rhodos 1480 mit nur 3.500 Mann gegen 70.000 Osmanen — und gewannen.","1522 bot Süleyman der Prächtige den 600 überlebenden Rittern freien Abzug — ein seltener Akt des Respekts im Osmanischen Reich.","Jede 'Zunge' (Nation) der Johanniter verteidigte ihren eigenen Mauerabschnitt — Frankreich, England, Deutschland, Italien, Spanien, Provence, Auvergne.","Die Festungsmauern wurden nach 1480 speziell gegen Kanonen umgebaut — Rhodos war eine der ersten Bastionärfestungen der Geschichte.","Der Großmeisterpalast enthielt ein unterirdisches Lazarett — die Johanniter waren zugleich Ritter und Ärzte."],
+  angkor:["Angkor war im 12. Jahrhundert mit über 750.000 Einwohnern die größte Stadt der Welt — größer als jede europäische Stadt.","Das Wassermanagementsystem umfasste riesige Stauseen (Barays) die 200.000 Hektar Reisfelder bewässerten — Angkors wahre Stärke.","Die Khmer setzten Kriegselefanten als lebende Belagerungsmaschinen ein — bis zu 200 Elefanten in einer einzigen Schlacht.","Angkor Thom hatte 5 monumentale Tore — jedes bewacht von 54 Steinriesen die eine Naga-Schlange halten.","Angkor fiel nicht durch Krieg sondern durch Klimawandel — Dürren zerstörten das Bewässerungssystem und damit die Nahrungsgrundlage."],
+  bodiam:["Bodiam ist die 'perfekte' mittelalterliche Burg — aber Historiker streiten ob sie jemals ernsthaft verteidigt werden sollte.","Der Wassergraben war nicht nur Verteidigung sondern auch Statussymbol — Sir Edward Dallingridge wollte beeindrucken, nicht nur verteidigen.","Der Zugang führt über einen 90-Grad-Knick über die Barbakane — Angreifer mussten sich unter Beschuss drehen.","1483 ergab sich Bodiam kampflos an Richard III. — die schönste Burg Englands wurde nie im Kampf getestet.","National Trust restaurierte Bodiam ab 1919 — Lord Curzon kaufte die Ruine und schenkte sie der Nation."],
+  windsor:["Windsor ist mit über 950 Jahren ununterbrochener Nutzung die am längsten bewohnte Burg der Welt.","Wilhelm der Eroberer wählte den Standort 1070 strategisch — einen Tagesmarsch von London entfernt, auf einem Kreidefelsen über der Themse.","Der Round Tower steht auf einem künstlichen Hügel den normannische Zwangsarbeiter in nur 16 Wochen aufschütteten.","1992 verwüstete ein Brand 115 Räume — die Restaurierung dauerte 5 Jahre und kostete 37 Millionen Pfund.","Windsor überstand den englischen Bürgerkrieg als Cromwells Hauptquartier — die einzige königliche Burg die nie belagert wurde."],
+  great_wall:["Die Große Mauer ist kein einzelnes Bauwerk sondern hunderte separate Mauern aus 2.000 Jahren — zusammen über 21.000km.","Entgegen dem Mythos ist die Mauer NICHT vom Weltraum sichtbar — Astronaut Yang Liwei bestätigte das 2003.","Während des Baus der Ming-Mauer starben geschätzt 400.000 Arbeiter — viele wurden in die Mauer selbst eingemauert.","Die Mauer scheiterte strategisch: Dschingis Khan, die Mandschurei und andere umgingen oder bestachen Torwächter.","Wachtürme konnten durch Rauchsignale Nachrichten über 750km in weniger als 24 Stunden übermitteln."],
+  persepolis:["Dareios I. begann Persepolis 518 v.Chr. als Zeremonialhauptstadt — nicht als Festung, sondern als Symbol persischer Macht.","Alexander der Große brannte Persepolis 330 v.Chr. nieder — angeblich im Rausch, möglicherweise als Rache für die Zerstörung der Akropolis.","Die Apadana-Treppe zeigt 23 verschiedene Völker die dem Großkönig Tribut bringen — ein steinernes Zeugnis des größten Reiches seiner Zeit.","Die 'Unsterblichen', 10.000 Elitesoldaten, waren Persepolis' Garde — fiel einer, wurde er sofort ersetzt, daher der Name.","Persepolis wurde erst 1931 systematisch ausgegraben — über 2.000 Jahre lag die Palaststadt unter Sand und Schutt."],
+  mont_michel:["Der Mont-Saint-Michel wird bei Flut zur Insel — das Meer steigt hier schneller als ein Pferd galoppieren kann.","Während des Hundertjährigen Krieges hielten 119 Ritter den Mont gegen die gesamte englische Armee — 30 Jahre lang.","Die Abtei auf der Spitze diente im 18. Jahrhundert als Gefängnis — Spottname: 'Saint-Michel-en-Péril-de-la-Mer'.","Die Gezeiten waren die beste Verteidigung: Angreifer die bei Ebbe kamen, ertranken bei Flut in Treibsand.","Mont-Saint-Michel ist mit 3 Millionen Besuchern jährlich das meistbesuchte Monument der Normandie."],
+  // Batch 5 — fehlende Fantasy-Burgen
+  angband:["Angband bedeutet 'Eisengefängnis' auf Sindarin — Morgoth baute es als Gegenstück zu den Hallen der Valar.","Thangorodrim, die drei Vulkangipfel über Angband, waren die höchsten Berge Mittelerdes — aus Schlacke aufgetürmt.","Morgoth saß in der tiefsten Halle auf einem Eisenthron mit den drei Silmaril in seiner Krone — und wagte nicht mehr hinauszugehen.","Die Balrogs waren Angbands Elitegarnison — Feuerdämonen die seit der Schöpfung Morgoths treueste Diener waren.","Angband wurde im Krieg des Zorns vernichtet — die Valar selbst griffen ein und versenkten Beleriand im Meer."],
+  khazad_dum:["Khazad-dûm (Moria) erstreckte sich unter drei Bergen — Caradhras, Celebdil und Fanuidhol — das größte Zwergenreich aller Zeiten.","Die Zwerge gruben zu tief nach Mithril und weckten Durins Fluch — einen Balrog der seit dem Ersten Zeitalter dort schlief.","Mithril, leichter als Seide und härter als Stahl, wurde NUR in Khazad-dûm gefunden — sein Verlust veränderte Mittelerdes Wirtschaft.","Gandalfs Kampf gegen den Balrog dauerte von der tiefsten Höhle bis zum höchsten Gipfel — 10 Tage ununterbrochen.","Balin versuchte Moria zurückzuerobern — sein Grab im Kammerbuch erzählt das Ende: 'Trommeln in der Tiefe. Sie kommen.'"],
+  edoras:["Edoras bedeutet 'die Höfe' auf Altenglisch — Tolkien basierte Rohan vollständig auf angelsächsischer Kultur.","Meduseld, die Goldene Halle, hat ein Dach aus echtem Gold — sichtbar über die gesamte Ebene Rohans.","Théoden wurde durch Sarumans Einfluss via Gríma Schlangenzunge zum lebenden Toten — Gandalf heilte ihn mit einem Wort.","Die Rohirrim sind Tolkiens Angelsachsen zu Pferd — ihre Sprache ist Altenglisch, ihre Namen germanisch.","Peter Jackson baute Edoras komplett auf einem Hügel in Neuseeland — die Kulisse steht nicht mehr, aber der Ort ist Pilgerstätte."],
+  harrenhal:["Harrenhal ist die größte Burg in Westeros — und verflucht: Jeder Herr von Harrenhal stirbt eines gewaltsamen Todes.","Aegon der Eroberer schmolz Harrenhals Türme mit Drachenfeuer — die geschmolzenen Steine sind noch heute sichtbar.","Harren der Schwarze baute 40 Jahre an Harrenhal — er genoss genau eine Nacht darin bevor Aegon kam.","Arya Stark diente in Harrenhal als Cupbearer für Tywin Lannister — ohne dass er wusste wer sie war.","Die fünf Türme heißen: Kingspyre, Widow's, Wailing, Ghost und Tower of Dread — jeder Name erzählt von Unheil."],
+  minas_morgul:["Minas Morgul war einst Minas Ithil, 'Turm des Mondes' — die schönste Stadt Gondors, bevor die Nazgûl sie nahmen.","Das grüne Leuchten von Minas Morgul ist Tolkiens Version von Giftgas — eine Waffe die den Geist zersetzt, nicht den Körper.","Der Hexenkönig von Angmar regierte von Minas Morgul — sein Schrei allein konnte Männer in den Wahnsinn treiben.","Frodo wurde am Pass von Cirith Ungol, direkt über Minas Morgul, von Kankra gestochen — der gefährlichste Moment der Quest.","Nach Saurons Fall wurde Minas Morgul auf Aragorns Befehl geschleift — der Ort war so vergiftet dass niemand dort leben konnte."],
+  minas_anor:["Minas Anor, 'Turm der Sonne', war der ursprüngliche Name von Minas Tirith — umbenannt nach dem Fall von Minas Ithil.","Die Stadt wurde als Pendant zu Minas Ithil gebaut — Sonne und Mond, Wachturm-Paar über dem Tal von Gondor.","Anárion, Sohn Elendils, regierte von Minas Anor — er fiel in der Schlacht vor Barad-dûr, sein Helm wurde nie gefunden.","Der Weiße Baum im Hof der Zitadelle ist ein Sämling des Baumes von Númenor — Isildurs größte Tat vor dem Ring.","Die sieben Mauerringe wurden über Jahrhunderte erweitert — jeder Ring eine Antwort auf eine neue Bedrohung aus Mordor."],
+  dreadfort:["Die Boltons häuteten ihre Feinde lebendig — 'Ein gehäuteter Mann hat keine Geheimnisse' war ihr Hausmotto.","Theon Greyjoy wurde in der Dreadfort zu 'Reek' gebrochen — Ramsay Boltons sadistischste Schöpfung.","Die Boltons waren die ältesten Rivalen der Starks — Jahrtausende Blutfehde vor der Vereinigung des Nordens.","Die Dreadfort liegt am Weeping Water — ein passender Name für den Sitz der grausamsten Familie des Nordens.","Nach der Schlacht der Bastarde fiel die Dreadfort an die Starks — das Ende einer 8.000 Jahre alten Linie."],
 };
 
 // Generic Lexikon facts for castles without specific entries
@@ -593,7 +614,28 @@ const CASTLES = [
  strengths:["400m Steilklippen auf 3 Seiten","40.000m³ Zisternen","Scheinbar uneinnehmbar"],
  weaknesses:["Westlicher Geländesporn","Keine Entsatzmöglichkeit","Zu wenig Verteidiger"],
  attackTips:["Circumvallation (Belagerungsring)","Rampe am Westsporn bauen","Geduld: Jahre warten"],
- siegeCtx:"73 n.Chr. — Flavius Silva, X. Legion, 15.000 Soldaten. 960 Zeloten. Nur eine Rampe hilft.",defender:"Eleazar ben Yair"},
+ siegeCtx:"73 n.Chr. — Flavius Silva, X. Legion, 15.000 Soldaten. 960 Zeloten. Nur eine Rampe hilft.",defender:"Eleazar ben Yair",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:12,rBot:15.5,h:4.0,label:'Masada-Plateau (Tafelberg)',info:'Senkrechte Klippen auf drei Seiten — 400m Absturz ins Tote Meer. Der Berg selbst ist Masadas einzige Mauer.'},
+ {type:'RING',y:4.0,squareTowers:true,
+  gate:{atIndex:8,w:2.2,d:1.8,h:3.8,label:'Westtor (Serpentinenweg)',info:'Einziger regulärer Zugang über den gewundenen Fußpfad der Westseite — zugleich die einzige Schwachstelle des Plateaus.'},
+  points:[
+   {x:0,    z:-17,  r:0.85,h:4.5,label:'Nordturm',       info:'Beobachtet das nördliche Ufer des Toten Meers und die Belagerungswerke der X. Legion.'},
+   {x:6.4,  z:-13.7,r:0.8, h:4.0,label:'Nordostturm',    info:'Flankierungsturm — antike Kasamattenmauer folgt dem Plateau-Rand.'},
+   {x:10.5, z:-5.3, r:0.8, h:4.0,label:'Ostturm Nord',   info:'Östliche Steilseite — 400m senkrechter Abfall. Hier war kein Angriff möglich.'},
+   {x:10.5, z:5.3,  r:0.8, h:4.0,label:'Ostturm Süd',    info:'Senkrechter Abfall ins Salzwasser. Die Natur ersetzte die Mauer.'},
+   {x:6.4,  z:13.7, r:0.8, h:4.0,label:'Südostturm',     info:'Südöstliche Ecke — direkter Blick auf das Tote Meer 400m tiefer.'},
+   {x:0,    z:17,   r:0.85,h:4.5,label:'Südturm',        info:'Südende des Plateaus — der schmalste und gefährdetste Punkt.'},
+   {x:-6.4, z:13.7, r:0.8, h:4.0,label:'Südwestturm',    info:'Kontrolle über den westlichen Serpentinenweg — Silvas Hauptangriffsachse.'},
+   {x:-10.5,z:5.3,  r:0.85,h:4.5,label:'Westturm Süd',   info:'Über dem westlichen Geländesporn — der Punkt den Flavius Silva anvisierte.'},
+   {x:-10.5,z:-5.3, r:0.85,h:4.5,label:'Westturm Nord',  info:'Direkt über dem Ansatzpunkt der römischen Belagerungsrampe.'},
+   {x:-6.4, z:-13.7,r:0.8, h:4.0,label:'Nordwestturm',   info:'Nordwestecke — Blick auf die komplette Circumvallation der X. Legion.'},
+  ],
+  wall:{h:3.0,thick:0.9}},
+ {type:'SQUARE_TOWER',x:0,z:-12,w:5.5,d:2.5,h:2.8,y:4.0,label:'Herodianischer Nordpalast',info:'Dreistufige Palastanlage auf Felsvorsprüngen — Herodes nutzte Masada als luxuriösen Rückzugsort. Architektonisches Meisterwerk des 1. Jh. v. Chr.'},
+ {type:'SQUARE_TOWER',x:-3.5,z:0,w:7,d:2,h:1.8,y:4.0,label:'Magazingebäude (Zehn Speicher)',info:'Zehn lange Lagerhäuser mit Vorräten für Jahre. 12 in den Fels gehauene Zisternen speicherten 40.000 m³ Regenwasser.'},
+ {type:'GLACIS',x:-16,z:2,y:0,rTop:3,rBot:6.5,h:3.5,label:'Silvas Belagerungsrampe (Westsporn)',info:'73 n.Chr.: Flavius Silva ließ die X. Legion einen Erdwall an den westlichen Geländesporn aufschütten — die einzige Stelle wo das Plateau erreichbar war. Nach Wochen war die Rampe fertig. Masada fiel.'},
+]},
 
 {id:"carcassonne",name:"Carcassonne",sub:"Doppelmauerstadt",era:"12.–13. Jh.",year:1200,loc:"Frankreich",type:"real",epoch:"Mittelalter",region:"europa",icon:"🏯",
  theme:{bg:"#140f08",accent:"#d4a855",glow:"rgba(200,150,70,0.15)"},
@@ -605,7 +647,43 @@ const CASTLES = [
  strengths:["Doppelmauerring als Zwingerfalle","52 Türme","Barbakane","Stadtgröße"],
  weaknesses:["Keine gesicherte Wasserquelle","Südostecke tiefer","Politische Anfälligkeit"],
  attackTips:["Wasserquellen sperren","Diplomatischen Druck aufbauen","Südostseite für Maschinen"],
- siegeCtx:"1209 — 20.000 Kreuzfahrer, 40 Tage Gelübde. Militärisch fast uneinnehmbar — aber durstig.",defender:"Raimund-Roger Trencavel"},
+ siegeCtx:"1209 — 20.000 Kreuzfahrer, 40 Tage Gelübde. Militärisch fast uneinnehmbar — aber durstig.",defender:"Raimund-Roger Trencavel",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:13,rBot:16,h:2.2,label:'Stadthügel von Carcassonne',info:'Carcassonne thront auf einem natürlichen Hügel über dem Aude-Tal. Kein unzugänglicher Berg — aber genug Höhenvorteil für den doppelten Mauerring.'},
+ {type:'RING',y:2.2,
+  gate:{atIndex:3,w:4.0,d:2.8,h:5.5,label:'Narbonnisches Tor (Äußere Barbakane)',info:'Zwei mächtige Tortürme flankieren den Eingang zum Zwinger. Wer eindrang, stand im Kreuzfeuer beider Mauerringe — die perfekte Zwickmühle.'},
+  points:[
+   {x:0,   z:-22,  r:1.0,h:4.0,label:'Außenturm N',  info:'Nördlicher Endturm der Vormaer — bewachte die Straße Richtung Toulouse.'},
+   {x:11,  z:-19,  r:1.0,h:4.0,label:'Außenturm NNO', info:'Flankierungsturm der Nordostseite.'},
+   {x:19,  z:-11,  r:1.0,h:4.0,label:'Außenturm NO',  info:'Eckturm — ermöglichte Kreuzfeuer zwischen Nord- und Ostmaer.'},
+   {x:22,  z:0,    r:1.1,h:5.0,label:'Narbonnisches Tor (Außen)',info:'Haupteingang Carcassonnes — zwei Türme, Fallgatter, Zugbrücke.'},
+   {x:19,  z:11,   r:1.0,h:4.0,label:'Außenturm SO',  info:'Südöstlicher Flankierungsturm.'},
+   {x:11,  z:19,   r:1.0,h:4.0,label:'Außenturm SSO', info:'Bewachte den Zugang von der Aude-Seite.'},
+   {x:0,   z:22,   r:1.0,h:4.0,label:'Außenturm S',   info:'Südturm — Blick auf das Aude-Tal.'},
+   {x:-11, z:19,   r:1.0,h:4.0,label:'Außenturm SSW', info:'Flankierung der Westseite.'},
+   {x:-19, z:11,   r:1.1,h:5.0,label:"Porte d'Aude (Außen)",info:"Der zweite Zugang zur Stadt — Porte d'Aude an der Westseite. Weniger befestigt als das Narbonnische Tor."},
+   {x:-22, z:0,    r:1.0,h:4.0,label:'Außenturm W',   info:'Westturm der Vormauer.'},
+   {x:-19, z:-11,  r:1.0,h:4.0,label:'Außenturm NW',  info:'Nordwestturm — Blick auf die Straße nach Bordeaux.'},
+   {x:-11, z:-19,  r:1.0,h:4.0,label:'Außenturm NNW', info:'Letzter Flankierungsturm vor dem Narbonnischen Tor.'},
+  ],
+  wall:{h:3.5,thick:0.7}},
+ {type:'RING',y:2.2,
+  gate:{atIndex:2,w:3.5,d:2.8,h:7.0,label:'Narbonnisches Tor (Inneres)',info:'Das innere Narbonnische Tor mit Portikus und Fallgatter. Wer den Zwinger überlebte, stand hier vor dem zweiten Hindernis — noch massiver als das äußere.'},
+  points:[
+   {x:0,    z:-13,  r:1.2,h:7.0,label:'Innenturm N',         info:'Nordturm der Hauptmauer — Teil des Narbonnischen Tortrakts.'},
+   {x:8.2,  z:-10.4,r:1.2,h:6.5,label:'Innenturm NNO',       info:'Flankiert den inneren Toreingang von Norden.'},
+   {x:12.4, z:-4,   r:1.3,h:8.0,label:'Innenturm NO',        info:'Dominierender Eckturm — flankiert das innere Narbonnische Tor.'},
+   {x:12.4, z:4,    r:1.2,h:6.5,label:'Innenturm SO',        info:'Südöstlicher Flankierungsturm der Hauptmauer.'},
+   {x:8.2,  z:10.4, r:1.2,h:6.5,label:'Innenturm SSO',       info:'Bewachte den südlichen Stadtbereich.'},
+   {x:0,    z:13,   r:1.2,h:6.5,label:'Innenturm S',         info:'Südturm — Blick auf das Aude-Tal.'},
+   {x:-8.2, z:10.4, r:1.2,h:6.5,label:"Innenturm SSW",       info:"Flankierung der inneren Westmauer."},
+   {x:-12.4,z:4,    r:1.2,h:6.5,label:"Innenturm SW",        info:"Südwestturm der Hauptmauer."},
+   {x:-12.4,z:-4,   r:1.5,h:9.0,label:'Turm des Château Comtal',info:'Mächtigster Turm des inneren Rings — Teil des Château Comtal, der Burg in der Burg. Letzter Rückzugspunkt der Vizegrafen.'},
+   {x:-8.2, z:-10.4,r:1.2,h:6.5,label:'Innenturm NNW',       info:'Nordwestturm — schützte den Zugang zum Château Comtal.'},
+  ],
+  wall:{h:6.0,thick:1.0}},
+ {type:'SQUARE_TOWER',x:-9,z:-6,w:6.5,d:4.5,h:5.5,y:2.2,label:'Château Comtal (Kernburg)',info:'Die Burg in der Burg — ein eigenständiges Kastell mit eigenem Graben und eigenen Mauern im Nordwesten der Stadt. Letzter Rückzugspunkt der Vizegrafen von Carcassonne.'},
+]},
 
 {id:"chateau_gaillard",name:"Château Gaillard",sub:"Philipps Nemesis",era:"1196–1204",year:1200,loc:"Normandie, FR",type:"real",epoch:"Mittelalter",region:"europa",icon:"🪖",
  theme:{bg:"#120e0a",accent:"#b8934a",glow:"rgba(180,130,60,0.15)"},
@@ -617,7 +695,41 @@ const CASTLES = [
  strengths:["Dreigliedrige Verteidigung","Wellenförmige Mauer (Corrugated)","Felssporposition"],
  weaknesses:["Latrinenöffnung in der Kapelle","Versorgungsrisiko","Kleine Garnison"],
  attackTips:["Spion sucht Schwachstellen","Latrinenöffnung als Eingang!","Versorgungsblockade"],
- siegeCtx:"1204 — Philipp II. gegen Gaillard. 3 Monate. Dein Spion berichtet von einer Öffnung...",defender:"Roger de Lacy"},
+ siegeCtx:"1204 — Philipp II. gegen Gaillard. 3 Monate. Dein Spion berichtet von einer Öffnung...",defender:"Roger de Lacy",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:9,rBot:13,h:5.0,label:'Felssporn über der Seine',info:'Château Gaillard thront auf einem isolierten Felssporn 100m über dem Seine-Knie. Richard I. wählte diesen Ort für seine natürliche Unzugänglichkeit.'},
+ {type:'RING',y:0,
+  gate:{atIndex:3,w:3.0,d:2.2,h:4.5,label:'Äußeres Vorwerk (Südtor)',info:'Südliches Eingangstor des äußeren Vorwerks — erster von drei Verteidigungsringen. Philip II. brauchte Monate nur um diesen zu überwinden.'},
+  points:[
+   {x:0,    z:3,    r:1.0,h:4.5,label:'Vorwerkturm N',  info:'Nördlicher Anschlussturm — verbindet äußeres Vorwerk mit der mittleren Enceinte.'},
+   {x:4.76, z:7,    r:1.0,h:4.0,label:'Vorwerkturm NO', info:'Flankenturm des äußeren Vorwerks.'},
+   {x:4.76, z:15,   r:1.0,h:4.0,label:'Vorwerkturm SO', info:'Südöstlicher Eckturm des äußeren Vorwerks.'},
+   {x:0,    z:19,   r:1.0,h:4.5,label:'Vorwerkturm S',  info:'Südlichster Punkt — hier lag der Zugang vom Städtchen Petit-Andelys.'},
+   {x:-4.76,z:15,   r:1.0,h:4.0,label:'Vorwerkturm SW', info:'Südwestturm des äußeren Vorwerks.'},
+   {x:-4.76,z:7,    r:1.0,h:4.0,label:'Vorwerkturm NW', info:'Nordwestturm — Anschluss an Mittelring.'},
+  ],
+  wall:{h:3.5,thick:0.8}},
+ {type:'RING',y:2,
+  gate:{atIndex:0,w:3.0,d:2.2,h:5.5,label:'Mittlere Enceinte (Südtor)',info:'Das berühmte wellenförmige (corrugated) Mauerwerk — Richards Innovation. Die gebogene Mauer verdoppelte die Abwehrwinkel und eliminierte tote Winkel. Phillip II. stand hier wochenlang.'},
+  points:[
+   {x:0,    z:6,    r:1.1,h:6.0,label:'Mittlerer Ring S', info:'Südtor der mittleren Enceinte — Eingang nach dem Fall des Vorwerks.'},
+   {x:-4.28,z:1.5,  r:1.1,h:5.5,label:'Mittlerer Ring SW',info:'Wellenförmige Mauerführung — Richards corrugated wall.'},
+   {x:-2.64,z:-5.5, r:1.1,h:5.5,label:'Mittlerer Ring NW',info:'Die Latrine — ein kleines Fenster in der Kapellenmauer. Ein französischer Soldat kroch hindurch.'},
+   {x:2.64, z:-5.5, r:1.1,h:5.5,label:'Mittlerer Ring NO',info:'Nordostturm der mittleren Enceinte.'},
+   {x:4.28, z:1.5,  r:1.1,h:5.5,label:'Mittlerer Ring SO',info:'Südostturm — flankierte das Südtor.'},
+  ],
+  wall:{h:5.0,thick:1.1}},
+ {type:'RING',y:4,
+  gate:{atIndex:1,w:2.8,d:2.2,h:6.5,label:'Innerer Ring (Hochburg)',info:'Der innerste Ring — Richards stärkster Abschnitt. Zylindrischer Donjon dahinter. Nach dem Fall der Latrinengalerie 1204 sofort aufgegeben.'},
+  points:[
+   {x:0,    z:-7,   r:1.2,h:7.0,label:'Hochburg N',   info:'Nordturm der Kernburg — Blick über die gesamte Anlage.'},
+   {x:4,    z:-12,  r:1.2,h:6.5,label:'Hochburg NO',  info:'Nordostturm.'},
+   {x:0,    z:-17,  r:1.2,h:6.5,label:'Hochburg S',   info:'Südtor der Kernburg — direkt am Abgrund des Felssporns.'},
+   {x:-4,   z:-12,  r:1.2,h:6.5,label:'Hochburg NW',  info:'Nordwestturm der Kernburg.'},
+  ],
+  wall:{h:6.0,thick:1.2}},
+ {type:'ROUND_TOWER',x:0,z:-14,r:2.0,h:12,y:4,label:'Donjon von Château Gaillard',info:'Richards zylindrischer Donjon — letzter Rückzugspunkt. Der abgerundete Grundriss eliminierte tote Winkel vollständig. Nie durch Sturm eingenommen — fiel durch eine Toilette.'},
+]},
 
 {id:"harlech",name:"Harlech Castle",sub:"Edwardianische Seefestung",era:"1283–1468",year:1400,loc:"Wales, UK",type:"real",epoch:"Hochmittelalter",region:"europa",icon:"🏴󠁧󠁢󠁷󠁬󠁳󠁿",
  theme:{bg:"#0d1015",accent:"#8899cc",glow:"rgba(100,120,180,0.15)"},
@@ -653,7 +765,48 @@ const CASTLES = [
  strengths:["83 Tore = 83 Gefechte","Irrgartensystem","Psychologische Verwirrung"],
  weaknesses:["Holz = Brandgefahr","Gegen Artillerie obsolet"],
  attackTips:["Brandanschlag bei starkem Wind","Irrgarten kartieren lassen","Feuer als Massenwaffe"],
- siegeCtx:"16. Jh. — Verstärkung könnte kommen. Du hast Feuerpfeile, Karten — und Geduld.",defender:"Katsumoto Akamatsu"},
+ siegeCtx:"16. Jh. — Verstärkung könnte kommen. Du hast Feuerpfeile, Karten — und Geduld.",defender:"Katsumoto Akamatsu",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:7,rBot:11,h:2.8,label:'Himeyama-Hügel (Weißer Reiher)',info:'Himeji-jō thront auf dem Himeyama-Hügel. Die weiß verputzten Mauern schimmern von weitem — daher der Name Weißer Reiher.'},
+ {type:'RING',y:0,
+  gate:{atIndex:5,w:3.2,d:2.5,h:5.0,label:'Äußeres Burgtor (Hishi-no-Mon)',info:'Das erste von 83 Toren — Himeji hatte für jeden Angreifer 83 separate Gefechte vorbereitet. Kein gerades Stück, kein freies Schussfeld.'},
+  points:[
+   {x:0,    z:-20,  r:1.3,h:5.5,label:'Äußerer Ring N',  info:'Nördlicher Flankierungsturm des äußeren Rings.'},
+   {x:14.14,z:-14.14,r:1.3,h:5.5,label:'Äußerer Ring NO', info:'Nordostturm — Irrgartenwege darunter verwirren jeden Angreifer.'},
+   {x:20,   z:0,    r:1.3,h:5.5,label:'Äußerer Ring O',  info:'Ostturm des äußeren Rings.'},
+   {x:14.14,z:14.14,r:1.3,h:5.5,label:'Äußerer Ring SO', info:'Südostturm — flankierte den Haupteingang.'},
+   {x:0,    z:20,   r:1.3,h:5.5,label:'Äußerer Ring S',  info:'Südturm. 83 Tore — 83 Einzelgefechte.'},
+   {x:-14.14,z:14.14,r:1.3,h:5.5,label:'Äußerer Ring SW', info:'Südwestturm.'},
+   {x:-20,  z:0,    r:1.3,h:5.5,label:'Äußerer Ring W',  info:'Westturm.'},
+   {x:-14.14,z:-14.14,r:1.3,h:5.5,label:'Äußerer Ring NW', info:'Nordwestturm — letzter äußerer Flankierungsturm.'},
+  ],
+  wall:{h:4.0,thick:0.8}},
+ {type:'RING',y:2.8,
+  gate:{atIndex:3,w:2.8,d:2.2,h:5.5,label:'Mittleres Burgtor (Ni-no-Mon)',info:'Zweite Burgtor-Ebene — der Weg führt durch Kurven und Engpässe. Angreifer verloren Tempo und Orientierung gleichzeitig.'},
+  points:[
+   {x:0,    z:-13,  r:1.2,h:6.0,label:'Mittlerer Ring N',  info:'Nordturm der zweiten Umfassungsmauer.'},
+   {x:9.19, z:-9.19,r:1.2,h:6.0,label:'Mittlerer Ring NO', info:'Nordostturm.'},
+   {x:13,   z:0,    r:1.2,h:6.0,label:'Mittlerer Ring O',  info:'Ostturm.'},
+   {x:9.19, z:9.19, r:1.2,h:6.0,label:'Mittlerer Ring SO', info:'Südostturm.'},
+   {x:0,    z:13,   r:1.2,h:6.0,label:'Mittlerer Ring S',  info:'Südtor der mittleren Mauer.'},
+   {x:-9.19,z:9.19, r:1.2,h:6.0,label:'Mittlerer Ring SW', info:'Südwestturm.'},
+   {x:-13,  z:0,    r:1.2,h:6.0,label:'Mittlerer Ring W',  info:'Westturm.'},
+   {x:-9.19,z:-9.19,r:1.2,h:6.0,label:'Mittlerer Ring NW', info:'Nordwestturm.'},
+  ],
+  wall:{h:5.0,thick:0.9}},
+ {type:'RING',y:5.5,
+  gate:{atIndex:2,w:2.5,d:2.0,h:6.5,label:'Innerstes Tor (San-no-Mon)',info:'Drittes und letztes Tor — hier hatten Angreifer bereits 70+ Gefechte hinter sich. Die psychologische Erschöpfung war so groß wie die physische.'},
+  points:[
+   {x:0,    z:-7,   r:1.4,h:7.5,label:'Innerer Ring N',   info:'Nördlicher Kerntum.'},
+   {x:6.12, z:-3.5, r:1.3,h:7.0,label:'Innerer Ring NO',  info:'Nordostturm des Kernbereichs.'},
+   {x:6.12, z:3.5,  r:1.3,h:7.0,label:'Innerer Ring SO',  info:'Südostturm.'},
+   {x:0,    z:7,    r:1.3,h:7.0,label:'Innerer Ring S',   info:'Südturm des Kernbereichs.'},
+   {x:-6.12,z:3.5,  r:1.3,h:7.0,label:'Innerer Ring SW',  info:'Südwestturm.'},
+   {x:-6.12,z:-3.5, r:1.3,h:7.0,label:'Innerer Ring NW',  info:'Nordwestturm.'},
+  ],
+  wall:{h:6.0,thick:1.1}},
+ {type:'ROUND_TOWER',x:0,z:0,r:2.5,h:15,y:5.5,label:'Tenshu (Hauptturm, 7 Stockwerke)',info:'Der Tenshu von Himeji — sieben Stockwerke, 46m Gesamthöhe. Symbol der Macht des Daimyō, sichtbar von 20km Entfernung. UNESCO-Welterbe. Überstand den 2. Weltkrieg durch reines Glück.'},
+]},
 
 {id:"alamut",name:"Burg Alamut",sub:"Assassinenfestung",era:"1090–1256",year:1180,loc:"Alborz, Persien",type:"real",epoch:"Mittelalter",region:"nahost",icon:"🗡️",
  theme:{bg:"#0e0c08",accent:"#8866aa",glow:"rgba(120,80,150,0.15)"},
@@ -677,7 +830,62 @@ const CASTLES = [
  strengths:["Dreifaches Mauersystem","Wassergraben","Griechisches Feuer","Bosporus schützt"],
  weaknesses:["Kerkaporta offen gelassen","7.000 vs. 80.000","Urbans Riesenkanone"],
  attackTips:["Kerkaporta durch Spionage lokalisieren","Riesenkanone auf Mauern","Graben füllen"],
- siegeCtx:"Mehmed II. 1453 — 80.000 vs. 7.000. Urbans Kanone schussbereit. Spion kennt das Kerkaporta.",defender:"Konstantinos XI. Palaiologos"},
+ siegeCtx:"Mehmed II. 1453 — 80.000 vs. 7.000. Urbans Kanone schussbereit. Spion kennt das Kerkaporta.",defender:"Konstantinos XI. Palaiologos",
+components:[
+ {type:'RING',y:0,squareTowers:true,
+  gate:{atIndex:1,w:2.0,d:1.5,h:3.5,label:'Kerkaporta (das vergessene Tor)',info:'DAS Tor das die Geschichte veränderte. 1453 offen gelassen — türkische Truppen strömten hindurch. 1000 Jahre Byzantinisches Reich endeten durch eine vergessene Tür.'},
+  points:[
+   {x:0,   z:-22,  r:0.8,h:3.2,label:'Proteichisma N (Vormaer)',       info:'Äußerste Mauer: die niedrige Proteichisma als erste Abwehrlinie. Davor lag ein 18m breiter und 6m tiefer Graben.'},
+   {x:2.6, z:-16,  r:0.8,h:3.2,label:'Proteichisma NNO',               info:'Türme der Proteichisma — eng gereiht, um den Peribolos (Zwinger) zu überwachen.'},
+   {x:3,   z:-8,   r:0.8,h:3.2,label:'Proteichisma Mitte-N',           info:'Mittlerer Abschnitt der Proteichisma.'},
+   {x:3,   z:0,    r:0.8,h:3.2,label:'Proteichisma Mitte',             info:'Zentraler Abschnitt der Landmauer — hier konzentrierten sich Mehmeds Angriffe.'},
+   {x:3,   z:8,    r:0.8,h:3.2,label:'Proteichisma Mitte-S',           info:'Südlicher Mittelteil.'},
+   {x:2.6, z:16,   r:0.8,h:3.2,label:'Proteichisma SSO',               info:'Südlicher Abschnitt der äußeren Vormauer.'},
+   {x:0,   z:22,   r:0.8,h:3.2,label:'Proteichisma S (Marmara-Ende)',  info:'Südende der Landmauern — hier treffen sie auf die Seemauer am Marmarameer.'},
+   {x:-2.6,z:16,   r:0.8,h:3.2,label:'Proteichisma SSW',               info:'Südwestabschnitt.'},
+   {x:-3,  z:8,    r:0.8,h:3.2,label:'Proteichisma W-S',               info:'Westlicher Südteil — dem Angriffsfeld zugewandt.'},
+   {x:-3,  z:0,    r:0.8,h:3.2,label:'Proteichisma W-Mitte',           info:'Westmitte.'},
+   {x:-3,  z:-8,   r:0.8,h:3.2,label:'Proteichisma W-N',               info:'Westnordteil.'},
+   {x:-2.6,z:-16,  r:0.8,h:3.2,label:'Proteichisma NNW',               info:'Nordwestabschnitt — nahe Kerkaporta.'},
+  ],
+  wall:{h:2.5,thick:0.6}},
+ {type:'RING',y:0,squareTowers:true,
+  gate:{atIndex:3,w:3.0,d:2.2,h:6.0,label:'Mittlere Mauer (Mittleres Tor)',info:'Zweite Mauerlinie — Teil des dreifachen Mauerwerks. Höher als die Proteichisma, bewacht den Peribolos (Zwinger zwischen den Mauern).'},
+  points:[
+   {x:0,   z:-20,  r:1.0,h:5.5,label:'Mittelmauer N',      info:'Nördlicher Turm der mittleren Mauerlinie.'},
+   {x:4,   z:-14,  r:1.0,h:5.5,label:'Mittelmauer NNO',    info:''},
+   {x:5,   z:-6,   r:1.0,h:5.5,label:'Mittelmauer NO',     info:''},
+   {x:5,   z:0,    r:1.0,h:5.5,label:'Mittelmauer O-Mitte',info:'Zentrales Segment der mittleren Mauer.'},
+   {x:5,   z:6,    r:1.0,h:5.5,label:'Mittelmauer SO',     info:''},
+   {x:4,   z:14,   r:1.0,h:5.5,label:'Mittelmauer SSO',    info:''},
+   {x:0,   z:20,   r:1.0,h:5.5,label:'Mittelmauer S',      info:'Südende der mittleren Mauer.'},
+   {x:-4,  z:14,   r:1.0,h:5.5,label:'Mittelmauer SSW',    info:''},
+   {x:-5,  z:6,    r:1.0,h:5.5,label:'Mittelmauer SW',     info:''},
+   {x:-5,  z:0,    r:1.0,h:5.5,label:'Mittelmauer W-Mitte',info:''},
+   {x:-5,  z:-6,   r:1.0,h:5.5,label:'Mittelmauer NW',     info:''},
+   {x:-4,  z:-14,  r:1.0,h:5.5,label:'Mittelmauer NNW',    info:'Nahe dem Kerkaporta-Bereich.'},
+  ],
+  wall:{h:5.0,thick:0.8}},
+ {type:'RING',y:0,squareTowers:true,
+  gate:{atIndex:4,w:4.0,d:3.0,h:10.0,label:'Innere Hauptmauer (Großes Stadttor)',info:'Die eigentliche Theodosianische Hauptmauer — fast 12m hoch, 6m dick, mit 96 Türmen. Hielt 29 Belagerungen stand. Gefallen 1453 durch Urbans Riesenkanone und die vergessene Kerkaporta.'},
+  points:[
+   {x:0,   z:-18,  r:1.4,h:9.0, label:'Hauptmauer N',       info:'Nördlichster Turm der Hauptmauer — Blachernae-Abschnitt. Hier war die Mauer am schwächsten (neuere Bauphase).'},
+   {x:5.5, z:-12,  r:1.4,h:9.5, label:'Hauptmauer NNO',     info:'Turm der Hauptmauer.'},
+   {x:7,   z:-4,   r:1.4,h:10,  label:'Hauptmauer NO',      info:'Dieser Abschnitt wurde von Urbans Kanone beschossen.'},
+   {x:7,   z:0,    r:1.4,h:10,  label:'Hauptmauer O-Mitte', info:'Mesoteichion — das kritische Mittelstück. Hier brachen die Osmanen 1453 durch.'},
+   {x:7,   z:4,    r:1.4,h:10,  label:'Hauptmauer SO',      info:'Südöstlicher Abschnitt des Mesoteichion.'},
+   {x:5.5, z:12,   r:1.4,h:9.5, label:'Hauptmauer SSO',     info:''},
+   {x:0,   z:18,   r:1.4,h:9.0, label:'Hauptmauer S',       info:'Südende der Theodosianischen Mauer — Übergang zur Seemauer am Marmarameer.'},
+   {x:-5.5,z:12,   r:1.4,h:9.5, label:'Hauptmauer SSW',     info:''},
+   {x:-7,  z:4,    r:1.4,h:10,  label:'Hauptmauer SW',      info:''},
+   {x:-7,  z:0,    r:1.4,h:10,  label:'Hauptmauer W-Mitte', info:''},
+   {x:-7,  z:-4,   r:1.4,h:10,  label:'Hauptmauer NW',      info:''},
+   {x:-5.5,z:-12,  r:1.4,h:9.5, label:'Hauptmauer NNW',     info:'Blachernae-Abschnitt — schwächste Stelle der Hauptmauer, direkt neben Kerkaporta.'},
+   {x:-2,  z:-16,  r:1.6,h:11,  label:'Blachernae-Palast-Turm',info:'Sonderturm des Blachernae-Kaiserpalastes — kaiserliche Residenz der letzten Byzantiner.'},
+   {x:2,   z:-16,  r:1.4,h:9.5, label:'Hauptmauer NNO 2',   info:''},
+  ],
+  wall:{h:8.5,thick:1.5}},
+]},
 
 {id:"coucy",name:"Château de Coucy",sub:"Größter Donjon Europas",era:"1225–1917",year:1300,loc:"Aisne, Frankreich",type:"real",epoch:"Hochmittelalter",region:"europa",icon:"🗼",
  theme:{bg:"#10100c",accent:"#aa9955",glow:"rgba(160,140,70,0.15)"},
@@ -737,7 +945,28 @@ const CASTLES = [
  strengths:["Polygonale Türme ohne toten Winkel","Doppelter Ring","Seeversorgung","Psychologische Herrschaftsarchitektur"],
  weaknesses:["Riesige Garnison nötig","Abhängigkeit von Seeweg"],
  attackTips:["Landseitig mit Maschinen","Seeweg blockieren","Langer Aushungerungsversuch"],
- siegeCtx:"Owain Glyndŵr 1401 — walisischer Aufstand. Die Burg ist Symbol der englischen Unterdrückung.",defender:"Gouverneur John Bolde"},
+ siegeCtx:"Owain Glyndŵr 1401 — walisischer Aufstand. Die Burg ist Symbol der englischen Unterdrückung.",defender:"Gouverneur John Bolde",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:10,rBot:13,h:1.8,label:'Caernarvon-Halbinsel (Meeresseite)',info:'Caernarvon liegt auf einer Halbinsel zwischen Menai-Straße und Fluss Seiont — drei Seiten durch Wasser gesichert. Die Burg kontrolliert die einzige Landseite.'},
+ {type:'RING',y:1.8,
+  gate:{atIndex:2,w:5.0,d:4.0,h:8.5,label:"Königstor (King's Gate)",info:"Das aufwändigste Tor Britanniens — geplant mit 5 Fallgattern, 6 Eisentüren und Pfeillöchern aus jedem Winkel. Nie vollständig fertiggestellt. Owain Glyndŵr scheiterte daran."},
+  points:[
+   {x:0,    z:-10,  r:1.3,h:7.0,label:'Nordturm',              info:'Nördlicher Turm — Blick auf die Menai-Straße.'},
+   {x:10,   z:-8.66,r:1.4,h:7.5,label:'Nordostturm',           info:'Flankierungsturm des Königstors.'},
+   {x:17.32,z:-5,   r:1.5,h:8.0,label:'Nordosteckturm',        info:'Polygonaler Eckturm — kein toter Winkel.'},
+   {x:20,   z:0,    r:1.5,h:8.0,label:'Ostturm (Königstor-Flanke)',info:'Flankiert das Königstor — Teil des aufwändigsten Torbaues Britanniens.'},
+   {x:17.32,z:5,    r:1.5,h:8.0,label:'Südosteckturm',         info:'Polygonaler Eckturm des Unteren Wards.'},
+   {x:10,   z:8.66, r:1.4,h:7.5,label:'Südostturm',            info:'Hafentor-Flanke — die Meeresseite war durch Seeversorgung gesichert.'},
+   {x:0,    z:10,   r:1.3,h:7.0,label:'Südturm (Hafentor)',     info:'Hafentor — ermöglichte Seeversorgung auch während langer Belagerungen.'},
+   {x:-10,  z:8.66, r:1.4,h:7.5,label:'Südwestturm',           info:'Südwestlicher Flankierungsturm.'},
+   {x:-17.32,z:5,   r:1.4,h:7.5,label:'Westturm',              info:'Westturm — Blick auf den Fluss Seiont.'},
+   {x:-20,  z:0,    r:2.2,h:10.5,label:'Eagle Tower (Adlerturm)',info:'Der mächtigste Turm Caernarvons — sieben separate Türme in einem. Dreifache Krone, drei Adlerstatuen. Geburtsort Eduards II. 1284. Symbol englischer Herrschaft über Wales.'},
+   {x:-17.32,z:-5,  r:1.4,h:7.5,label:'Nordwestturm',          info:'Nordwestlicher Flankierungsturm.'},
+   {x:-10,  z:-8.66,r:1.4,h:7.5,label:'Nordwesteckturm',       info:'Eckturm des Oberen Wards.'},
+  ],
+  wall:{h:6.5,thick:1.1}},
+ {type:'WALL',x:-1,z:0,x2:1,z2:0,h:6.0,y:1.8,thick:1.5,label:'Trennmauer (Oberer/Unterer Ward)',info:'Die Mittelmauer teilt Caernarvon in Oberen Ward (Wohnbereich, westlich) und Unteren Ward (östlich). Ein Angreifer der den Unteren Ward nahm, stand vor einem zweiten vollständigen Verteidigungsring.'},
+]},
 
 {id:"rhodes",name:"Rhodos (Johanniterburg)",sub:"Inselfestung der Johanniter",era:"1309–1522",year:1400,loc:"Rhodos, Griechenland",type:"real",epoch:"Mittelalter",region:"nahost",icon:"✝️",
  theme:{bg:"#0a0e14",accent:"#cc8844",glow:"rgba(180,110,50,0.18)"},
@@ -834,7 +1063,33 @@ const CASTLES = [
  strengths:["Schlucht macht Überlegenheit sinnlos","Hornburg auf nacktem Fels","Aglarond als Rückzugsraum"],
  weaknesses:["Abflusskanal (FATAL)","Keine Flankenoption","Passive Defensive"],
  attackTips:["Sprengstoff in den Drain!","Massenschock zur Ablenkung","Gleichzeitiger Tor-Frontalangriff"],
- siegeCtx:"10.000 Uruk-hai. 300 Rohirrim. Eine Nacht. Du weißt vom Abflusskanal.",defender:"König Théoden von Rohan"},
+ siegeCtx:"10.000 Uruk-hai. 300 Rohirrim. Eine Nacht. Du weißt vom Abflusskanal.",defender:"König Théoden von Rohan",
+components:[
+ {type:'GLACIS',x:-18,z:0,y:0,rTop:6,rBot:10,h:4.0,label:'Fels der Hornburg (Helm-Stein)',info:'Die Hornburg steht auf einem nackten Felsriegel am Ende der Schlucht. Unersteiglich auf drei Seiten — der Fels selbst ist die stärkste Mauer.'},
+ {type:'RING',y:4.0,
+  gate:{atIndex:4,w:3.5,d:2.8,h:7.0,label:'Hornburg-Tor',info:'Das Tor der Hornburg — massiv, aber letztlich das einzige schwache Element der Festung. Die Uruk-hai rammten hier, während Sarumans Sprengstoff den Drain sprengte.'},
+  points:[
+   {x:-18,  z:-7,   r:1.4,h:8.0,label:'Hornburg-Nordturm',   info:'Nördlichster Turm der Hornburg — Blick über die gesamte Schlucht und das Vorgelände.'},
+   {x:-12,  z:-4,   r:1.3,h:7.5,label:'Hornburg NO-Turm',    info:'Verbindet Hornburg mit der Hornmauer.'},
+   {x:-12,  z:4,    r:1.3,h:7.5,label:'Hornburg SO-Turm',    info:'Südostturm der Hornburg — Flanke zum Helm-Bach.'},
+   {x:-18,  z:7,    r:1.4,h:8.0,label:'Hornburg-Südturm',    info:'Südlicher Turm der Hornburg.'},
+   {x:-24,  z:4,    r:1.4,h:8.0,label:'Hornburg-Westturm S', info:'Westseite der Hornburg — direkt in den Fels gebaut.'},
+   {x:-24,  z:-4,   r:1.4,h:8.0,label:'Hornburg-Westturm N', info:'Nordwestturm — in den Thrihyrne-Fels integriert.'},
+  ],
+  wall:{h:6.5,thick:1.2}},
+ {type:'RING',y:0,
+  gate:{atIndex:5,w:4.5,d:3.0,h:5.5,label:'Deeping Gate (Osttor der Hornmauer)',info:'Das Haupttor der Deeping-Mauer — hier rammten die Uruk-hai die ganze Nacht. Gehalten bis Sarumans Sprengstoff den Entwässerungskanal sprengte und die Mauer brach.'},
+  points:[
+   {x:20,   z:-4,   r:1.0,h:5.0,label:'Hornmauer-Ostende N', info:'Östliches Ende der Hornmauer — an den Kliffd der Schlucht gesetzt.'},
+   {x:8,    z:-4,   r:1.0,h:5.0,label:'Hornmauer Mitte-N',   info:'Mittelteil der Hornmauer.'},
+   {x:-4,   z:-4,   r:1.0,h:5.0,label:'Abflusskanal-Position',info:'HIER WAR DER DRAIN: Ein Entwässerungsschlitz ohne Eisengitter. Sarumans Sprengstoff passte hindurch. Die Mauer brach.'},
+   {x:-4,   z:4,    r:1.0,h:5.0,label:'Hornmauer Mitte-S',   info:'Südseite der Mitte.'},
+   {x:8,    z:4,    r:1.0,h:5.0,label:'Hornmauer Süd-Mitte', info:'Südlicher Mittelteil.'},
+   {x:20,   z:4,    r:1.0,h:5.0,label:'Hornmauer-Ostende S', info:'Südöstliches Ende der Hornmauer — an den gegenüberliegenden Kliff gesetzt.'},
+  ],
+  wall:{h:4.5,thick:0.9}},
+ {type:'SQUARE_TOWER',x:-20,z:8,w:8,d:5,h:2.5,y:0,label:'Aglarond-Höhlen (Goldene Halle)',info:'Die Aglarond-Höhlen hinter der Hornburg boten dem Volk Rohans Schutz. Legolas und Gimli stritten sich noch Jahrzehnte später darüber wer die schönere Stätte hatte — Aglarond oder der Fangornwald.'},
+]},
 
 {id:"minas_tirith",name:"Minas Tirith",sub:"Hauptstadt Gondors",era:"Drittes Zeitalter",year:3019,loc:"Gondor",type:"fantasy",epoch:"Mittelerde",region:"mittelerde",icon:"🏯",
  theme:{bg:"#10100a",accent:"#bbaa66",glow:"rgba(170,150,70,0.15)"},
@@ -846,7 +1101,86 @@ const CASTLES = [
  strengths:["7 Verteidigungsringe","Ithilstein","Höhenvorteil jeder Ebene","Anduin schützt Flanke"],
  weaknesses:["Pelennor ohne Schutz","Einzelnes Haupttor","Keine Flotte (normaler Zustand)"],
  attackTips:["Grond gegen Tor","Hexenkönig als Psychowaffe","Anduin-Flanke durch Überraschung"],
- siegeCtx:"Saurons Armeen. Grond bereit. Hexenkönig führt. 100.000 gegen 10.000 hinter sieben Mauern.",defender:"Denethor II., Truchsess Gondors"},
+ siegeCtx:"Saurons Armeen. Grond bereit. Hexenkönig führt. 100.000 gegen 10.000 hinter sieben Mauern.",defender:"Denethor II., Truchsess Gondors",
+components:[
+ {type:'GLACIS',x:0,z:0,y:0,rTop:5,rBot:24,h:20,label:'Mindolluin — Fels von Minas Tirith',info:'Der Mindolluin-Berg ist Fundament und Rücken von Minas Tirith zugleich. Kein Angriff war von Westen oder Norden möglich. Nur die Pelennor-Felder im Osten boten Zugang.'},
+ {type:'RING',y:0,
+  gate:{atIndex:6,w:6.0,d:4.0,h:6.0,label:'Erstes Tor (Großes Stadttor — Grond)',info:'Das einzige Eingangstor der gesamten Stadt. Gefertigt aus Stahl und Mithril — bis Grond, der Wolfskopfram, es unter dem Gesang des Hexenkönigs zerstörte.'},
+  points:[
+   {x:0,    z:-24,  r:1.5,h:5.5,label:'1. Ring N',  info:'Nördlicher Turm des äußeren Rings.'},
+   {x:12.5, z:-20.8,r:1.5,h:5.5,label:'1. Ring NNO', info:''},
+   {x:22,   z:-11,  r:1.5,h:5.5,label:'1. Ring NO',  info:''},
+   {x:24,   z:0,    r:1.5,h:5.5,label:'1. Ring O',   info:'Ostturm — Blick auf die Pelennor-Felder.'},
+   {x:22,   z:11,   r:1.5,h:5.5,label:'1. Ring SO',  info:''},
+   {x:12.5, z:20.8, r:1.5,h:5.5,label:'1. Ring SSO', info:''},
+   {x:0,    z:24,   r:1.6,h:6.5,label:'Erstes Tor',  info:'Einziger Eingang — das Stahltor das Grond zerbrach.'},
+   {x:-12.5,z:20.8, r:1.5,h:5.5,label:'1. Ring SSW', info:''},
+   {x:-22,  z:11,   r:1.5,h:5.5,label:'1. Ring SW',  info:''},
+   {x:-24,  z:0,    r:1.5,h:5.5,label:'1. Ring W',   info:'Westseite — direkt in den Fels gebaut.'},
+   {x:-22,  z:-11,  r:1.5,h:5.5,label:'1. Ring NW',  info:''},
+   {x:-12.5,z:-20.8,r:1.5,h:5.5,label:'1. Ring NNW', info:''},
+  ],
+  wall:{h:5.0,thick:0.9}},
+ {type:'RING',y:4,
+  gate:{atIndex:6,w:4.5,d:3.0,h:7.0,label:'Zweites Tor (2. Mauerring)',info:'Zweiter von sieben Ringen — jeder Ring liegt höher als der vorherige. Wer das erste Tor überwand, stand vor einem zweiten vollständigen Verteidigungsring.'},
+  points:[
+   {x:0,    z:-19,  r:1.5,h:6.5,label:'2. Ring N',   info:''},
+   {x:9.9,  z:-16.5,r:1.5,h:6.5,label:'2. Ring NNO', info:''},
+   {x:17.5, z:-9,   r:1.5,h:6.5,label:'2. Ring NO',  info:''},
+   {x:19,   z:0,    r:1.5,h:6.5,label:'2. Ring O',   info:''},
+   {x:17.5, z:9,    r:1.5,h:6.5,label:'2. Ring SO',  info:''},
+   {x:9.9,  z:16.5, r:1.5,h:6.5,label:'2. Ring SSO', info:''},
+   {x:0,    z:19,   r:1.6,h:7.5,label:'2. Tor',      info:'Zweites Tor.'},
+   {x:-9.9, z:16.5, r:1.5,h:6.5,label:'2. Ring SSW', info:''},
+   {x:-17.5,z:9,    r:1.5,h:6.5,label:'2. Ring SW',  info:''},
+   {x:-19,  z:0,    r:1.5,h:6.5,label:'2. Ring W',   info:''},
+   {x:-17.5,z:-9,   r:1.5,h:6.5,label:'2. Ring NW',  info:''},
+   {x:-9.9, z:-16.5,r:1.5,h:6.5,label:'2. Ring NNW', info:''},
+  ],
+  wall:{h:6.0,thick:1.0}},
+ {type:'RING',y:8,
+  gate:{atIndex:6,w:4.0,d:2.8,h:8.0,label:'Drittes Tor (3. Mauerring)',info:'Dritter Ring aus reinem Ithilstein — diesem Stein schadet kein Feuer.'},
+  points:[
+   {x:0,    z:-14,  r:1.5,h:7.5,label:'3. Ring N',   info:''},
+   {x:7.3,  z:-12,  r:1.5,h:7.5,label:'3. Ring NNO', info:''},
+   {x:12.5, z:-7,   r:1.5,h:7.5,label:'3. Ring NO',  info:''},
+   {x:14,   z:0,    r:1.5,h:7.5,label:'3. Ring O',   info:''},
+   {x:12.5, z:7,    r:1.5,h:7.5,label:'3. Ring SO',  info:''},
+   {x:7.3,  z:12,   r:1.5,h:7.5,label:'3. Ring SSO', info:''},
+   {x:0,    z:14,   r:1.6,h:8.5,label:'3. Tor',      info:'Drittes Tor.'},
+   {x:-7.3, z:12,   r:1.5,h:7.5,label:'3. Ring SSW', info:''},
+   {x:-12.5,z:7,    r:1.5,h:7.5,label:'3. Ring SW',  info:''},
+   {x:-14,  z:0,    r:1.5,h:7.5,label:'3. Ring W',   info:''},
+   {x:-12.5,z:-7,   r:1.5,h:7.5,label:'3. Ring NW',  info:''},
+   {x:-7.3, z:-12,  r:1.5,h:7.5,label:'3. Ring NNW', info:''},
+  ],
+  wall:{h:7.0,thick:1.1}},
+ {type:'RING',y:12,
+  gate:{atIndex:5,w:3.5,d:2.5,h:9.0,label:'Fünftes Tor (innere Ringe)',info:'Die inneren drei Ringe aus reinsten Ithilstein — hier wohnten die Noblen Gondors. Jeder Schritt nach oben war ein weiteres vollständiges Verteidigungswerk.'},
+  points:[
+   {x:0,    z:-9,   r:1.5,h:9.0, label:'4. Ring N',  info:''},
+   {x:6.4,  z:-6.4, r:1.5,h:9.0, label:'4. Ring NO', info:''},
+   {x:9,    z:0,    r:1.5,h:9.0, label:'4. Ring O',  info:''},
+   {x:6.4,  z:6.4,  r:1.5,h:9.0, label:'4. Ring SO', info:''},
+   {x:0,    z:9,    r:1.6,h:10,  label:'4. Tor',     info:'Viertes Tor von Minas Tirith.'},
+   {x:-6.4, z:6.4,  r:1.5,h:9.0, label:'4. Ring SW', info:''},
+   {x:-9,   z:0,    r:1.5,h:9.0, label:'4. Ring W',  info:''},
+   {x:-6.4, z:-6.4, r:1.5,h:9.0, label:'4. Ring NW', info:''},
+  ],
+  wall:{h:8.0,thick:1.2}},
+ {type:'RING',y:17,
+  gate:{atIndex:3,w:3.0,d:2.2,h:10,label:'Zitadellen-Tor (7. Ring)',info:'Das letzte Tor — die Zitadelle von Minas Tirith. Hier residierte Denethor. Von hier aus sah er das Unheil auf den Pelennor-Feldern und verlor den Verstand.'},
+  points:[
+   {x:0,   z:-5,  r:1.4,h:11,label:'Zitadelle N',  info:'Nördlicher Zitadellenturm.'},
+   {x:4.3, z:-2.5,r:1.4,h:11,label:'Zitadelle NO', info:''},
+   {x:4.3, z:2.5, r:1.4,h:11,label:'Zitadelle SO', info:''},
+   {x:0,   z:5,   r:1.5,h:12,label:'Zitadellen-Tor',info:'Letztes Tor.'},
+   {x:-4.3,z:2.5, r:1.4,h:11,label:'Zitadelle SW', info:''},
+   {x:-4.3,z:-2.5,r:1.4,h:11,label:'Zitadelle NW', info:''},
+  ],
+  wall:{h:9.5,thick:1.3}},
+ {type:'ROUND_TOWER',x:0,z:0,r:1.8,h:18,y:18,label:'Turm des Ecthelion (Weißer Turm)',info:'Der Weiße Turm von Minas Tirith — strahlend hoch über der Zitadelle. Hier thronte der Palantír von Ithil, in den Denethor zu lange blickte. Der mächtigste sichtbare Punkt Gondors.'},
+]},
 
 {id:"gondolin",name:"Gondolin",sub:"Die verborgene Stadt",era:"Erstes Zeitalter",year:-500,loc:"Tumladen, Mittelerde",type:"fantasy",epoch:"Silmarillion",region:"mittelerde",icon:"✨",
  theme:{bg:"#08101a",accent:"#88aacc",glow:"rgba(100,140,180,0.18)"},
@@ -4350,10 +4684,28 @@ function MiniLeafletMap({lat, lon, castle}){
         .openPopup();
       mapInstance.current=map;
     };
-    if(window.L){initMap();}
-    else{
-      const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
-      return()=>clearInterval(t);
+    if(window.L){
+      initMap();
+    } else {
+      // Leaflet CSS
+      if(!document.getElementById('leaflet-css')){
+        const link=document.createElement('link');
+        link.id='leaflet-css'; link.rel='stylesheet';
+        link.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+        document.head.appendChild(link);
+      }
+      // Leaflet JS — inject if not yet loading
+      if(!document.getElementById('leaflet-js')){
+        const script=document.createElement('script');
+        script.id='leaflet-js';
+        script.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+        script.onload=initMap;
+        document.head.appendChild(script);
+      } else {
+        // Script tag exists but not yet loaded — poll
+        const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
+        return()=>clearInterval(t);
+      }
     }
     return()=>{
       if(mapInstance.current){
@@ -4929,7 +5281,12 @@ function RealWorldMap({castles,onSelect,selected}){
       initMap();
       return;
     }
+    if(document.getElementById('leaflet-js')){
+      const t=setInterval(()=>{if(window.L){clearInterval(t);initMap();}},100);
+      return()=>clearInterval(t);
+    }
     const script = document.createElement('script');
+    script.id = 'leaflet-js';
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
     script.onload = initMap;
     document.head.appendChild(script);
@@ -8963,12 +9320,13 @@ function buildGlacis(p,sm){
 function buildRing(p,sm,dm,rm){
   const pts=p.points||[], n=pts.length, y=p.y||0;
   if(n<2) return null;
-  const wH=p.wall?.h||3, wT=p.wall?.thick||0.8, gt=p.gate;
+  const wH=p.wall?.h||3, wT=p.wall?.thick||0.8, gt=p.gate, useSq=p.squareTowers;
   const g=new THREE.Group();
   g.userData={label:p.label||'',info:p.info||''};
   pts.forEach((pt,i)=>{
-    // Turm an diesem Punkt
-    g.add(buildRoundTower({...pt, y:y+(pt.y||0)}, sm,dm,rm));
+    // Turm an diesem Punkt (rund oder eckig je nach squareTowers-Flag)
+    if(useSq) g.add(buildSquareTower({...pt, w:(pt.r||1.2)*2, d:(pt.r||1.2)*2, y:y+(pt.y||0)}, sm,dm,rm));
+    else g.add(buildRoundTower({...pt, y:y+(pt.y||0)}, sm,dm,rm));
     // Mauer oder Tor zum nächsten Punkt (Modulo schließt den Ring)
     const nx=pts[(i+1)%n];
     const mx=(pt.x+nx.x)/2, mz=(pt.z+nx.z)/2;
@@ -8996,65 +9354,137 @@ function _buildComponent(comp,sm,dm,rm){
 }
 
 // ── Master-Template: prozedurales RING-System für alle 100 Burgen ──────────
-// Jede Burg bekommt: optionalen Glacis + Außenring (8 Türme, R=20) + Innenring (5 Türme, R=10)
-// Türme sind dicker als Mauern → stehen an Ecken sichtbar hervor.
+// Variation nach Epoche, Ratings und deterministischem Hash aus castle.id.
 function generateComponents(castle){
-  const walls=castle.ratings?.walls||50;
-  const pos  =castle.ratings?.position||50;
-  const isF  =castle.type==='fantasy';
-  const outerR=20, innerR=10;
-  // Skalierung basierend auf Mauerstärke (walls-Rating)
-  const oTowerH = 2.8 + walls*0.018;   // Außenturm-Höhe
-  const oWallH  = oTowerH*0.55;         // Außenmauer-Höhe (Türme stehen hervor)
-  const iTowerH = 4.5 + walls*0.030;   // Innenturm-Höhe
-  const iWallH  = iTowerH*0.60;         // Innenmauer-Höhe
-  const oTowerR = 1.2 + walls*0.002;   // Außenturm-Radius
-  const iTowerR = 1.5 + walls*0.003;   // Innenturm-Radius
-  const glacisH = (pos>=85&&!isF) ? 3.5 : 0;
+  const walls    = castle.ratings?.walls    || 50;
+  const pos      = castle.ratings?.position || 50;
+  const garrison = castle.ratings?.garrison || 50;
+  const epoch    = castle.epoch || 'Mittelalter';
+  const isF      = castle.type === 'fantasy';
+
+  // Deterministischer Hash → visuelle Variation ohne Zufall
+  const hv = (castle.id||'x').split('').reduce((a,c)=>a+c.charCodeAt(0), 0);
+  const h1 = hv%7, h2 = hv%5, h3 = hv%3;
+
+  // Epoche-Flags
+  const isAncient = epoch==='Antike' || epoch==='Spätantike';
+  const isHigh    = epoch==='Hochmittelalter';
+  const isModern  = epoch==='Neuzeit';
+  const isJapan   = epoch==='Feudaljapan';
+
+  // ── Turmanzahl ────────────────────────────────────────────────────────────
+  const nOuter = isAncient ? 6 : isModern ? 6 : isHigh ? 10 : isF ? 8+h1%3 : 8;
+  const nInner = isAncient ? 4 : isHigh   ? 6 : isF    ? 5+h2%2 : 5;
+
+  // ── Radien ────────────────────────────────────────────────────────────────
+  const outerR = isAncient ? 22 : isModern ? 18 : 20;
+  const innerR = walls>75 ? 11 : walls<40 ? 9 : 10;
+
+  // ── Höhen & Stärken ───────────────────────────────────────────────────────
+  const oTowerH = (isAncient?3.5 : isModern?2.8 : isF?5.5 : 3.0) + walls*0.020;
+  const oWallH  = oTowerH * (isModern ? 0.70 : 0.55);
+  const iTowerH = (isAncient?5.0 : isF?8.0 : 4.5) + walls*0.032;
+  const iWallH  = iTowerH * 0.60;
+  const oTowerR = (isModern?1.6 : 1.2) + walls*0.002;
+  const iTowerR = 1.5 + walls*0.003;
+
+  // ── Glacis: glatte Skalierung ab pos≥65 ─────────────────────────────────
+  const glacisH = !isF && pos>=80 ? 2.0+(pos-80)*0.12 : !isF && pos>=65 ? 1.5 : 0;
   const innerY  = glacisH;
 
-  const cs=[];
+  // ── Variation: Tor-Index & Ring-Startwinkel ───────────────────────────────
+  const gateIdx   = 1 + (h2 % (nOuter-2));          // nicht immer Ost
+  const ringOff   = h3 * Math.PI / nOuter;           // leichte Drehung pro Burg
+  const dir16     = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSW','SW','WSW','W','WNW','NW','NNW'];
 
-  // ── Glacis (nur bei Hochlagen) ─────────────────────────────────────────
+  const cs = [];
+
+  // ── Glacis ────────────────────────────────────────────────────────────────
   if(glacisH>0) cs.push({
-    type:'GLACIS', x:0, z:0, y:0, rTop:innerR*1.12, rBot:innerR*1.65, h:glacisH,
+    type:'GLACIS', x:0, z:0, y:0,
+    rTop:innerR*1.1, rBot:innerR*1.6+pos*0.015, h:glacisH,
     label:`Glacis – ${castle.name}`,
-    info:`Angeschrägter Felssockel unter dem Innenring. Position-Rating: ${pos}/100.`
+    info:`Angeschrägter ${isAncient?'Stein':'Fels'}sockel — erschwert Belagerungsmaschinen erheblich. Geländevorteil: ${pos}/100.`
   });
 
-  // ── Außenring: 8 Türme (Oktagon, R=20) mit Tor auf Ostseite ────────────
-  const dirN=['N','NO','O','SO','S','SW','W','NW'];
+  // ── Außenring ─────────────────────────────────────────────────────────────
   cs.push({
     type:'RING', y:0,
-    gate:{atIndex:2, w:3.0, d:2.2, h:oTowerH*0.95,
-      label:`Haupttor – ${castle.name}`,
-      info:`Einziger regulärer Eingang zu ${castle.name}. Bewacht von zwei Flankentürmen.`},
-    points: Array.from({length:8}, (_,i)=>{
-      const α=i*Math.PI/4;
-      return {x:+(outerR*Math.sin(α)).toFixed(2), z:+(- outerR*Math.cos(α)).toFixed(2),
-        r:oTowerR, h:oTowerH,
-        label:`Außenturm ${dirN[i]} – ${castle.name}`,
-        info:'Flankierungsturm des äußeren Rings — ermöglichte Kreuzfeuer entlang der Mauern.'};
+    gate:{
+      atIndex: gateIdx,
+      w: 2.8+walls*0.012, d: 1.8+walls*0.010, h: oTowerH*0.95,
+      label:`${isAncient?'Stadttor':isModern?'Bastion-Torwerk':isJapan?'Masugata-Tor':'Haupttor'} – ${castle.name}`,
+      info: isModern
+        ? 'Bastioniertes Torwerk — optimiert für Artilleriefeuer und seitliche Flankenverteidigung.'
+        : isJapan
+          ? 'Masugata: Doppeltes Torwerk mit Richtungswechsel — Angreifer stehen im Kreuzfeuer.'
+          : isAncient
+            ? 'Monumentaltor — Symbol der Macht. Flankiert von massiven Quadrattürmen.'
+            : 'Bewacht von Flankentürmen — Fallgatter, Pfeillöcher, enger Tordurchgang.'
+    },
+    points: Array.from({length:nOuter}, (_,i)=>{
+      const α = ringOff + i*2*Math.PI/nOuter;
+      // Elliptisch bei Hochlagen (Kamm-Burgen strecken sich entlang des Grats)
+      const rx = pos>80 ? outerR*1.15 : outerR;
+      const rz = pos>80 ? outerR*0.85 : outerR;
+      return {
+        x: +(rx*Math.sin(α)).toFixed(2),
+        z: +(-rz*Math.cos(α)).toFixed(2),
+        r: oTowerR, h: oTowerH,
+        label:`${isModern?'Bastion':isAncient?'Wachturm':'Außenturm'} ${dir16[Math.round(i*16/nOuter)%16]} – ${castle.name}`,
+        info: isModern
+          ? 'Artillerie-Bastion — abgeschrägte Flanken lenken Kanonenkugeln ab.'
+          : isAncient
+            ? 'Massiver antiker Wachturm — breitere Basis, weniger Höhe als mittelalterliche Typen.'
+            : 'Flankierungsturm — ermöglichte Kreuzfeuer entlang der Mauerstrecke.'
+      };
     }),
-    wall:{h:oWallH, thick:0.75}
+    wall:{h:oWallH, thick:isModern?1.0:0.75}
   });
 
-  // ── Innenring: 5 Türme (Pentagon, R=10, gedreht so Süd=Hauptturm) ──────
-  // α = π + i·(2π/5): Startpunkt Süd, damit Bergfried die Südseite dominiert.
+  // ── Innenring ─────────────────────────────────────────────────────────────
+  const bfLabel = isAncient?'Zentralturm' : isJapan?'Tenshu (Hauptturm)' : isF?`${castle.name.split(' ')[0]}-Turm` : 'Bergfried';
   cs.push({
     type:'RING', y:innerY,
-    points: Array.from({length:5}, (_,i)=>{
-      const α=Math.PI+i*2*Math.PI/5;
-      const isSouth=i===0;
-      return {x:+(innerR*Math.sin(α)).toFixed(2), z:+(-innerR*Math.cos(α)).toFixed(2),
-        r:isSouth ? iTowerR*1.25 : iTowerR, h:isSouth ? iTowerH*1.4 : iTowerH,
-        label:isSouth ? `Bergfried – ${castle.name}` : `Innenturm ${['S','SW','NW','NO','SO'][i]}`,
-        info:isSouth
-          ? `Bergfried von ${castle.name} — letzter Rückzugspunkt. Mauerstärke: ${walls}/100.`
-          : 'Innerer Wehrturm.'};
+    points: Array.from({length:nInner}, (_,i)=>{
+      const α = Math.PI + i*2*Math.PI/nInner;
+      const isBF = i===0;
+      return {
+        x: +(innerR*Math.sin(α)).toFixed(2),
+        z: +(-innerR*Math.cos(α)).toFixed(2),
+        r: isBF ? iTowerR*1.3 : iTowerR,
+        h: isBF ? iTowerH*(isF?1.7:isJapan?1.6:1.4) : iTowerH,
+        label: isBF ? `${bfLabel} – ${castle.name}` : `Innenturm ${i}`,
+        info: isBF
+          ? (isJapan
+              ? `Tenshu — mehrstöckiger Hauptturm, Symbol der Macht des Daimyō. Höhe: ${walls}/100.`
+              : isF
+                ? 'Zentralturm des dunklen Herrn — kein Licht dringt durch seine Mauern.'
+                : `Bergfried — letzter Rückzugspunkt. Hier fiel die Entscheidung. Mauerstärke: ${walls}/100.`)
+          : `Innerer Wehrturm. Garrison: ${garrison}/100.`
+      };
     }),
     wall:{h:iWallH, thick:1.0}
   });
+
+  // ── Palas / Innenhalle (bei starker Garnison oder dicken Mauern) ──────────
+  if(garrison>60 || walls>75){
+    const palα = ringOff + h1*2*Math.PI/8;
+    const palR = innerR*0.42;
+    cs.push({
+      type:'SQUARE_TOWER',
+      x: +(palR*Math.sin(palα)).toFixed(2),
+      z: +(-palR*Math.cos(palα)).toFixed(2),
+      w: 4.0+garrison*0.025, d:2.0, h:iTowerH*0.50,
+      y: innerY,
+      label:`${isAncient?'Palast':isJapan?'Ninomaru':isF?'Thronsaal':'Palas'} – ${castle.name}`,
+      info: isJapan
+        ? 'Ninomaru — Sekundärburg mit Palastbereich, Residenz des Herrn.'
+        : isAncient
+          ? 'Repräsentationsbau — hier residierte der Herrscher und empfing Gesandte.'
+          : `Wohn- und Verwaltungsbau im Kernwerk. Garrison: ${garrison}/100.`
+    });
+  }
 
   return cs;
 }
