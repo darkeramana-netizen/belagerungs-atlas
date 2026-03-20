@@ -32,12 +32,12 @@ const PALETTES = {
     gate:   () => mkMat(0x3a2f22, 0.94, 0.04),
   },
   japanese: {
-    stone:  () => mkMat(0x3a3028, 0.88, 0.02),
-    dark:   () => mkMat(0x1a120a, 0.95, 0.03),
-    roof:   () => mkMat(0x1c2a1a, 0.82, 0.01), // dark green-grey tiles
-    wood:   () => mkMat(0x4a2e0c, 0.85, 0.02),
+    stone:  () => mkMat(0xddd5c2, 0.82, 0.01), // Shikkui white plaster (off-white)
+    dark:   () => mkMat(0x1e1a14, 0.90, 0.05), // dark lacquered wood
+    roof:   () => mkMat(0x24303a, 0.76, 0.02), // dark blue-grey roof tiles
+    wood:   () => mkMat(0x3a2410, 0.88, 0.02), // timber
     ground: () => mkMat(0x1c1a10, 1.00, 0.00),
-    gate:   () => mkMat(0x2a1e0e, 0.93, 0.02),
+    gate:   () => mkMat(0x1a1410, 0.92, 0.04), // dark gate wood
   },
   oriental: {
     stone:  () => mkMat(0x5a4a30, 0.86, 0.04),

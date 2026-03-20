@@ -51,19 +51,6 @@ export default function CastleDiorama({ castle }) {
       gnd.receiveShadow = true;
       scene.add(gnd);
 
-      // ── Mesa terrain for extreme-position castles (Masada-type) ──────────
-      const posR = castle.ratings?.position || 50;
-      if (posR >= 90 && castle.type !== 'fantasy') {
-        const mesa = new T.Mesh(
-          new T.CylinderGeometry(15, 18.5, 2, 32),
-          new T.MeshStandardMaterial({ color: 0x2a2015, roughness: 0.96 }),
-        );
-        mesa.position.y = 1;
-        mesa.receiveShadow = true;
-        mesa.castShadow = true;
-        scene.add(mesa);
-      }
-
       // ── Lighting ─────────────────────────────────────────────────────────
       const amb  = new T.AmbientLight(0xc8b89a, 2.8);
       scene.add(amb);
@@ -98,6 +85,22 @@ export default function CastleDiorama({ castle }) {
       const maxRingR = rings.length > 0
         ? Math.max(...rings.flatMap(r => (r.points || []).map(pt => Math.sqrt((pt.x || 0) ** 2 + (pt.z || 0) ** 2))))
         : 0;
+
+      // ── Rocky plateau for extreme-position castles (Masada-type) ─────────
+      // Mesa top = y=0 so buildings sit on top. Extends downward as a cliff.
+      const posR = castle.ratings?.position || 50;
+      if (posR >= 90 && castle.type !== 'fantasy') {
+        const plateauR = maxRingR > 0 ? maxRingR + 3 : 18;
+        const mesaH = 3.5;
+        const mesa = new T.Mesh(
+          new T.CylinderGeometry(plateauR * 0.95, plateauR + 3, mesaH, 36),
+          new T.MeshStandardMaterial({ color: 0x2a2015, roughness: 0.97, metalness: 0.0 }),
+        );
+        mesa.position.y = -(mesaH / 2); // top surface at y=0
+        mesa.receiveShadow = true;
+        mesa.castShadow   = true;
+        scene.add(mesa);
+      }
 
       let theta = Math.PI * 0.85, phi = 0.78;
       let camR  = maxRingR > 0 ? Math.max(26, maxRingR * 2.4) : (castle.components ? 32 : 26);

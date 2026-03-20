@@ -6,40 +6,33 @@ import {
   squareTowerMerlonPositions,
 } from './battlements.js';
 import { buildRoofForStyle } from './roofs.js';
-import { buildButtresses, buildHoarding, buildOriel } from './details.js';
+import { buildHoarding, buildOriel } from './details.js';
 
 // ── WALL ─────────────────────────────────────────────────────────────────
 // Connects (x,z) → (x2,z2) with auto-rotated box + InstancedMesh battlements.
-// Optional: buttresses on long walls, hoardings (via p.hoarding flag).
 export function buildWall(p, sm, dm, style = 'crusader') {
   const dx = p.x2 - p.x, dz = p.z2 - p.z;
   const len = Math.sqrt(dx * dx + dz * dz);
   const ang = Math.atan2(-dz, dx);
   const h = p.h || 3, thick = p.thick || 0.75, y = p.y || 0;
 
+  if (len < 0.2) return null; // degenerate segment — skip
+
   const g = new THREE.Group();
   g.position.set((p.x + p.x2) / 2, y, (p.z + p.z2) / 2);
   g.rotation.y = ang;
   g.userData = { label: p.label || '', info: p.info || '' };
 
-  // Main body — polygon walls fold naturally because each segment is independent
   const wall = new THREE.Mesh(new THREE.BoxGeometry(len, h, thick), sm);
-  wall.position.y = h / 2;
+  wall.position.y = h / 2 + 0.002;
   wall.castShadow = true;
   wall.receiveShadow = true;
-  // Slight y-offset to avoid Z-fighting with adjacent tower bases
-  wall.position.y += 0.001;
   g.add(wall);
 
   // Battlements (InstancedMesh — 1 draw call per wall segment)
   const mkM = chooseMerlonBuilder(style);
   const merlons = mkM(wallMerlonPositions(len, h), sm);
   if (merlons) g.add(merlons);
-
-  // Buttresses on longer walls (guards against Z-fighting with towers by spacing > 3)
-  if (len > 7 && p.buttresses !== false) {
-    g.add(buildButtresses(len, h, thick, sm));
-  }
 
   return g;
 }
@@ -54,7 +47,6 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
 
   // Body with slight batter (wider base)
   const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 1.12, h, 18), sm);
-  // Raise by epsilon to avoid Z-fighting with ground plane
   body.position.y = h / 2 + 0.002;
   body.castShadow = true;
   body.receiveShadow = true;
@@ -65,12 +57,12 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
   const merlons = mkM(roundTowerMerlonPositions(r, h), sm);
   if (merlons) g.add(merlons);
 
-  // Hoarding — wooden gallery (European non-fantasy, garrison > 65)
+  // Hoarding — wooden gallery (European non-fantasy, high-garrison castles)
   if (p.hoarding && style === 'crusader') {
     g.add(buildHoarding(r, h, dm));
   }
 
-  // Oriel — one small projecting bay on tall towers
+  // Oriel — projecting bay on tall towers (optional)
   if (p.oriel && h > 6) {
     g.add(buildOriel(r * 0.95, h * 0.55, 0, 0, dm));
   }
@@ -102,15 +94,19 @@ export function buildSquareTower(p, sm, dm, rm, style = 'crusader') {
   const merlons = mkM(squareTowerMerlonPositions(w, d, h), sm);
   if (merlons) g.add(merlons);
 
+  // Style-aware roof (irimoya for japanese, cone for crusader, none for ancient)
+  const roof = buildRoofForStyle(style, Math.max(w, d) / 2, h, rm, { w, d });
+  if (roof) g.add(roof);
+
   return g;
 }
 
 // ── GATE ─────────────────────────────────────────────────────────────────
-// Gatehouse with two round flanking towers, passage cutout, portcullis bars.
+// Gatehouse with two round flanking towers, visible passage opening, portcullis bars.
 export function buildGate(p, sm, dm, style = 'crusader') {
   const w = p.w || 4.5, d = p.d || 3.5, h = p.h || 6.0, y = p.y || 0;
   const tR = d * 0.52;   // flanking tower radius
-  const tH = h * 1.22;  // towers taller than gatehouse
+  const tH = h * 1.22;  // flanking towers taller than gatehouse
 
   const g = new THREE.Group();
   g.position.set(p.x, y, p.z);
@@ -127,7 +123,7 @@ export function buildGate(p, sm, dm, style = 'crusader') {
     tw.receiveShadow = true;
     g.add(tw);
 
-    // Merlons on flanking towers — positions are in gate-group local space
+    // Merlons on flanking towers — offsets into gate-group local space
     const mkM = chooseMerlonBuilder(style);
     const merPos = roundTowerMerlonPositions(tR, tH).map(m => ({
       ...m, x: m.x + cx,
@@ -143,13 +139,13 @@ export function buildGate(p, sm, dm, style = 'crusader') {
   body.receiveShadow = true;
   g.add(body);
 
-  // Passage cutout (darker material simulates depth)
-  const pW = w * 0.35, pH = h * 0.58;
+  // Passage opening — dark material creates visual depth
+  const pW = w * 0.38, pH = h * 0.62;
   const pass = new THREE.Mesh(new THREE.BoxGeometry(pW, pH, d * 1.1), dm || sm);
   pass.position.y = pH / 2;
   g.add(pass);
 
-  // Portcullis bar hints (not for ancient style — too early)
+  // Portcullis bar hints (not for ancient style)
   if (style !== 'ancient') {
     for (let bi = -1; bi <= 1; bi++) {
       const bar = new THREE.Mesh(new THREE.BoxGeometry(0.055, pH * 0.82, 0.055), dm || sm);
@@ -185,9 +181,9 @@ export function buildGlacis(p, sm) {
 }
 
 // ── RING ─────────────────────────────────────────────────────────────────
-// Connects an array of tower points in a closed ring via walls.
+// Connects tower points in a closed ring via walls.
 // gate:{atIndex,…} replaces one wall segment with a gatehouse.
-// squareTowers flag switches all towers to SquareTower (ancient style).
+// squareTowers / style='japanese' forces square towers throughout.
 export function buildRing(p, sm, dm, rm, style = 'crusader') {
   const pts = p.points || [], n = pts.length, y = p.y || 0;
   if (n < 2) return null;
@@ -195,28 +191,32 @@ export function buildRing(p, sm, dm, rm, style = 'crusader') {
   const wH = p.wall?.h || 3;
   const wT = p.wall?.thick || 0.8;
   const gt = p.gate;
-  const useSq = p.squareTowers;
+  // Japanese castles always use square towers (Yagura are rectangular)
+  const useSquare = p.squareTowers || style === 'japanese';
 
   const g = new THREE.Group();
   g.userData = { label: p.label || '', info: p.info || '' };
 
   pts.forEach((pt, i) => {
     const ptY = y + (pt.y || 0);
+    const tR  = pt.r || 1.2; // tower radius / half-width
 
-    // Tower at this vertex
-    if (useSq) {
+    // ── Tower at this vertex ─────────────────────────────────────────────
+    if (useSquare) {
+      const side = tR * 2;
       g.add(buildSquareTower(
-        { ...pt, w: (pt.r || 1.2) * 2, d: (pt.r || 1.2) * 2, y: ptY },
+        { ...pt, w: side, d: side, y: ptY },
         sm, dm, rm, style,
       ));
     } else {
       g.add(buildRoundTower({ ...pt, y: ptY }, sm, dm, rm, style));
     }
 
-    // Wall or gate to next tower (ring closes on last segment)
-    const nx = pts[(i + 1) % n];
-    const mx = (pt.x + nx.x) / 2;
-    const mz = (pt.z + nx.z) / 2;
+    // ── Wall or gate to next tower ───────────────────────────────────────
+    const nx  = pts[(i + 1) % n];
+    const nxR = nx.r || 1.2;
+    const mx  = (pt.x + nx.x) / 2;
+    const mz  = (pt.z + nx.z) / 2;
 
     if (gt && gt.atIndex === i) {
       g.add(buildGate(
@@ -224,10 +224,25 @@ export function buildRing(p, sm, dm, rm, style = 'crusader') {
         sm, dm, style,
       ));
     } else {
-      g.add(buildWall(
-        { x: pt.x, z: pt.z, x2: nx.x, z2: nx.z, h: pt.wallH || wH, y, thick: wT, label: '', info: '' },
-        sm, dm, style,
-      ));
+      // Trim wall endpoints to tower surfaces to eliminate Z-fighting overlap
+      const dx = nx.x - pt.x, dz = nx.z - pt.z;
+      const rawLen = Math.sqrt(dx * dx + dz * dz);
+      const trim1  = tR  * (useSquare ? 0.82 : 0.88);
+      const trim2  = nxR * (useSquare ? 0.82 : 0.88);
+
+      if (rawLen > trim1 + trim2 + 0.4) {
+        const ux = dx / rawLen, uz = dz / rawLen;
+        g.add(buildWall({
+          x:  pt.x + ux * trim1,
+          z:  pt.z + uz * trim1,
+          x2: nx.x  - ux * trim2,
+          z2: nx.z  - uz * trim2,
+          h: pt.wallH || wH,
+          y,
+          thick: wT,
+          label: '', info: '',
+        }, sm, dm, style));
+      }
     }
   });
 
