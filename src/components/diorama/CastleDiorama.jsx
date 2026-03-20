@@ -71,13 +71,20 @@ export default function CastleDiorama({ castle }) {
       fill.position.set(-18, 12, -22);
       scene.add(fill);
 
+      // ── Anti-gravity: ensure no object sinks below the ground plane ──────
+      function snapToGround(obj) {
+        const box = new THREE.Box3().setFromObject(obj);
+        if (box.min.y < 0) obj.position.y -= box.min.y;
+      }
+
       // ── Build castle ─────────────────────────────────────────────────────
       const components = castle.components || generateComponents(castle);
       const clickables  = [];
 
       components.forEach(comp => {
-        const obj = buildComponent(comp, mats.stone, mats.dark, mats.roof, style);
+        const obj = buildComponent(comp, mats.stone, mats.dark, mats.roof, style, mats.rock);
         if (!obj) return;
+        snapToGround(obj);
         scene.add(obj);
         clickables.push(obj);
       });
@@ -96,7 +103,7 @@ export default function CastleDiorama({ castle }) {
         const mesaH = 3.5;
         const mesa = new T.Mesh(
           new T.CylinderGeometry(plateauR * 0.95, plateauR + 3, mesaH, 36),
-          new T.MeshStandardMaterial({ color: 0x2a2015, roughness: 0.97, metalness: 0.0 }),
+          mats.rock,
         );
         mesa.position.y = -(mesaH / 2); // top surface at y=0
         mesa.receiveShadow = true;
@@ -197,7 +204,7 @@ export default function CastleDiorama({ castle }) {
             else obj.material.dispose();
           }
         });
-        Object.values(mats).forEach(m => m.dispose());
+        Object.values(mats).forEach(m => { m.map?.dispose(); m.dispose(); });
       };
     } catch (e) {
       console.error('CastleDiorama error:', castle.id, e);

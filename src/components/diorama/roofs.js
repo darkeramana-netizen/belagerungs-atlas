@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 // ── European / Crusader: simple cone ─────────────────────────────────────
-// Cone base = r * 1.05 (max 1.2× rule satisfied)
+// Cone base = r * 1.10; height capped at r * 1.30 (less pointy)
 export function buildConeRoof(r, baseY, mat) {
-  const cR = r * 1.05;
-  const cH = r * 1.55;
+  const cR = r * 1.10;
+  const cH = r * 1.30;
   const cone = new THREE.Mesh(new THREE.ConeGeometry(cR, cH, 18), mat);
   cone.position.y = baseY + cH / 2;
   cone.castShadow = true;
