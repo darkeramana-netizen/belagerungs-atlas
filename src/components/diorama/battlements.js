@@ -68,10 +68,15 @@ export function roundTowerMerlonPositions(r, h) {
 // (thickness 0.22) has been added — keeps merlons clear of the slab geometry.
 export function squareTowerMerlonPositions(w, d, h, yOffset = 0.30) {
   const positions = [];
+  const spacing = 1.1;
   [[0, d / 2, false], [0, -d / 2, false], [w / 2, 0, true], [-w / 2, 0, true]]
     .forEach(([ox, oz, isZ]) => {
       const len = isZ ? d : w;
-      for (let t = -(len / 2) + 0.5; t < len / 2 - 0.1; t += 1.1) {
+      // Count merlons, then centre the group on each face so they are always symmetric.
+      const count = Math.max(1, Math.floor((len + 0.1) / spacing));
+      const start = -((count - 1) * spacing) / 2;
+      for (let i = 0; i < count; i++) {
+        const t = start + i * spacing;
         positions.push({
           x: isZ ? ox : ox + t,
           y: h + yOffset,
