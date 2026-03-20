@@ -276,13 +276,14 @@ export function buildRing(p, sm, dm, rm, style = 'crusader') {
 }
 
 // ── Component dispatcher ──────────────────────────────────────────────────
-export function buildComponent(comp, sm, dm, rm, style = 'crusader') {
+// gm (rock/ground material) is used for GLACIS; falls back to sm if not provided.
+export function buildComponent(comp, sm, dm, rm, style = 'crusader', gm = null) {
   switch (comp.type) {
     case 'WALL':         return buildWall(comp, sm, dm, style);
     case 'ROUND_TOWER':  return buildRoundTower(comp, sm, dm, rm, style);
     case 'SQUARE_TOWER': return buildSquareTower(comp, sm, dm, rm, style);
     case 'GATE':         return buildGate(comp, sm, dm, style);
-    case 'GLACIS':       return buildGlacis(comp, sm);
+    case 'GLACIS':       return buildGlacis(comp, gm || sm);
     case 'RING':         return buildRing(comp, sm, dm, rm, style);
     default: return null;
   }
