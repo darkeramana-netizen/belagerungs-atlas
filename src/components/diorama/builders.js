@@ -60,11 +60,6 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
     if (merlons) g.add(merlons);
   }
 
-  // Hoarding — wooden gallery (European non-fantasy, high-garrison castles)
-  if (p.hoarding && style === 'crusader') {
-    g.add(buildHoarding(r, h, dm));
-  }
-
   // Oriel — projecting bay on tall towers (optional)
   if (p.oriel && h > 6) {
     g.add(buildOriel(r * 0.95, h * 0.55, 0, 0, dm));
