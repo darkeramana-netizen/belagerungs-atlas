@@ -81,11 +81,47 @@ export function buildFlatRoof(w, d, baseY, mat) {
   return slab;
 }
 
+// ── Japanese: irimoya (入母屋) hip-gable roof for SQUARE towers ───────────
+// Two stacked tiers: each tier = wide overhanging eave plate + 4-sided pyramid body.
+export function buildIrimoyaRoof(w, d, baseY, mat, tiers = 2) {
+  const g = new THREE.Group();
+  for (let t = 0; t < tiers; t++) {
+    const scale = 1 - t * 0.36;
+    const tw = (w + 0.32) * scale;
+    const td = (d + 0.32) * scale;
+    const yOff = baseY + t * Math.min(w, d) * 0.46 * (1 - t * 0.08);
+
+    // Overhanging eave plate (thin wide box)
+    const eave = new THREE.Mesh(new THREE.BoxGeometry(tw + 0.52, 0.10, td + 0.52), mat);
+    eave.position.y = yOff + 0.05;
+    eave.castShadow = true;
+    g.add(eave);
+
+    // 4-sided pyramid (hip roof body)
+    const rH = Math.min(tw, td) * 0.58;
+    const pyramid = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.01, Math.min(tw, td) * 0.52, rH, 4),
+      mat,
+    );
+    pyramid.position.y = yOff + 0.10 + rH / 2;
+    pyramid.rotation.y = Math.PI / 4; // align to wall axes
+    pyramid.castShadow = true;
+    g.add(pyramid);
+  }
+  return g;
+}
+
 // ── Dispatcher ───────────────────────────────────────────────────────────
+// extra.w / extra.d — dimensions for square-tower-aware roofs
 export function buildRoofForStyle(style, r, baseY, mat, extra = {}) {
   switch (style) {
-    case 'japanese': return buildPagodaRoof(r, baseY, mat);
+    case 'japanese':
+      // Square towers get irimoya; circular fallback = double-tier irimoya from r
+      return extra.w
+        ? buildIrimoyaRoof(extra.w, extra.d || extra.w, baseY, mat)
+        : buildIrimoyaRoof(r * 1.8, r * 1.8, baseY, mat);
     case 'oriental': return buildDomeRoof(r, baseY, mat);
+    case 'ancient':  return null; // flat mud-brick roofs — no visible roof element
     default:         return buildConeRoof(r, baseY, mat);
   }
 }

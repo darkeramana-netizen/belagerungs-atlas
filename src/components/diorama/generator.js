@@ -129,7 +129,7 @@ export function generateComponents(castle) {
   // ── Outer ring ───────────────────────────────────────────────────────────
   cs.push({
     type: 'RING', y: 0,
-    squareTowers: isAncient || isModern,
+    squareTowers: isAncient || isModern || isJapan,
     gate: {
       atIndex: gateIdx,
       w: 2.8 + walls * 0.012, d: 1.8 + walls * 0.010, h: oTowerH * 0.95,
@@ -155,7 +155,7 @@ export function generateComponents(castle) {
   // ── Inner ring ───────────────────────────────────────────────────────────
   cs.push({
     type: 'RING', y: innerY,
-    squareTowers: isAncient || isModern,
+    squareTowers: isAncient || isModern || isJapan,
     points: Array.from({ length: nInner }, (_, i) => {
       const α = Math.PI + i * TWO_PI / nInner;
       const isBF = i === 0;
