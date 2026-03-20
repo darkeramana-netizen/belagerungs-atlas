@@ -590,132 +590,132 @@ components:[
  weaknesses:["6h Ebbe-Fenster","Kleine Garnison","Versorgung bei langer Blockade"],
  attackTips:["Nur bei Ebbe (6h Fenster)","Gezeitenkarte kennen","Lokalen Guide organisieren"],
  siegeCtx:"Englische Armee 1423 — Gezeitenkarte dabei. Verräter als Guide. 6 Stunden Ebbe.",defender:"Abt Robert de Jolivet",
- // ═══ MONT SAINT-MICHEL — ÜBERARBEITETES LAYOUT MIT PLATEAU ════════════════
+ // ═══ MONT SAINT-MICHEL — GOTHIC & URBAN EXPANSION ════════════════════════
  // Koordinatensystem: z+ = Süd (Eingangsseite), z- = Nord (La-Merveille-Seite)
  //
  // Vertikaler Aufbau:
- //   GLACIS 1:  y=0→4.5   rBot=15 → rTop=11  (breiter Felssockel)
- //   GLACIS 2:  y=4.5→8.5 rBot=11 → rTop=7   (Mittelsteigung)
- //   PLATEAU:   y=8.5→12.5 w=13, d=10         (flaches Abteiplateau — historisch korrekt:
- //                                              die Abtei liegt auf einem Kryptenkomplex,
- //                                              nicht direkt auf dem Felsgipfel)
+ //   ROCK_FOUNDATION 1:  y=0→4.5   r=15  (unregelmäßige Granitbasis, DodecahedronGeo)
+ //   ROCK_FOUNDATION 2:  y=4.5→9   r=11  (steiler Mittelaufstieg, seed versetzt)
+ //   PLATEAU:            y=9→13    w=13  (flaches Abteiplateau/Kryptenkomplex)
  //
- // La Merveille (y=8.5, z=-8, d=5): Südfläche bei z=-5.5 = genau an PLATEAU-Nordfläche
- //   → kein Spalt, kein Schweben, Gebäude hängt an Nordflanke des Plateaus
- //
- // Alle Abteigebäude bei y=12.5 = PLATEAU-Top → kein Schweben möglich
+ // CIVILIAN_HOUSING (3 Streifen): Häuserzeilen auf den Felsrängen zwischen den Ringen.
+ // LA MERVEILLE: SQUARE_TOWER (noRoof) an Nordflanke des Plateaus, y=9.
+ // ABBEY_MODULE: Gotische Kirche mit Spire (integrierte Strebebögen), auf PLATEAU-Top y=13.
+ // BUTTRESS_SYSTEM: Strebepfeiler an La Merveilles Nordflanke.
  components:[
 
-  // ── UNTERHANG: Breite Granitbasis des Felseninsels ────────────────────────
-  {type:'GLACIS', x:0, z:0, y:0, rTop:11, rBot:15, h:4.5,
-   label:'Granitfels (Unterhang)',
-   info:'Der Mont Saint-Michel ist ein einzelner Granitfels in der Bucht der Normandie — entstanden durch präkambrische Ausläufer des Armorikanischen Massivs. Die Flut steigt 14m, die schnellste Europas. Was nicht Granit ist, ist Wasser.'},
+  // ── FELS-SCHICHT 1: Breite Granitbasis (ROCK_FOUNDATION) ─────────────────
+  // Dodekaedrisches Mesh gibt dem Fels das charakteristische unregelmäßige
+  // Granitprofil — kein glatter Kegel mehr, sondern echte Felssilhouette.
+  {type:'ROCK_FOUNDATION', x:0, z:0, y:0, r:15, h:4.5, seed:42,
+   label:'Granitfels (Unterhang — Dodekaedrisches Mesh)',
+   info:'Der Mont Saint-Michel ist ein einzelner Granitfels, entstanden durch präkambrische Ausläufer des Armorikanischen Massivs. Das DodecahedronGeometry-Mesh mit Vertex-Perturbation gibt dem Fels sein unregelmäßiges, lebendiges Profil — ganz anders als ein glatter Kegelstumpf. Die Flut steigt 14m — schnellste in Europa.'},
 
-  // ── MITTELHANG: Steilerer Felsaufstieg mit Häusern ───────────────────────
-  {type:'GLACIS', x:0, z:0, y:4.5, rTop:7, rBot:11, h:4,
-   label:'Mittelhang (Bürgerstadt)',
-   info:'Auf diesem Hang klammert sich die mittelalterliche Bürgerstadt ans Gestein — enge Gassen, steil nach oben führende Treppen, Häuser die aufeinander gebaut sind. Die Grande Rue windet sich spiralförmig zum Gipfel.'},
+  // ── FELS-SCHICHT 2: Steilerer Mittelhang ─────────────────────────────────
+  {type:'ROCK_FOUNDATION', x:0, z:0, y:4.5, r:11, h:4.5, seed:73,
+   label:'Mittelhang (Steiler Granit)',
+   info:'Der zweite Felsring, höher und enger. Der andere Seed (73) erzeugt eine andere Vertex-Perturbation — kein zwei Lagen sehen gleich aus. Auf diesem Abschnitt klammert sich die Bürgerstadt mit engen Gassen und gestapelten Häusern ans Gestein.'},
 
-  // ── ABTEI-PLATEAU: Flache Fels-Terrasse die den Komplex trägt ────────────
-  // Ersetzt GLACIS-3. Historisch korrekt: die Abteianlage liegt auf einem massiven
-  // Kryptenkomplex (Notre-Dame-Sous-Terre, Crypte des Gros-Piliers usw.) der als
-  // künstliches Plateau den unregelmäßigen Felsengipfel einebnet.
-  // Leicht nach Nord versetzt (z:-0.5) da das Gebäudevolumen sich Richtung Nord konzentriert.
-  // Top bei y=12.5 → ALLE Abteigebäude sitzen fest auf y=12.5, kein Schweben.
-  {type:'PLATEAU', x:0, z:-0.5, y:8.5, w:13, d:10, h:4,
+  // ── ABTEI-PLATEAU: Flache Terrasse auf dem Fels ──────────────────────────
+  {type:'PLATEAU', x:0, z:-0.5, y:9, w:13, d:10, h:4,
    label:'Abtei-Plateau (Kryptenkomplex)',
-   info:'Das flache Plateau ist kein natürlicher Fels, sondern ein über Jahrhunderte aufgebauter Unterbau aus Krypten, Pfeilern und Stützmauern. Notre-Dame-Sous-Terre (10. Jh.), die Crypte des Gros-Piliers (15. Jh.) — all diese unterirdischen Räume bilden die Basis, auf der die Abtei steht. Ohne diesen Kryptenteppich wäre der gotische Kirchenbau auf diesem Gipfel unmöglich.'},
+   info:'Das Plateau ist kein natürlicher Fels, sondern Jahrhunderte aus Krypten, Pfeilern und Stützmauern: Notre-Dame-Sous-Terre (10. Jh.), Crypte des Gros-Piliers (15. Jh.). Ohne diesen Unterbau wäre der gotische Kirchenbau auf dem spitzen Gipfel unmöglich gewesen. Top bei y=13 — alle Abteigebäude sitzen fest, kein Schweben.'},
 
-  // ── ÄUSSERE STADTMAUERN: Remparts (12 Türme, Eingang Süd) ───────────────
-  // r=17 liegt klar außerhalb von GLACIS-1-Basis (rBot=15) → Mauern wachsen aus Fels
+  // ── ÄUSSERE STADTMAUERN: Remparts (12 Türme) ─────────────────────────────
   {type:'RING', y:0,
    gate:{atIndex:0, w:4.5, d:3.5, h:7.0,
      label:'Porte de l\'Avancée (Barbakane)',
-     info:'Das dreifach gefaltete Eingangswerk des Mont: Zugbrücke, Barbakane, Fallgatter — wer eintritt, ist sofort von zwei Mauerzügen eingeschlossen. Die englische Armee von 1423 stand wochenlang genau hier.'},
+     info:'Das dreifach gefaltete Eingangswerk: Zugbrücke, Barbakane, Fallgatter. Die englische Armee von 1423 stand wochenlang genau hier und erreichte nie dieses Tor.'},
    points:[
-    {x:0,     z:17,    r:1.2, h:5.5, label:'Tour Boucle',        info:'Südlichster Turm des äußeren Rings — bewacht den Zugang vom Damm und der Flachküste.'},
-    {x:8.5,   z:14.5,  r:1.0, h:5.0, label:'Tour du Roi',        info:'Königsturm — Zeichen der Souveränität der Krone über den Mont.'},
-    {x:14.5,  z:8.5,   r:1.0, h:5.0, label:'Tour de la Liberté', info:'Freiheitsturm — Teil der Verteidigungslinie gegen englische Angriffe 1423.'},
-    {x:17,    z:0,     r:1.0, h:5.0, label:'Tour Basse Ost',      info:'Östlicher Flachturm — hier konzentrierte sich die englische Belagerungslinie.'},
-    {x:14.5,  z:-8.5,  r:1.0, h:5.0, label:'Tour Aubert',        info:'Benannt nach Bischof Aubert, dem Gründer des Heiligtums (708 n. Chr.).'},
-    {x:8.5,   z:-14.5, r:1.0, h:5.0, label:'Tour de l\'Arcade',  info:'Nordöstlicher Bogenturm — überspannt eine enge Gasse vom Hafen.'},
-    {x:0,     z:-17,   r:1.2, h:5.5, label:'Tour Basse Nord',     info:'Nordturm — schaut auf 20km Wattenmeer. Bei Ebbe das Paradox der Stille.'},
-    {x:-8.5,  z:-14.5, r:1.0, h:5.0, label:'Tour Cholet',        info:'Nordwestturm — Blickachse auf die schroffe Nordflanke des Felsen.'},
-    {x:-14.5, z:-8.5,  r:1.0, h:5.0, label:'Tour Gabriel',       info:'Stärkster Nordwestturm — Plattform für Katapulte und Armbrustschützen.'},
-    {x:-17,   z:0,     r:1.0, h:5.0, label:'Tour Basse Ouest',    info:'Westturm — senkrechte Klippen machen die Westflanke militärisch nahezu uneinnehmbar.'},
-    {x:-14.5, z:8.5,   r:1.0, h:5.0, label:'Tour Claudine',      info:'Südwestturm — kontrolliert den Zugang vom westlichen Ufer.'},
-    {x:-8.5,  z:14.5,  r:1.0, h:5.0, label:'Tour de Beatrix',    info:'Südwestlicher Flankierungsturm — schließt die Stadtmauer zum Haupttor hin ab.'},
+    {x:0,     z:17,    r:1.2, h:5.5, label:'Tour Boucle',        info:'Südlichster Turm — bewacht den Damm.'},
+    {x:8.5,   z:14.5,  r:1.0, h:5.0, label:'Tour du Roi',        info:'Königsturm — Zeichen der Souveränität der Krone.'},
+    {x:14.5,  z:8.5,   r:1.0, h:5.0, label:'Tour de la Liberté', info:'Freiheitsturm — Verteidigungslinie gegen England 1423.'},
+    {x:17,    z:0,     r:1.0, h:5.0, label:'Tour Basse Ost',      info:'Östlicher Flachturm — englische Belagerungslinie 1423.'},
+    {x:14.5,  z:-8.5,  r:1.0, h:5.0, label:'Tour Aubert',        info:'Benannt nach Bischof Aubert, Gründer 708 n. Chr.'},
+    {x:8.5,   z:-14.5, r:1.0, h:5.0, label:'Tour de l\'Arcade',  info:'Nordöstlicher Bogenturm — überspannt eine enge Gasse.'},
+    {x:0,     z:-17,   r:1.2, h:5.5, label:'Tour Basse Nord',     info:'Nordturm — 20km Wattenmeer bei Ebbe.'},
+    {x:-8.5,  z:-14.5, r:1.0, h:5.0, label:'Tour Cholet',        info:'Nordwestturm — Blickachse auf La Merveilles Nordflanke.'},
+    {x:-14.5, z:-8.5,  r:1.0, h:5.0, label:'Tour Gabriel',       info:'Stärkster Nordwestturm — Katapultplattform.'},
+    {x:-17,   z:0,     r:1.0, h:5.0, label:'Tour Basse Ouest',    info:'Westturm — senkrechte Klippen machen die Westflanke uneinnehmbar.'},
+    {x:-14.5, z:8.5,   r:1.0, h:5.0, label:'Tour Claudine',      info:'Südwestturm.'},
+    {x:-8.5,  z:14.5,  r:1.0, h:5.0, label:'Tour de Beatrix',    info:'Südwestlicher Flankierungsturm.'},
    ],
    wall:{h:3.5, thick:0.75}},
 
   // ── OBERE STADTMAUERN: Mittlerer Ring (8 Türme, y=4.5) ──────────────────
-  // r=12 außerhalb GLACIS-2-Basis (rBot=11) — obere Bebauungsgrenze der Bürgerstadt
   {type:'RING', y:4.5,
    gate:{atIndex:0, w:3.5, d:2.5, h:5.5,
      label:'Porte du Boulevard (Oberes Stadttor)',
-     info:'Das zweite Torwerk — markiert den Übergang von der Bürgerstadt zu den kirchlichen Bereichen. Der Mont war einer der reichsten Wallfahrtsorte Europas — bis zu 1 Million Pilger im Jahr.'},
+     info:'Übergang von Bürgerstadt zu kirchlichem Bereich — bis zu 1 Mio. Pilger/Jahr passierten dieses Tor.'},
    points:[
-    {x:0,     z:12,    r:1.0, h:4.5, label:'Oberer Südturm',  info:'Kontrolliert den oberen Teil der Grande Rue.'},
-    {x:8.5,   z:8.5,   r:0.9, h:4.5, label:'Oberer SO-Turm',  info:'Südöstlicher Flankierungsturm der oberen Mauer.'},
-    {x:12,    z:0,     r:0.9, h:4.5, label:'Oberer Ostturm',  info:'Östlicher Turm der oberen Bebauungsgrenze.'},
-    {x:8.5,   z:-8.5,  r:0.9, h:4.5, label:'Oberer NO-Turm',  info:'Nordostturm — Blick auf La Merveille, die sich direkt dahinter erhebt.'},
-    {x:0,     z:-12,   r:1.0, h:4.5, label:'Oberer Nordturm', info:'Nordturm — über ihm beginnt die Stützmauer der Merveille.'},
-    {x:-8.5,  z:-8.5,  r:0.9, h:4.5, label:'Oberer NW-Turm',  info:'Nordwestturm.'},
-    {x:-12,   z:0,     r:0.9, h:4.5, label:'Oberer Westturm', info:'Westturm der oberen Mauerlinie.'},
-    {x:-8.5,  z:8.5,   r:0.9, h:4.5, label:'Oberer SW-Turm',  info:'Südwestturm.'},
+    {x:0,    z:12,   r:1.0, h:4.5, label:'Oberer Südturm',  info:'Oberer Teil der Grande Rue.'},
+    {x:8.5,  z:8.5,  r:0.9, h:4.5, label:'Oberer SO-Turm',  info:'Südöstlicher Flankierungsturm.'},
+    {x:12,   z:0,    r:0.9, h:4.5, label:'Oberer Ostturm',  info:'Östliche Bebauungsgrenze.'},
+    {x:8.5,  z:-8.5, r:0.9, h:4.5, label:'Oberer NO-Turm',  info:'Nordostturm — Blick auf La Merveille.'},
+    {x:0,    z:-12,  r:1.0, h:4.5, label:'Oberer Nordturm', info:'Stützmauer der Merveille beginnt hier.'},
+    {x:-8.5, z:-8.5, r:0.9, h:4.5, label:'Oberer NW-Turm',  info:'Nordwestturm.'},
+    {x:-12,  z:0,    r:0.9, h:4.5, label:'Oberer Westturm', info:'Westturm.'},
+    {x:-8.5, z:8.5,  r:0.9, h:4.5, label:'Oberer SW-Turm',  info:'Südwestturm.'},
    ],
    wall:{h:3.5, thick:0.70}},
 
-  // ── ABTEIPRÄZINKT: Ring auf PLATEAU-Top (6 Türme, y=12.5) ───────────────
-  // y=12.5 = Top des PLATEAU. r=5 liegt klar innerhalb PLATEAU-Grenzen (±6.5/±5.5)
-  // → Türme stehen sicher auf der Plateaufläche und umschließen die Abteigebäude
-  {type:'RING', y:12.5,
+  // ── ABTEIPRÄZINKT: Ring auf PLATEAU-Top (6 Türme, y=13) ─────────────────
+  {type:'RING', y:13,
    gate:{atIndex:0, w:3.0, d:2.2, h:4.5,
      label:'Châtelet (Abtei-Torhaus)',
-     info:'Das spätgotische Doppelturmtor der Abtei — erbaut Ende 15. Jh. nach englischen Bedrohungen. Der Korridor dahinter führt sofort in die Guardroom-Gewölbe, einem System von Sicherheitsschleusen.'},
+     info:'Spätgotisches Doppelturmtor der Abtei. Der Korridor dahinter = Guardroom-Gewölbe mit Sicherheitsschleusen.'},
    points:[
-    {x:0,   z:5,    r:0.8, h:4.0, label:'Abtei Südturm',  info:'Südlichster Turm des Abtei-Präzinkts — steht über dem Châtelet-Torwerk.'},
-    {x:4,   z:2.5,  r:0.7, h:3.5, label:'Abtei SO-Turm',  info:'Südostturm der Abteianlage.'},
-    {x:4.5, z:-2,   r:0.7, h:3.5, label:'Abtei NO-Turm',  info:'Nordostturm — Blick hinunter auf La Merveille und die Nordflanke.'},
-    {x:0,   z:-5,   r:0.8, h:4.0, label:'Abtei Nordturm', info:'Nordturm — direkt über La Merveille.'},
-    {x:-4.5,z:-2,   r:0.7, h:3.5, label:'Abtei NW-Turm',  info:'Nordwestturm.'},
-    {x:-4,  z:2.5,  r:0.7, h:3.5, label:'Abtei SW-Turm',  info:'Südwestturm.'},
+    {x:0,    z:5,   r:0.8, h:4.0, label:'Abtei Südturm',  info:'Über dem Châtelet-Torwerk.'},
+    {x:4,    z:2.5, r:0.7, h:3.5, label:'Abtei SO-Turm',  info:'Südostturm.'},
+    {x:4.5,  z:-2,  r:0.7, h:3.5, label:'Abtei NO-Turm',  info:'Blick hinunter auf La Merveille.'},
+    {x:0,    z:-5,  r:0.8, h:4.0, label:'Abtei Nordturm', info:'Direkt über La Merveille.'},
+    {x:-4.5, z:-2,  r:0.7, h:3.5, label:'Abtei NW-Turm',  info:'Nordwestturm.'},
+    {x:-4,   z:2.5, r:0.7, h:3.5, label:'Abtei SW-Turm',  info:'Südwestturm.'},
    ],
    wall:{h:2.8, thick:0.60}},
 
-  // ── LA MERVEILLE (Das Wunder) ─────────────────────────────────────────────
-  // Positionierung: x=0, z=-8, y=8.5 (gleiche Basis wie PLATEAU)
-  //   d=5 → Südfläche bei z=-8+2.5=-5.5 = exakt an PLATEAU-Nordfläche (z=-0.5-5=-5.5)
-  //   → nahtloser Anschluss, kein Spalt, kein Schweben
-  //   → Gebäude hängt sichtbar an der Nordflanke, Dach ragt 6 Einheiten über Plateauniveau
-  {type:'SQUARE_TOWER', x:0, z:-8, w:10.5, d:5, h:10, y:8.5, noRoof:true,
+  // ── CIVILIAN HOUSING: Häuserzeilen der mittelalterlichen Bürgerstadt ──────
+  // Drei Streifen umschließen den Südwesthang, Südhang und Südosthang des Berges.
+  // Jeder Streifen = CIVILIAN_HOUSING-Typ: Häuserreihe mit steilen gotischen Dächern,
+  // Variation pro Haus (seed), optional Schornstein. p.rotation dreht den Streifen.
+
+  // Streifen 1: Südhang, untere Ebene (zwischen Ring 1 und Ring 2)
+  {type:'CIVILIAN_HOUSING', x:0, z:13, y:1, count:7, w:1.6, d:2.6, h:2.3, seed:11,
+   label:'Grande Rue — Untere Häuserzeile',
+   info:'Die Grande Rue ist die einzige Straße des Mont — eng, steil, vollgestopft mit Pilgern und Händlern. Die Häuser wachsen übereinander wie Schuppenblättchen an einem Zapfen. Jedes Haus kämpft um seinen Millimeter Fels.'},
+
+  // Streifen 2: Osthang, untere Ebene (Ring 1 Ostseite) — gedreht 90°
+  {type:'CIVILIAN_HOUSING', x:13, z:0, y:1, count:5, w:1.5, d:2.4, h:2.1, seed:29, rotation:1.5708,
+   label:'Osthang — Häuserzeile',
+   info:'Die Ostseite war weniger steil und für Pilger leichter zugänglich. Hier siedelten Fischer und Händler die den Warenumschlag für die Klostergemeinschaft abwickelten.'},
+
+  // Streifen 3: Südhang, mittlere Ebene (zwischen Ring 2 und PLATEAU) — leicht kleiner
+  {type:'CIVILIAN_HOUSING', x:0, z:9, y:5.5, count:5, w:1.4, d:2.2, h:2.0, seed:53,
+   label:'Grande Rue — Obere Häuserzeile (mittlere Ebene)',
+   info:'Die obere Häuserreihe direkt unter dem Klosterpräzinkt. Von hier aus beginnt der steile Pilgerweg zum Châtelet-Tor. Diese Häuser gehörten dem Abt — er vermietete sie an wohlhabende Pilger.'},
+
+  // ── LA MERVEILLE (Das Wunder) — Klosterbau an der Nordflanke ─────────────
+  // SQUARE_TOWER(noRoof): y=9 = PLATEAU-Basis. d=5 → Südfläche z=-8+2.5=-5.5 = PLATEAU-Nordfläche.
+  // Nahtloser Anschluss, kein Spalt, kein Schweben. Ragt 4.5 Einheiten über PLATEAU-Top.
+  {type:'SQUARE_TOWER', x:0, z:-8, w:10.5, d:5, h:10, y:9, noRoof:true,
    label:'La Merveille (Das Wunder) — Klostergebäude',
-   info:'Das architektonische Herzstück des Mont: drei Stockwerke gotischer Kühnheit, gebaut 1211–1228. Unten: Lager und Hospiz (Almoserie). Mitte: Rittersaal und Gästehalle. Oben: Refektorium und Kreuzgang. Der Bau hängt an der Nordflanke — kein normales Fundament, nur die Felsenwand als Rücken. La Merveille ist das größte gotische Klostergebäude an einer Klippe überhaupt.'},
+   info:'Drei Stockwerke gotischer Kühnheit, gebaut 1211–1228. Almoserie, Rittersaal, Refektorium und Kreuzgang, gestapelt an der Nordflanke des Felsen. Kein normales Fundament — nur die Felswand als Rücken. Das größte gotische Klostergebäude an einer Klippe weltweit.'},
 
-  // ── ABTEIKIRCHE — Langhaus (O-W auf PLATEAU-Top, y=12.5) ─────────────────
-  // Sitzt fest auf y=12.5 (PLATEAU-Top) → kein Schweben
-  // Leichte Nordverschiebung (z=-0.5) korrekt für die historische Lage
-  {type:'SQUARE_TOWER', x:0, z:-0.5, w:11, d:3.5, h:5.5, y:12.5,
-   label:'Abteikirche — Langhaus (Nef)',
-   info:'Das gotische Langhaus der Kirche St-Michel — 11. Jahrhundert, mehrfach umgebaut. Spannt sich O-W über das Plateau, teils auf Stützpfeilern im Fels. 1000 Jahre lang das Ziel unzähliger Pilger.'},
+  // ── BUTTRESS SYSTEM: Strebepfeiler für La Merveille ──────────────────────
+  // Separate Strebebögen entlang der Ostseite von La Merveille (x-Achse).
+  // La Merveille hat massive Strebepfeiler — hier simuliert durch BUTTRESS_SYSTEM.
+  {type:'BUTTRESS_SYSTEM', x:0, z:-8, y:9, w:9.5, d:5, h:9, count:3,
+   label:'La Merveille — Strebepfeilersystem',
+   info:'Die massiven Strebepfeiler der Merveille tragen den lateralen Schub des gotischen Gewölbes ab. Ohne diese diagonal angeordneten Stützen würde der Bau an der Nordflanke nach außen kippen — das ist das Grundprinzip gotischer Architektur: Schub nach außen leiten statt nach unten drücken.'},
 
-  // ── QUERSCHIFF: N-S-Erweiterung, y leicht versetzt gegen Z-Fighting ──────
-  {type:'SQUARE_TOWER', x:0, z:-0.5, w:3.5, d:7.5, h:5.0, y:12.52, noRoof:true,
-   label:'Querschiff (Transept)',
-   info:'Das romanisch-gotische Querschiff kreuzt das Langhaus über dem Vierungsturm. Die Kreuzung von Langhaus und Querschiff ist der liturgische Mittelpunkt — hier endete die Pilgerreise.'},
-
-  // ── CHOR / CHEVET: Östlicher Chorschluss ─────────────────────────────────
-  {type:'SQUARE_TOWER', x:4.5, z:-0.5, w:3.5, d:3.0, h:4.5, y:12.5,
-   label:'Chor (Chevet) — Flamboyant-Chorabschluss',
-   info:'Errichtet 1446–1521 im Flamboyant-Stil über der Krypta Notre-Dame-Sous-Terre — der ältesten Kirche des Mont, tief im Felsinneren.'},
-
-  // ── VIERUNGSTURM & SPIRE — das Wahrzeichen ───────────────────────────────
-  // y=18 = PLATEAU-Top(12.5) + Langhaus-Höhe(5.5). Dünner Rundturm r=0.42.
-  // h=16 → Gesamthöhe 34 Einheiten. Insel-Top bei 12.5 → Spire überragt 2.7× die Inselhöhe.
-  // Real: Spire 157m, Insel 80m → 2.0×. Leicht überhöht für visuellen Eindruck. ✓
-  {type:'ROUND_TOWER', x:0, z:-0.5, r:0.42, h:16, y:18,
-   label:'Vierungsturm & Flèche — Erzengel Michael',
-   info:'Der neugotische Turmhelm von 1897 trägt die vergoldete Skulptur des Erzengels Michael (4.5m, 200kg vergoldet). 157m über dem Meer — sichtbar von 50km. Der Spire ist so dünn, dass er in Sturmwinden schwingt. Seit 1897 zeigt der Erzengel nach Osten, nach Jerusalem.'},
+  // ── ABBEY MODULE: Gotische Abteikirche mit Strebebögen + Flèche ──────────
+  // Auf PLATEAU-Top (y=13). Integrierte flying buttresses (n=3) + Spire (h=18).
+  // Ersetzt: SQUARE_TOWER (Langhaus) + SQUARE_TOWER (Querschiff) + SQUARE_TOWER (Chor)
+  //          + ROUND_TOWER (Spire) — 4 Komponenten in einem.
+  // spireH=18 → Spire-Basis bei y=13+6+6*0.9+0.15≈24.5, Spitzenkopf bei y≈43. ✓
+  {type:'ABBEY_MODULE', x:0, z:-0.5, y:13, w:11, d:4, h:6, spireH:18, buttresses:3,
+   label:'Abteikirche St-Michel — Langhaus, Strebebögen & Flèche',
+   info:'Die Krönung des Mont: gotisches Langhaus (11. Jh., mehrfach umgebaut), integrierte Strebebögen (flying buttresses mit Pinnakeln), und die neugotische Flèche von 1897 mit dem vergoldeten Erzengel Michael (4.5m, 200kg) an der Spitze. 157m über dem Meer. Das ABBEY_MODULE vereint Langhaus, Dach, Strebebögen und Spire in einem Bauteil.'},
  ]},
 
 // ── FANTASY: MITTELERDE ──────────────────────────────────────────────────

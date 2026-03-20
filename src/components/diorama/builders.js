@@ -171,6 +171,350 @@ export function buildGate(p, sm, dm, rm, style = 'crusader') {
   return g;
 }
 
+// ── ABBEY MODULE ─────────────────────────────────────────────────────────
+// Complete Gothic abbey building: long nave body + gabled saddle roof +
+// integrated flying buttresses + optional spire at the crossing.
+//
+// Parameters:
+//   p.w        — nave length E-W (default 14)
+//   p.d        — nave depth N-S (default 5)
+//   p.h        — wall height (default 8)
+//   p.spireH   — spire needle height, 0 = no spire (default 14)
+//   p.spireX/Z — spire offset from nave center (default 0)
+//   p.buttresses — number of flying buttress pairs; -1 = auto (default -1)
+//
+// Roof geometry: two slope panels meeting at a ridge, computed exactly so
+//   bottom edge of each panel sits at (z=±d/2, y=h) and top edge at (z=0, y=h+roofH).
+//   Verified: local +z panel-end maps to world z=d/2, y=h ✓ (see math in comments).
+export function buildAbbeyModule(p, sm, rm) {
+  const w  = p.w  || 14;
+  const d  = p.d  || 5;
+  const h  = p.h  || 8;
+  const spireH   = p.spireH !== undefined ? p.spireH : 14;
+  const spireX   = p.spireX || 0;
+  const spireZ   = p.spireZ || 0;
+  const nButt    = p.buttresses !== undefined ? p.buttresses : Math.max(2, Math.floor(w / 3.5));
+  const y        = Math.max(0, p.y || 0);
+
+  const g = new THREE.Group();
+  g.position.set(p.x || 0, y, p.z || 0);
+  if (p.rotation) g.rotation.y = p.rotation;
+  g.userData = { label: p.label || '', info: p.info || '' };
+
+  // ── 1. Nave body ─────────────────────────────────────────────────────────
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), sm);
+  body.position.y = h / 2 + 0.002;
+  body.castShadow = true;
+  body.receiveShadow = true;
+  g.add(body);
+
+  // ── 2. Gabled saddle roof ─────────────────────────────────────────────────
+  // roofH = height of ridge above wall top. Gothic pitch ≈ 0.90 × half-span.
+  // slopeLen = true hypotenuse of the slope triangle (d/2 base, roofH height).
+  // Rotation math: for panel center at (0, h+roofH/2, side*d/4),
+  //   rotation.x = side*pitchAng places bottom edge at z=side*d/2, y=h ✓
+  const roofH    = d * 0.90;
+  const slopeLen = Math.sqrt((d / 2) ** 2 + roofH ** 2);
+  const pitchAng = Math.atan2(roofH, d / 2);
+  const roofMat  = rm || sm;
+
+  [-1, 1].forEach(side => {
+    const slope = new THREE.Mesh(new THREE.BoxGeometry(w + 0.22, 0.22, slopeLen), roofMat);
+    slope.position.set(0, h + roofH / 2, side * d / 4);
+    slope.rotation.x = side * pitchAng;
+    slope.castShadow = true;
+    g.add(slope);
+  });
+
+  // Ridge beam
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(w + 0.35, 0.30, 0.30), roofMat);
+  ridge.position.y = h + roofH + 0.15;
+  ridge.castShadow = true;
+  g.add(ridge);
+
+  // Gable-end triangular infills — close the open triangles at each end of the roof
+  [-1, 1].forEach(endSide => {
+    // Approximate the gable triangle with a narrow vertical box at each end
+    const gable = new THREE.Mesh(new THREE.BoxGeometry(0.22, roofH, d), sm);
+    gable.position.set(endSide * (w / 2 + 0.09), h + roofH / 2, 0);
+    gable.castShadow = true;
+    g.add(gable);
+  });
+
+  // ── 3. Flying buttresses ──────────────────────────────────────────────────
+  // Each pair: outer pier + pier pinnacle + diagonal flying arm.
+  // Arm connects wall face (z=±d/2, y=h*0.88) to pier top (z=±pZ, y=pierH).
+  // rotation.x = side*armAng ensures +z arm-end goes DOWN for +z side ✓
+  if (nButt > 0) {
+    const reach  = d * 0.68;
+    const pierH  = h * 0.72;
+    const pZ     = d / 2 + reach;
+    const armDy  = h * 0.88 - pierH;
+    const armLen = Math.sqrt(armDy ** 2 + reach ** 2);
+    const armAng = Math.atan2(armDy, reach);
+    const step   = w / (nButt + 1);
+
+    for (let bi = 0; bi < nButt; bi++) {
+      const bx = -w / 2 + (bi + 1) * step;
+
+      [-1, 1].forEach(side => {
+        const sz = side * pZ;
+
+        // Outer pier (vertical stone pillar)
+        const pier = new THREE.Mesh(new THREE.BoxGeometry(0.32, pierH, 0.32), sm);
+        pier.position.set(bx, pierH / 2, sz);
+        pier.castShadow = true;
+        g.add(pier);
+
+        // Pier pinnacle (small pyramid on top — Gothic decorative finish)
+        const pinnacle = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.001, 0.24, 0.62, 4), roofMat,
+        );
+        pinnacle.rotation.y = Math.PI / 4;
+        pinnacle.position.set(bx, pierH + 0.31, sz);
+        pinnacle.castShadow = true;
+        g.add(pinnacle);
+
+        // Flying arm (diagonal box from wall face to pier top)
+        const arm = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.20, armLen), sm);
+        arm.position.set(bx, (h * 0.88 + pierH) / 2, (side * d / 2 + sz) / 2);
+        arm.rotation.x = side * armAng;
+        arm.castShadow = true;
+        g.add(arm);
+      });
+    }
+  }
+
+  // ── 4. Spire at crossing ──────────────────────────────────────────────────
+  // Octagonal crossing tower base + thin needle. y-base = ridge top + slight offset.
+  if (spireH > 0) {
+    const spireBase = h + roofH + 0.15;
+
+    // Octagonal crossing tower drum
+    const drum = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.64, 0.72, 1.1, 8), sm,
+    );
+    drum.position.set(spireX, spireBase + 0.55, spireZ);
+    drum.castShadow = true;
+    g.add(drum);
+
+    // Needle
+    const needle = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.001, 0.46, spireH, 8), roofMat,
+    );
+    needle.position.set(spireX, spireBase + 1.10 + spireH / 2, spireZ);
+    needle.castShadow = true;
+    g.add(needle);
+  }
+
+  return g;
+}
+
+// ── CIVILIAN HOUSING ──────────────────────────────────────────────────────
+// A strip of small medieval houses with steep gabled roofs arranged in a row.
+// Designed for stacking in tiers up a hillside (e.g. Mont Saint-Michel's town).
+//
+// Parameters:
+//   p.count   — number of houses in the strip (default 5)
+//   p.w       — width of each house (default 1.8)
+//   p.d       — depth of each house (default 2.8)
+//   p.h       — wall height (default 2.4)
+//   p.seed    — deterministic height variation seed (default 17)
+//   p.rotation — rotation of the whole strip (so you can orient it around a hill)
+//
+// The row runs along the local X axis. Use p.rotation to orient the strip
+// around the mountain (e.g. rotation: Math.PI*0.25 for a 45° arc segment).
+export function buildCivilianHousing(p, sm, rm) {
+  const count  = p.count || 5;
+  const hw     = p.w    || 1.8;   // house width (along row)
+  const hd     = p.d    || 2.8;   // house depth (perpendicular)
+  const hh     = p.h    || 2.4;   // wall height
+  const seed   = p.seed || 17;
+  const y      = Math.max(0, p.y || 0);
+  const roofMat = rm || sm;
+
+  const g = new THREE.Group();
+  g.position.set(p.x || 0, y, p.z || 0);
+  if (p.rotation) g.rotation.y = p.rotation;
+  g.userData = { label: p.label || '', info: p.info || '' };
+
+  // Roof geometry constants (same for all houses in strip)
+  const roofH    = hd * 0.88;                             // steep Norman pitch
+  const slopeLen = Math.sqrt((hd / 2) ** 2 + roofH ** 2);
+  const pitchAng = Math.atan2(roofH, hd / 2);
+
+  const gap      = 0.16;
+  const totalW   = count * hw + (count - 1) * gap;
+  const startX   = -totalW / 2 + hw / 2;
+
+  for (let i = 0; i < count; i++) {
+    const xPos  = startX + i * (hw + gap);
+    // Deterministic height variation per house — makes the row feel organic
+    const hVar  = 1 + Math.sin(i * 4.7 + seed) * 0.11;
+    const wallH = hh * hVar;
+
+    // House body
+    const body = new THREE.Mesh(new THREE.BoxGeometry(hw * 0.90, wallH, hd), sm);
+    body.position.set(xPos, wallH / 2 + 0.002, 0);
+    body.castShadow = true;
+    body.receiveShadow = true;
+    g.add(body);
+
+    // Gabled roof: two slope panels (same math as AbbeyModule)
+    [-1, 1].forEach(side => {
+      const slope = new THREE.Mesh(
+        new THREE.BoxGeometry(hw * 0.92, 0.17, slopeLen), roofMat,
+      );
+      slope.position.set(xPos, wallH + roofH / 2, side * hd / 4);
+      slope.rotation.x = side * pitchAng;
+      slope.castShadow = true;
+      g.add(slope);
+    });
+
+    // Ridge cap
+    const ridgeCap = new THREE.Mesh(
+      new THREE.BoxGeometry(hw * 0.90, 0.18, 0.20), roofMat,
+    );
+    ridgeCap.position.set(xPos, wallH + roofH + 0.09, 0);
+    g.add(ridgeCap);
+
+    // Chimney (every other house — alternating for visual variety)
+    if (i % 2 === 0) {
+      const chimney = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.09, 0.11, wallH * 0.40, 5), sm,
+      );
+      chimney.position.set(xPos + hw * 0.18, wallH + roofH * 0.52, -hd * 0.20);
+      chimney.castShadow = true;
+      g.add(chimney);
+    }
+  }
+
+  return g;
+}
+
+// ── BUTTRESS SYSTEM ───────────────────────────────────────────────────────
+// Standalone flying buttress array along BOTH long sides (+z and -z) of a building.
+// Used to add Gothic structural detail to a separate SQUARE_TOWER or PLATEAU.
+// (AbbeyModule includes its own integrated buttresses — this type is for walls
+//  and large rectangular blocks like La Merveille.)
+//
+// Parameters:
+//   p.w      — length of the building (buttresses spread along x, default 12)
+//   p.d      — depth of the building (buttresses reach beyond z=±d/2, default 4)
+//   p.h      — wall height to support (default 6)
+//   p.count  — buttress pairs along the length (default 4)
+//   p.reach  — how far the pier stands beyond the wall face (default d*0.65)
+export function buildButtressSystem(p, sm, rm) {
+  const w      = p.w     || 12;
+  const d      = p.d     || 4;
+  const h      = p.h     || 6;
+  const count  = p.count || 4;
+  const reach  = p.reach !== undefined ? p.reach : d * 0.65;
+  const y      = Math.max(0, p.y || 0);
+  const roofMat = rm || sm;
+
+  const g = new THREE.Group();
+  g.position.set(p.x || 0, y, p.z || 0);
+  if (p.rotation) g.rotation.y = p.rotation;
+  g.userData = { label: p.label || '', info: p.info || '' };
+
+  const pierH  = h * 0.72;
+  const pZ     = d / 2 + reach;
+  const armDy  = h * 0.88 - pierH;
+  const armLen = Math.sqrt(armDy ** 2 + reach ** 2);
+  const armAng = Math.atan2(armDy, reach);
+  const step   = w / (count + 1);
+
+  for (let i = 0; i < count; i++) {
+    const xPos = -w / 2 + (i + 1) * step;
+
+    [-1, 1].forEach(side => {
+      const sz = side * pZ;
+
+      // Outer pier
+      const pier = new THREE.Mesh(new THREE.BoxGeometry(0.34, pierH, 0.34), sm);
+      pier.position.set(xPos, pierH / 2, sz);
+      pier.castShadow = true;
+      g.add(pier);
+
+      // Pier pinnacle
+      const pinnacle = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.001, 0.26, 0.68, 4), roofMat,
+      );
+      pinnacle.rotation.y = Math.PI / 4;
+      pinnacle.position.set(xPos, pierH + 0.34, sz);
+      pinnacle.castShadow = true;
+      g.add(pinnacle);
+
+      // Flying arm
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, armLen), sm);
+      arm.position.set(xPos, (h * 0.88 + pierH) / 2, (side * d / 2 + sz) / 2);
+      arm.rotation.x = side * armAng;
+      arm.castShadow = true;
+      g.add(arm);
+    });
+  }
+
+  return g;
+}
+
+// ── ROCK FOUNDATION ───────────────────────────────────────────────────────
+// Irregular rocky hill base using a DodecahedronGeometry (detail=1) with
+// vertex-level perturbation. Replaces the smooth GLACIS cone with a
+// naturalistic, faceted granite-rock silhouette.
+//
+// Parameters:
+//   p.r      — footprint radius (default 10)
+//   p.h      — total height of the rock mass (default 4)
+//   p.seed   — deterministic random seed for vertex noise (default 42)
+//   p.detail — dodecahedron subdivision level 0–2 (default 1)
+//
+// Geometry: DodecahedronGeometry(1, detail) → vertex perturbation → scale(r, h/2, r)
+// The mesh center is placed at y=h/2 so the bottom touches y=0 (group base).
+export function buildRockFoundation(p, gm) {
+  const r      = p.r      || 10;
+  const h      = p.h      || 4;
+  const seed   = p.seed   || 42;
+  const detail = p.detail !== undefined ? p.detail : 1;
+  const y      = Math.max(0, p.y || 0);
+
+  const g = new THREE.Group();
+  g.position.set(p.x || 0, y, p.z || 0);
+  g.userData = { label: p.label || '', info: p.info || '' };
+
+  // Start from a unit dodecahedron (12 pentagonal faces, detail=1 → 80 triangles)
+  const geo = new THREE.DodecahedronGeometry(1.0, detail);
+
+  // Perturb each vertex for organic rock texture.
+  // Uses sin/cos of vertex index + seed — fully deterministic, no RNG.
+  // Perturbation amplitude scaled by normalized y so the bottom stays roughly flat.
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const vx = pos.getX(i);
+    const vy = pos.getY(i);
+    const vz = pos.getZ(i);
+
+    // Noise in range [-0.13, +0.13] — subtle but visible faceting
+    const noise = Math.sin(i * 7.31 + seed * 0.91) * Math.cos(i * 3.73 + seed * 0.47) * 0.13;
+    // Reduce perturbation near the bottom (vy < -0.5) to keep base stable
+    const amp   = noise * (0.5 + Math.max(0, vy + 0.5) * 0.85);
+
+    pos.setXYZ(i, vx + vx * amp, vy + vy * amp * 0.4, vz + vz * amp);
+  }
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+
+  const mesh = new THREE.Mesh(geo, gm);
+  // Scale to final hill dimensions: r in x/z, h/2 in y (flatten into hill)
+  mesh.scale.set(r, h / 2, r);
+  mesh.position.y = h / 2;   // sit base on y=0 within group
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  g.add(mesh);
+
+  return g;
+}
+
 // ── PLATEAU ──────────────────────────────────────────────────────────────
 // Flat stone terrace / abbey platform — solid rectangular block, no battlements,
 // no roof. Used as the foundation platform that buildings sit on top of.
@@ -312,13 +656,17 @@ export function buildRing(p, sm, dm, rm, style = 'crusader') {
 // gm (rock/ground material) is used for GLACIS; falls back to sm if not provided.
 export function buildComponent(comp, sm, dm, rm, style = 'crusader', gm = null) {
   switch (comp.type) {
-    case 'WALL':         return buildWall(comp, sm, dm, style);
-    case 'ROUND_TOWER':  return buildRoundTower(comp, sm, dm, rm, style);
-    case 'SQUARE_TOWER': return buildSquareTower(comp, sm, dm, rm, style);
-    case 'GATE':         return buildGate(comp, sm, dm, rm, style);
-    case 'PLATEAU':      return buildPlateau(comp, gm || sm);
-    case 'GLACIS':       return buildGlacis(comp, gm || sm);
-    case 'RING':         return buildRing(comp, sm, dm, rm, style);
+    case 'WALL':             return buildWall(comp, sm, dm, style);
+    case 'ROUND_TOWER':      return buildRoundTower(comp, sm, dm, rm, style);
+    case 'SQUARE_TOWER':     return buildSquareTower(comp, sm, dm, rm, style);
+    case 'GATE':             return buildGate(comp, sm, dm, rm, style);
+    case 'ABBEY_MODULE':     return buildAbbeyModule(comp, sm, rm);
+    case 'CIVILIAN_HOUSING': return buildCivilianHousing(comp, sm, rm);
+    case 'BUTTRESS_SYSTEM':  return buildButtressSystem(comp, sm, rm);
+    case 'ROCK_FOUNDATION':  return buildRockFoundation(comp, gm || sm);
+    case 'PLATEAU':          return buildPlateau(comp, gm || sm);
+    case 'GLACIS':           return buildGlacis(comp, gm || sm);
+    case 'RING':             return buildRing(comp, sm, dm, rm, style);
     default: return null;
   }
 }
