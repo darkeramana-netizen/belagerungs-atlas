@@ -241,3 +241,145 @@ export function deriveFidelityLabels(castle, historicalMode, components, fallbac
 
   return { fidelityLabel, sourceConfidence };
 }
+
+function hasAnyLabel(components, needles) {
+  return components.some(c => {
+    const l = (c.label || '').toLowerCase();
+    return needles.some(n => l.includes(n));
+  });
+}
+
+function countType(components, type) {
+  return components.filter(c => c.type === type).length;
+}
+
+export function runHistoricalAccuracyAudit(castle, components, style, historicalMode) {
+  const findings = [];
+  let score = 100;
+
+  const walls = castle.ratings?.walls ?? 50;
+  const supply = castle.ratings?.supply ?? 50;
+  const position = castle.ratings?.position ?? 50;
+  const garrison = castle.ratings?.garrison ?? 50;
+
+  const ringCount = countType(components, 'RING');
+  const hasTerrain = components.some(c => c.type === 'TERRAIN_STACK' || c.type === 'ROCK_FOUNDATION');
+  const hasApproach = components.some(c => c.type === 'SLOPE_PATH' || c.type === 'STAIRWAY');
+  const hasWater = components.some(c => c.type === 'WATER_PLANE' || c.type === 'DITCH')
+    || hasAnyLabel(components, ['zisterne', 'cistern', 'well']);
+  const hasOps = components.some(c => c.type === 'GABLED_HALL' || c.type === 'CIVILIAN_HOUSING')
+    || hasAnyLabel(components, ['magazin', 'werkhof', 'stall', 'barrack', 'kaserne']);
+  const hasGate = components.some(c => c.type === 'GATE')
+    || components.some(c => c.type === 'RING' && c.gate);
+
+  if (!hasGate) {
+    score -= 20;
+    findings.push({
+      severity: 'high',
+      code: 'missing_gate_system',
+      message: 'Keine erkennbare Torlogik. Jede funktionale Burg braucht mindestens ein Haupttor mit kontrolliertem Zugang.',
+    });
+  }
+
+  if (ringCount === 0) {
+    score -= 25;
+    findings.push({
+      severity: 'high',
+      code: 'missing_perimeter',
+      message: 'Kein Ring-/Perimeterwerk erkannt. Defensivstruktur ist damit historisch kaum plausibel.',
+    });
+  } else if (ringCount === 1 && walls >= 70) {
+    score -= 8;
+    findings.push({
+      severity: 'medium',
+      code: 'limited_defense_depth',
+      message: 'Starke Mauern ohne zweite Verteidigungstiefe. Bei hohen Mauerwerten sind Vorwerk/Zwinger meist plausibel.',
+    });
+  }
+
+  if (position >= 70 && !hasTerrain) {
+    score -= 12;
+    findings.push({
+      severity: 'medium',
+      code: 'missing_topography',
+      message: 'Hoehenlage ohne topografische Modellierung. Burg wirkt dadurch zu flach fuer eine Sporn-/Hoehenburg.',
+    });
+  }
+
+  if (position >= 68 && !hasApproach) {
+    score -= 10;
+    findings.push({
+      severity: 'medium',
+      code: 'missing_access_path',
+      message: 'Keine lesbare Zugangsroute (Rampe/Treppen). Historische Burgen hatten gefuehrte, kontrollierte Anmarschwege.',
+    });
+  }
+
+  if (supply >= 60 && !hasWater) {
+    score -= 8;
+    findings.push({
+      severity: 'low',
+      code: 'missing_water_logistics',
+      message: 'Versorgung ist hoch bewertet, aber Wasserinfrastruktur ist nicht sichtbar (Graben/Zisterne/Becken).',
+    });
+  }
+
+  if (garrison >= 60 && !hasOps) {
+    score -= 8;
+    findings.push({
+      severity: 'low',
+      code: 'missing_operational_buildings',
+      message: 'Groesse der Besatzung ohne erkennbare Betriebsbauten (Magazin, Kaserne, Werkhof) wirkt unvollstaendig.',
+    });
+  }
+
+  if (style === 'japanese' && countType(components, 'RING') < 2) {
+    score -= 6;
+    findings.push({
+      severity: 'low',
+      code: 'japanese_missing_bailey',
+      message: 'Feudaljapan-Stil ohne mehrstufige Hofstruktur (Honmaru/Ninomaru) wirkt vereinfacht.',
+    });
+  }
+
+  if (style === 'oriental' && !hasAnyLabel(components, ['iwan', 'bab', 'torhof'])) {
+    score -= 5;
+    findings.push({
+      severity: 'low',
+      code: 'oriental_missing_courtyard',
+      message: 'Orientalischer Stil ohne Torhof/Iwan-Element verliert architektonische Eigenart.',
+    });
+  }
+
+  if (style === 'city' && !components.some(c => c.type === 'CIVILIAN_HOUSING')) {
+    score -= 4;
+    findings.push({
+      severity: 'low',
+      code: 'city_missing_urban_layer',
+      message: 'Stadtburg ohne sichtbare urbane Schicht (Wohn-/Nutzbauten) wirkt zu militaerisch abstrahiert.',
+    });
+  }
+
+  const normalizedScore = Math.max(0, Math.min(100, Math.round(score)));
+  const grade = normalizedScore >= 90 ? 'A'
+    : normalizedScore >= 80 ? 'B'
+      : normalizedScore >= 70 ? 'C'
+        : normalizedScore >= 55 ? 'D' : 'E';
+
+  const prioritized = findings.sort((a, b) => {
+    const prio = { high: 0, medium: 1, low: 2 };
+    return prio[a.severity] - prio[b.severity];
+  });
+
+  return {
+    version: 'audit-v1',
+    historicalMode,
+    style,
+    score: normalizedScore,
+    grade,
+    findings: prioritized,
+    recommendation: prioritized.length
+      ? `Naechster sinnvoller Hand-Feinschliff: ${prioritized[0].message}`
+      : 'Modell wirkt in der aktuellen Aufloesung historisch konsistent.',
+  };
+}

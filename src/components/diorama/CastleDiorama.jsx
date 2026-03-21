@@ -387,6 +387,15 @@ export default function CastleDiorama({ castle }) {
           }}>
             Quelle: {model.sourceConfidence}
           </span>
+          <span style={{
+            padding: '4px 6px',
+            borderRadius: '999px',
+            background: 'rgba(15,11,7,0.76)',
+            color: '#d8c39a',
+            letterSpacing: '0.6px',
+          }}>
+            Audit: {model.historicalAudit?.grade || '-'} ({model.historicalAudit?.score ?? '--'})
+          </span>
         </div>
       </div>
 
@@ -417,6 +426,29 @@ export default function CastleDiorama({ castle }) {
           </div>
           <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.18)', marginTop: '8px', letterSpacing: '1px' }}>
             KLICK ZUM SCHLIESSEN
+          </div>
+        </div>
+      )}
+
+      {ready && model.historicalAudit?.findings?.length > 0 && !info && (
+        <div style={{
+          marginTop: '8px',
+          background: 'rgba(14,11,8,0.65)',
+          border: `1px solid ${ac}22`,
+          borderRadius: '4px',
+          padding: '10px 12px',
+        }}>
+          <div style={{
+            fontSize: '10px',
+            color: ac,
+            letterSpacing: '1px',
+            textTransform: 'uppercase',
+            marginBottom: '6px',
+          }}>
+            Historische Plausibilitaet: naechster Feinschliff
+          </div>
+          <div style={{ fontSize: '11px', color: '#c9b692', lineHeight: '1.55' }}>
+            {model.historicalAudit.recommendation}
           </div>
         </div>
       )}
