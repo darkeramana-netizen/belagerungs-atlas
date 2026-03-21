@@ -41,14 +41,16 @@ export const HERO_DIORAMAS_CRUSADER = {
         info: 'Der Raum zwischen den Ringen war keine rohe Boeschungsflaeche. Eine lesbare Hofterrasse stabilisiert hier den Zwinger und die Bewegungsflaechen des aeusseren Werks.',
       },
       {
-        type: 'GLACIS', x: 0.4, z: 0.1, y: 4.9, rTop: 13.5, rBot: 16.2, h: 3.2,
+        type: 'GLACIS', x: 0.5, z: 0.2, y: 4.92, rTop: 13.4, rBot: 16.8,
+        tiers: [
+          { rTop: 15.6, rBot: 16.8, h: 0.72 },
+          { rTop: 14.9, rBot: 15.9, h: 0.68 },
+          { rTop: 14.2, rBot: 15.1, h: 0.66 },
+          { rTop: 13.8, rBot: 14.4, h: 0.56 },
+          { rTop: 13.4, rBot: 13.9, h: 0.48 },
+        ],
         label: 'Glacis (Massiver Steinsockel)',
         info: 'Das ikonischste Merkmal des Krak: ein nach aussen geneigter Sockel, ueber den der Innenring thront. Katapultsteine prallen ab, Minen finden keinen Ansatz. Dieser Sockel machte die Suedmauer nahezu unzerstoerbar.',
-      },
-      {
-        type: 'PLATEAU', x: 0.4, z: -1.6, y: 8.18, w: 11.2, d: 7.8, h: 0.16,
-        label: 'Innere Hofplatte',
-        info: 'Der Innenhof der Hochburg liest sich hier bewusst als gebaute Plattform statt als ausgehhoehlte Mulde. So werden Konventsaal, Kapelle und Wehrgang klarer voneinander getrennt.',
       },
       {
         type: 'SLOPE_PATH', x1: 21, z1: 18, x2: 10.5, z2: 12.2, y1: 0.55, y2: 2.0, w: 4.6, thick: 0.24,
@@ -56,12 +58,12 @@ export const HERO_DIORAMAS_CRUSADER = {
         info: 'Der Zugang zum Krak verlief nicht frontal, sondern ueber eine ansteigende Rampe, die Angreifer unter Flankenbeschuss in den Torbereich zwang.',
       },
       {
-        type: 'SLOPE_PATH', x1: 10.2, z1: 11.6, x2: 6.7, z2: 6.6, y1: 2.1, y2: 8.18, w: 2.35, thick: 0.18,
+        type: 'SLOPE_PATH', x1: 10.8, z1: 10.2, x2: 7.6, z2: 6.1, y1: 2.15, y2: 7.98, w: 2.0, thick: 0.14,
         label: 'Gedeckte Innenrampe',
         info: 'Nach dem aeusseren Tor begann erst der eigentliche Zwangsweg: eine gedeckte, enge Rampe mit Kehren, Fallgittern und Schussoeffnungen.',
       },
       {
-        type: 'RING', y: 8.22,
+        type: 'RING', y: 8.02,
         gate: {
           atIndex: 4, w: 3.5, d: 3.0, h: 6.5,
           label: 'Inneres Tor - Rampeneingang (Hochburg)',
@@ -96,19 +98,34 @@ export const HERO_DIORAMAS_CRUSADER = {
         wall: { h: 3.0, thick: 0.8 },
       },
       {
-        type: 'SQUARE_TOWER', x: 0, z: -5.2, w: 8.6, d: 3.2, h: 3.2, y: 8.26, noRoof: true,
+        type: 'SQUARE_TOWER', x: 0, z: -5.4, w: 8.6, d: 3.2, h: 3.2, y: 8.06, noRoof: true,
         label: 'Konventsaal der Johanniter',
         info: 'Der lange gotische Saal bildet das kulturelle Herz des Krak innerhalb der Hochburg.',
       },
       {
-        type: 'SQUARE_TOWER', x: 4.8, z: -0.2, w: 2.7, d: 2.2, h: 4.1, y: 8.28,
+        type: 'SQUARE_TOWER', x: 4.9, z: -0.4, w: 2.7, d: 2.2, h: 4.1, y: 8.08,
         label: 'Johanniterkapelle',
         info: 'Kapelle der Hospitaliter im oestlichen Innenhof mit schlichter romanisch-gotischer Formensprache.',
       },
       {
-        type: 'SQUARE_TOWER', x: -2.5, z: 1.8, w: 3.2, d: 2.2, h: 2.6, y: 8.28,
+        type: 'SQUARE_TOWER', x: -2.6, z: 1.6, w: 3.2, d: 2.2, h: 2.6, y: 8.08,
         label: 'Kasernen- und Magazinbau',
         info: 'Niedriger Wirtschafts- und Magazintrakt im inneren Hof. Solche Nebengebaeude machen den Krak als bewohnte Ordensburg lesbarer und brechen die Leere im Hof.',
+      },
+      {
+        type: 'SQUARE_TOWER', x: 0.5, z: 0.8, w: 1.5, d: 1.5, h: 0.95, y: 8.04, noRoof: true,
+        label: 'Innenhof-Zisterne',
+        info: 'Kleine sichtbare Hofzisterne als Erinnerung daran, dass Wasserwirtschaft im Krak ueberlebenswichtig war.',
+      },
+      {
+        type: 'SQUARE_TOWER', x: -1.2, z: 4.4, w: 1.2, d: 0.8, h: 0.45, y: 8.04, noRoof: true,
+        label: 'Lagerkisten und Vorratsstapel',
+        info: 'Niedrige Vorratsstapel und Hofgut brechen die Leere im Innenbereich und lassen die Burg bewohnt wirken.',
+      },
+      {
+        type: 'SQUARE_TOWER', x: 1.0, z: 4.1, w: 1.0, d: 0.7, h: 0.38, y: 8.04, noRoof: true,
+        label: 'Werkhof',
+        info: 'Kleiner Werk- und Lagerbereich im Hof vor dem inneren Mauerzug.',
       },
       {
         type: 'ROUND_TOWER', x: -9.1, z: 7.2, r: 0.88, h: 4.0, y: 2.02,

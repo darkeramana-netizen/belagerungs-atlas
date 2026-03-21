@@ -756,6 +756,34 @@ export function buildGlacis(p, sm) {
   g.position.set(p.x || 0, y, p.z || 0);
   g.userData = { label: p.label || '', info: p.info || '' };
 
+  if (Array.isArray(p.tiers) && p.tiers.length) {
+    let currentY = 0;
+    let topRadius = rTop;
+    p.tiers.forEach((tier, idx) => {
+      const tierH = tier.h || tier.height || 0.5;
+      const tierTop = tier.rTop || tier.top || topRadius;
+      const tierBot = tier.rBot || tier.bot || Math.max(tierTop, topRadius + 0.8);
+      const ring = new THREE.Mesh(new THREE.CylinderGeometry(tierTop, tierBot, tierH, segs), sm);
+      ring.position.y = currentY + tierH / 2;
+      ring.castShadow = true;
+      ring.receiveShadow = true;
+      g.add(ring);
+
+      if (idx === p.tiers.length - 1) {
+        const crown = new THREE.Mesh(new THREE.CylinderGeometry(tierTop * 1.01, tierTop * 1.03, Math.max(0.08, tierH * 0.14), segs), sm);
+        crown.position.y = currentY + tierH - Math.max(0.04, tierH * 0.07);
+        crown.castShadow = true;
+        crown.receiveShadow = true;
+        g.add(crown);
+      }
+
+      currentY += tierH;
+      topRadius = tierTop;
+    });
+
+    return g;
+  }
+
   const mesh = new THREE.Mesh(new THREE.CylinderGeometry(rTop, rBot, h, segs), sm);
   mesh.position.y = h / 2;
   mesh.castShadow = true;
