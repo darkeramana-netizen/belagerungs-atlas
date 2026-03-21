@@ -41,12 +41,12 @@ export const HERO_DIORAMAS_CRUSADER = {
         info: 'Der Raum zwischen den Ringen war keine rohe Boeschungsflaeche. Eine lesbare Hofterrasse stabilisiert hier den Zwinger und die Bewegungsflaechen des aeusseren Werks.',
       },
       {
-        type: 'GLACIS', x: 0, z: 0, y: 4.9, rTop: 11, rBot: 15, h: 3.5,
+        type: 'GLACIS', x: 0.4, z: 0.1, y: 4.9, rTop: 13.5, rBot: 16.2, h: 3.2,
         label: 'Glacis (Massiver Steinsockel)',
         info: 'Das ikonischste Merkmal des Krak: ein nach aussen geneigter Sockel, ueber den der Innenring thront. Katapultsteine prallen ab, Minen finden keinen Ansatz. Dieser Sockel machte die Suedmauer nahezu unzerstoerbar.',
       },
       {
-        type: 'PLATEAU', x: 0.8, z: -0.6, y: 8.42, w: 16.4, d: 13.6, h: 0.3,
+        type: 'PLATEAU', x: 0.4, z: -1.6, y: 8.18, w: 11.2, d: 7.8, h: 0.16,
         label: 'Innere Hofplatte',
         info: 'Der Innenhof der Hochburg liest sich hier bewusst als gebaute Plattform statt als ausgehhoehlte Mulde. So werden Konventsaal, Kapelle und Wehrgang klarer voneinander getrennt.',
       },
@@ -56,12 +56,12 @@ export const HERO_DIORAMAS_CRUSADER = {
         info: 'Der Zugang zum Krak verlief nicht frontal, sondern ueber eine ansteigende Rampe, die Angreifer unter Flankenbeschuss in den Torbereich zwang.',
       },
       {
-        type: 'SLOPE_PATH', x1: 9.5, z1: 12.8, x2: 5.8, z2: 8.8, y1: 2.05, y2: 8.5, w: 2.8, thick: 0.22,
+        type: 'SLOPE_PATH', x1: 10.2, z1: 11.6, x2: 6.7, z2: 6.6, y1: 2.1, y2: 8.18, w: 2.35, thick: 0.18,
         label: 'Gedeckte Innenrampe',
         info: 'Nach dem aeusseren Tor begann erst der eigentliche Zwangsweg: eine gedeckte, enge Rampe mit Kehren, Fallgittern und Schussoeffnungen.',
       },
       {
-        type: 'RING', y: 8.72,
+        type: 'RING', y: 8.22,
         gate: {
           atIndex: 4, w: 3.5, d: 3.0, h: 6.5,
           label: 'Inneres Tor - Rampeneingang (Hochburg)',
@@ -96,17 +96,17 @@ export const HERO_DIORAMAS_CRUSADER = {
         wall: { h: 3.0, thick: 0.8 },
       },
       {
-        type: 'SQUARE_TOWER', x: 0, z: -5.5, w: 9, d: 3.5, h: 3.2, y: 8.78, noRoof: true,
+        type: 'SQUARE_TOWER', x: 0, z: -5.2, w: 8.6, d: 3.2, h: 3.2, y: 8.26, noRoof: true,
         label: 'Konventsaal der Johanniter',
         info: 'Der lange gotische Saal bildet das kulturelle Herz des Krak innerhalb der Hochburg.',
       },
       {
-        type: 'SQUARE_TOWER', x: 5.5, z: 0, w: 3.0, d: 2.5, h: 4.5, y: 8.78,
+        type: 'SQUARE_TOWER', x: 4.8, z: -0.2, w: 2.7, d: 2.2, h: 4.1, y: 8.28,
         label: 'Johanniterkapelle',
         info: 'Kapelle der Hospitaliter im oestlichen Innenhof mit schlichter romanisch-gotischer Formensprache.',
       },
       {
-        type: 'SQUARE_TOWER', x: -3.2, z: 2.8, w: 3.8, d: 2.6, h: 2.9, y: 8.82,
+        type: 'SQUARE_TOWER', x: -2.5, z: 1.8, w: 3.2, d: 2.2, h: 2.6, y: 8.28,
         label: 'Kasernen- und Magazinbau',
         info: 'Niedriger Wirtschafts- und Magazintrakt im inneren Hof. Solche Nebengebaeude machen den Krak als bewohnte Ordensburg lesbarer und brechen die Leere im Hof.',
       },
