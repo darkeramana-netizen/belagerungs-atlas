@@ -65,7 +65,8 @@ function compRadius(comp) {
   return Math.max(comp.r || 1, 1);
 }
 
-function applySpatialSafetyRules(components) {
+function applySpatialSafetyRules(components, options = {}) {
+  const allowLateralShift = options.allowLateralShift !== false;
   const rings = components.filter(c => c.type === 'RING' && Array.isArray(c.points) && c.points.length >= 3);
   const glacis = components.filter(c => c.type === 'GLACIS');
   const plateaus = components.filter(c => c.type === 'PLATEAU');
@@ -95,7 +96,7 @@ function applySpatialSafetyRules(components) {
       const dz = (comp.z || 0) - gz;
       const dist = Math.hypot(dx, dz);
       const keepOut = (gl.rBot || gl.rTop || 0) + r + 0.35;
-      if (keepOut > 0 && dist < keepOut) {
+      if (allowLateralShift && keepOut > 0 && dist < keepOut) {
         const ux = dist > 0.001 ? dx / dist : 1;
         const uz = dist > 0.001 ? dz / dist : 0;
         const push = keepOut - dist;
@@ -116,7 +117,7 @@ function applySpatialSafetyRules(components) {
       const dist = Math.hypot(dx, dz);
       const wallBand = Math.max(0.7, (ring.wall?.thick || 0.8) * 1.15) + r;
       const nearWall = Math.abs(dist - center.avgR) < wallBand;
-      if (nearWall) {
+      if (allowLateralShift && nearWall) {
         const ux = dist > 0.001 ? dx / dist : 1;
         const uz = dist > 0.001 ? dz / dist : 0;
         const targetR = center.avgR + wallBand + 0.28;
@@ -295,7 +296,11 @@ export function enhanceComponentsForRealism(castle, inputComponents, style, hist
   }
 
   // 6) Spatial safety pass for terrain and wall clearance.
-  applySpatialSafetyRules(components);
+  applySpatialSafetyRules(components, {
+    // Hand-built surveyed hero layouts keep authored X/Z placements.
+    // We still keep vertical grounding protection.
+    allowLateralShift: historicalMode !== 'surveyed',
+  });
 
   // 7) Meta flags for UI/later audits.
   components.realismMeta = {
