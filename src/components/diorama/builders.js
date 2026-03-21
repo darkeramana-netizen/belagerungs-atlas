@@ -51,6 +51,18 @@ export function buildWall(p, sm, dm, style = 'crusader') {
   wall.receiveShadow = true;
   g.add(wall);
 
+  const footing = new THREE.Mesh(new THREE.BoxGeometry(len, Math.max(0.18, h * 0.08), thick * 1.18), sm);
+  footing.position.y = Math.max(0.08, h * 0.04);
+  footing.castShadow = true;
+  footing.receiveShadow = true;
+  g.add(footing);
+
+  const coping = new THREE.Mesh(new THREE.BoxGeometry(len, 0.18, thick * 1.08), sm);
+  coping.position.y = h + 0.09;
+  coping.castShadow = true;
+  coping.receiveShadow = true;
+  g.add(coping);
+
   // Battlements (InstancedMesh — 1 draw call per wall segment)
   const mkM = chooseMerlonBuilder(style);
   const merlons = mkM(wallMerlonPositions(len, h), sm);
@@ -73,6 +85,28 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
   body.castShadow = true;
   body.receiveShadow = true;
   g.add(body);
+
+  const plinth = new THREE.Mesh(new THREE.CylinderGeometry(r * 1.18, r * 1.22, Math.max(0.22, h * 0.09), 18), sm);
+  plinth.position.y = Math.max(0.11, h * 0.045);
+  plinth.castShadow = true;
+  plinth.receiveShadow = true;
+  g.add(plinth);
+
+  const parapetBand = new THREE.Mesh(new THREE.CylinderGeometry(r * 1.04, r * 1.08, 0.28, 18), sm);
+  parapetBand.position.y = h + 0.14;
+  parapetBand.castShadow = true;
+  parapetBand.receiveShadow = true;
+  g.add(parapetBand);
+
+  if (style !== 'japanese' && h >= 6) {
+    for (let i = 0; i < 3; i++) {
+      const slit = new THREE.Mesh(new THREE.BoxGeometry(r * 0.16, h * 0.14, 0.06), dm || sm);
+      const a = (i / 3) * Math.PI * 2 + 0.25;
+      slit.position.set(Math.sin(a) * (r * 0.98), h * (0.48 + i * 0.07), Math.cos(a) * (r * 0.98));
+      slit.rotation.y = a;
+      g.add(slit);
+    }
+  }
 
   // Battlements — only for 'ancient' style (open flat parapet).
   // Roofed styles (cone, dome, pagoda) conflict visually with crenels.
@@ -108,6 +142,30 @@ export function buildSquareTower(p, sm, dm, rm, style = 'crusader') {
   body.castShadow = true;
   body.receiveShadow = true;
   g.add(body);
+
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(w * 1.08, Math.max(0.2, h * 0.08), d * 1.08), sm);
+  plinth.position.y = Math.max(0.1, h * 0.04);
+  plinth.castShadow = true;
+  plinth.receiveShadow = true;
+  g.add(plinth);
+
+  const parapetBand = new THREE.Mesh(new THREE.BoxGeometry(w * 1.03, 0.2, d * 1.03), sm);
+  parapetBand.position.y = h + 0.1;
+  parapetBand.castShadow = true;
+  parapetBand.receiveShadow = true;
+  g.add(parapetBand);
+
+  if (style !== 'japanese' && h >= 5.5) {
+    [
+      { x: 0, z: d * 0.51, ry: 0 },
+      { x: 0, z: -d * 0.51, ry: Math.PI },
+    ].forEach(pos => {
+      const slit = new THREE.Mesh(new THREE.BoxGeometry(Math.max(0.12, w * 0.08), h * 0.16, 0.06), dm || sm);
+      slit.position.set(pos.x, h * 0.5, pos.z);
+      slit.rotation.y = pos.ry;
+      g.add(slit);
+    });
+  }
 
   // Battlements — raise y-offset by flat-roof slab thickness (0.22) for styles
   // that add a flat parapet roof, so merlons sit on top rather than clipping through it.
@@ -169,6 +227,12 @@ export function buildGate(p, sm, dm, rm, style = 'crusader') {
   body.castShadow = true;
   body.receiveShadow = true;
   g.add(body);
+
+  const hood = new THREE.Mesh(new THREE.BoxGeometry(w * 1.02, 0.18, d * 1.02), sm);
+  hood.position.y = h + 0.09;
+  hood.castShadow = true;
+  hood.receiveShadow = true;
+  g.add(hood);
 
   // Passage opening — dark material creates visual depth
   const pW = w * 0.38, pH = h * 0.62;
@@ -667,6 +731,12 @@ export function buildPlateau(p, sm) {
   body.receiveShadow = true;
   g.add(body);
 
+  const lip = new THREE.Mesh(new THREE.BoxGeometry(w * 1.02, Math.max(0.12, h * 0.12), d * 1.02), sm);
+  lip.position.y = h - Math.max(0.06, h * 0.06);
+  lip.castShadow = true;
+  lip.receiveShadow = true;
+  g.add(lip);
+
   return g;
 }
 
@@ -685,6 +755,12 @@ export function buildGlacis(p, sm) {
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   g.add(mesh);
+
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(rTop * 1.02, rTop * 1.04, Math.max(0.12, h * 0.08), segs), sm);
+  crown.position.y = h - Math.max(0.06, h * 0.04);
+  crown.castShadow = true;
+  crown.receiveShadow = true;
+  g.add(crown);
 
   return g;
 }
