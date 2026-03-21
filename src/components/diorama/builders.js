@@ -34,6 +34,7 @@ function addGabledRoof(g, w, d, h, sm, rm, opts = {}) {
   const roofH = opts.roofH || d * 0.82;
   const roofT = opts.roofT || 0.18;
   const overhangW = opts.overhangW || 0.24;
+  const overhangD = opts.overhangD || 0.12;
   const slopeLen = Math.sqrt((d / 2) ** 2 + roofH ** 2);
   const pitchAng = Math.atan2(roofH, d / 2);
   const roofMat = rm || sm;
@@ -54,11 +55,20 @@ function addGabledRoof(g, w, d, h, sm, rm, opts = {}) {
   g.add(ridge);
 
   [-1, 1].forEach(endSide => {
-    const gable = new THREE.Mesh(new THREE.BoxGeometry(Math.max(0.16, roofT), roofH, d), sm);
+    const gable = new THREE.Mesh(new THREE.BoxGeometry(Math.max(0.22, roofT * 1.5), roofH, d + overhangD), sm);
     gable.position.set(endSide * (w / 2 + overhangW * 0.45), h + roofH / 2, 0);
     gable.castShadow = true;
     gable.receiveShadow = true;
     g.add(gable);
+  });
+
+  // Close tiny side gaps between slopes and gable infills on narrow halls.
+  [-1, 1].forEach(side => {
+    const seam = new THREE.Mesh(new THREE.BoxGeometry(w + overhangW + 0.02, Math.max(0.06, roofT * 0.55), 0.08), roofMat);
+    seam.position.set(0, h + roofH * 0.52, side * (d / 2 + overhangD / 2));
+    seam.castShadow = true;
+    seam.receiveShadow = true;
+    g.add(seam);
   });
 
   return roofH;
