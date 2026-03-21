@@ -138,7 +138,7 @@ diorama:{
   {type:'GLACIS', x:0, z:16, y:1.1, rTop:3.0, rBot:3.8, h:0.7,
    label:'Zisternenbecken (Südring)',
    info:'Eine der Hauptauffangzisternen im Zwinger zwischen den beiden Mauerringen — gefüllt durch Dachrinnen und sorgfältig gebaute Kanäle von den Wehrgangsböden. Das ausgeklügelte Wassersystem des Krak war sein wichtigstes strategisches Geheimnis: genug Wasser für fünf Jahre, selbst bei vollständiger Belagerung. Ohne diese Zisternen hätte der Krak nie 130 Jahre uneingenommen bleiben können.'},
- ]},
+ ]}},
 
 {id:"masada",name:"Masada",sub:"Jüdische Bergfestung",era:"73 n.Chr.",year:73,loc:"Judäa",type:"real",epoch:"Antike",region:"nahost",icon:"🪨",
  theme:{bg:"#150c05",accent:"#c97a40",glow:"rgba(180,100,50,0.15)"},
@@ -206,7 +206,7 @@ diorama:{
   {type:'PLATEAU',x:1.5,z:-12.8,w:6.8,d:2.6,h:0.5,y:6.5,label:'Nordpalast-Terrasse',info:'Der Nordpalast lag terrassiert an der Felskante. Diese vorgelagerte Plattform macht den dramatischen Sitz über dem Abgrund im Diorama lesbarer.'},
   {type:'SQUARE_TOWER',x:1.5,z:-12.8,w:5.5,d:2.5,h:2.8,y:7.0,label:'Herodianischer Nordpalast',info:'Dreistufige Palastanlage auf Felsvorsprüngen — Herodes nutzte Masada als luxuriösen Rückzugsort. Architektonisches Meisterwerk des 1. Jh. v. Chr.'},
   {type:'SQUARE_TOWER',x:-3.5,z:0,w:7,d:2,h:1.8,y:6.4,noRoof:true,label:'Magazingebäude (Zehn Speicher)',info:'Zehn lange Lagerhäuser mit Vorräten für Jahre. 12 in den Fels gehauene Zisternen speicherten 40.000 m³ Regenwasser.'},
- ]},
+ ]}},
 
 {id:"carcassonne",name:"Carcassonne",sub:"Doppelmauerstadt",era:"12.–13. Jh.",year:1200,loc:"Frankreich",type:"real",epoch:"Mittelalter",region:"europa",icon:"🏯",
  theme:{bg:"#140f08",accent:"#d4a855",glow:"rgba(200,150,70,0.15)"},
