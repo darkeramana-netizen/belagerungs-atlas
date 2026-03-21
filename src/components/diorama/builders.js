@@ -78,6 +78,9 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
   const plinthTop = p.plinthTopScale || 1.18;
   const plinthBot = p.plinthBottomScale || 1.22;
   const plinthDrop = p.plinthDrop || 0;
+  const skirtH = p.skirtH || 0;
+  const skirtTop = p.skirtTopScale || plinthBot;
+  const skirtBot = p.skirtBottomScale || (skirtTop * 1.08);
 
   const g = new THREE.Group();
   g.position.set(p.x, y, p.z);
@@ -95,6 +98,14 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
   plinth.castShadow = true;
   plinth.receiveShadow = true;
   g.add(plinth);
+
+  if (skirtH > 0) {
+    const skirt = new THREE.Mesh(new THREE.CylinderGeometry(r * skirtTop, r * skirtBot, skirtH, 18), sm);
+    skirt.position.y = -(skirtH / 2) + 0.02;
+    skirt.castShadow = true;
+    skirt.receiveShadow = true;
+    g.add(skirt);
+  }
 
   const parapetBand = new THREE.Mesh(new THREE.CylinderGeometry(r * 1.04, r * 1.08, 0.28, 18), sm);
   parapetBand.position.y = h + 0.14;
