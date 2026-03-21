@@ -1,7 +1,11 @@
 import { generateComponents } from './generator.js';
 import { HERO_DIORAMAS } from './heroData.js';
 import { resolveStyle } from './renderer.js';
-import { enhanceComponentsForRealism, deriveFidelityLabels } from './fidelity.js';
+import {
+  enhanceComponentsForRealism,
+  deriveFidelityLabels,
+  runHistoricalAccuracyAudit,
+} from './fidelity.js';
 
 function getComponentCenter(comp) {
   if (Array.isArray(comp.points) && comp.points.length) {
@@ -65,6 +69,7 @@ export function getDioramaModel(castle) {
     diorama.fidelityLabel,
     diorama.sourceConfidence,
   );
+  const historicalAudit = runHistoricalAccuracyAudit(castle, components, style, historicalMode);
 
   return {
     id: castle.id,
@@ -80,6 +85,7 @@ export function getDioramaModel(castle) {
     historicalMode,
     fidelityLabel: fidelity.fidelityLabel,
     sourceConfidence: fidelity.sourceConfidence,
+    historicalAudit,
     notes: diorama.notes || castle.desc || '',
     sources: diorama.sources || [],
     terrainModel: diorama.terrainModel || (components.some(comp => comp.type === 'TERRAIN_STACK') ? 'custom' : 'basic'),
