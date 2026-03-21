@@ -118,7 +118,7 @@ export const HERO_DIORAMAS_CRUSADER = {
           info: 'Der verschlungene Eingang in den Innenhof: eine ueberdachte Rampe, die in engen Kehren nach oben fuehrt.',
         },
         points: [
-          { x: 0, z: 10, r: 2.3, h: 11.5, plinthH: 1.2, plinthDrop: 0.62, plinthTopScale: 1.2, plinthBottomScale: 1.34, skirtH: 3.0, skirtTopScale: 1.34, skirtBottomScale: 1.54, hoarding: true, label: 'Torre Grande (Grosser Turm)', info: 'Der maechtigste Turm des Krak und letzter Rueckzugspunkt der Johanniter.' },
+          { x: 0, z: 10, r: 2.3, h: 11.5, plinthH: 1.2, plinthDrop: 0.62, plinthTopScale: 1.2, plinthBottomScale: 1.34, skirtH: 3.0, skirtTopScale: 1.34, skirtBottomScale: 1.54, label: 'Torre Grande (Grosser Turm)', info: 'Der maechtigste Turm des Krak und letzter Rueckzugspunkt der Johanniter.' },
           { x: -9.51, z: 3.09, r: 2.0, h: 10.0, plinthH: 1.02, plinthDrop: 0.56, plinthTopScale: 1.2, plinthBottomScale: 1.34, skirtH: 2.8, skirtTopScale: 1.34, skirtBottomScale: 1.52, label: 'Suedwestturm (Waechterturm)', info: 'Einer der drei massiven Suedtuerme mit senkrechten Abwurfwinkeln auf Angreifer am Mauerfuss.' },
           { x: -5.88, z: -8.09, r: 1.5, h: 7.5, label: 'Nordwestturm (Innen)', info: 'Verbindungsturm zwischen Sued- und Nordmauer des Innenhofs.' },
           { x: 5.88, z: -8.09, r: 1.5, h: 7.5, label: 'Nordostturm (Innen)', info: 'Ueberblickte das aeussere Ostfeld und deckte das Haupttor von oben.' },
@@ -149,6 +149,11 @@ export const HERO_DIORAMAS_CRUSADER = {
         type: 'STAIRWAY', x: 0.5, z: 5.8, y: 5.02, w: 6.2, d: 6.0, h: 3.0, steps: 6, landingD: 1.0,
         label: 'Grosser Steinaufgang zur Hochburg',
         info: 'Der Zugang zur Hochburg war kein glatter Hang, sondern eine gestaffelte Steinrampe mit Treppen und kleinen Podesten unter Beschuss der inneren Tuerme.',
+      },
+      {
+        type: 'PLATEAU', x: 0.1, z: -0.8, y: 8.18, w: 11.6, d: 8.2, h: 0.22,
+        label: 'Innenhof-Terrasse (Hochburg)',
+        info: 'Unsichtbar-stabile Trageflaeche fuer die Hofbauten, damit Hallen und Kleinobjekte sauber aufliegen.',
       },
       {
         type: 'GABLED_HALL', x: 0.0, z: -5.5, w: 8.8, d: 3.5, h: 3.2, y: 8.34, roofH: 1.9, buttressPairs: 3, slitCount: 2, doorSide: 'front', doorW: 0.9, chimneyCount: 2,
