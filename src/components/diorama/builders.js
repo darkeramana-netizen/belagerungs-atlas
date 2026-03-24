@@ -535,6 +535,65 @@ export function buildStairway(p, sm) {
   return g;
 }
 
+// ── STAIR FLIGHT ──────────────────────────────────────────────────────────────
+// Individual staircase with proper step geometry, handrail cheeks and landing.
+// Physics: Rapier autostep (0.35 m) handles each step; a companion slope collider
+// is added in PhysicsWorld.js so the capsule slides smoothly when descending.
+//
+// Parameters:
+//   p.steps   — number of treads (default 8)
+//   p.stepH   — riser height in metres (default 0.22)
+//   p.stepD   — tread depth  in metres (default 0.35)
+//   p.w       — stair width  in metres (default 2.4)
+//   p.y       — y of lowest step bottom (default 0)
+//   p.rotation — yaw in radians (direction the stair faces, default 0)
+export function buildStairFlight(p, sm) {
+  const steps  = Math.max(2, p.steps  || 8);
+  const stepH  = p.stepH  || 0.22;
+  const stepD  = p.stepD  || 0.35;
+  const w      = p.w      || 2.4;
+  const cheekH = stepH * 1.4;
+  const cheekT = 0.12;
+  const y0     = p.y || 0;
+
+  const g = new THREE.Group();
+  g.position.set(p.x || 0, y0, p.z || 0);
+  if (p.rotation !== undefined) g.rotation.y = p.rotation;
+  g.userData = { label: p.label || '', info: p.info || '' };
+
+  for (let i = 0; i < steps; i++) {
+    // Tread: full depth cumulative slab (pyramid-stack style — realistic masonry)
+    const slabD = (steps - i) * stepD;
+    const slab  = new THREE.Mesh(
+      new THREE.BoxGeometry(w, stepH, slabD),
+      sm,
+    );
+    slab.position.set(0, stepH * (i + 0.5), slabD / 2);
+    slab.castShadow    = true;
+    slab.receiveShadow = true;
+    g.add(slab);
+  }
+
+  // Cheek walls (parapets on each side of the stair)
+  const totalH = steps * stepH;
+  const totalD = steps * stepD;
+  const slopeLen = Math.sqrt(totalH * totalH + totalD * totalD);
+  const pitch    = Math.atan2(totalH, totalD);
+
+  [-1, 1].forEach(side => {
+    const cheek = new THREE.Mesh(
+      new THREE.BoxGeometry(cheekT, cheekH, slopeLen),
+      sm,
+    );
+    cheek.position.set(side * (w / 2 + cheekT / 2), totalH / 2 + cheekH / 2 - stepH / 2, totalD / 2);
+    cheek.rotation.x = pitch;
+    cheek.castShadow = cheek.receiveShadow = true;
+    g.add(cheek);
+  });
+
+  return g;
+}
+
 export function buildGate(p, sm, dm, rm, style = 'crusader') {
   const w = p.w || 4.5, d = p.d || 3.5, h = p.h || 6.0, y = Math.max(0, p.y || 0);
   const tR = d * 0.52;   // flanking tower radius
@@ -570,30 +629,78 @@ export function buildGate(p, sm, dm, rm, style = 'crusader') {
     }
   });
 
-  // Gatehouse body
-  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), sm);
-  body.position.y = h / 2 + 0.002;
-  body.castShadow = true;
-  body.receiveShadow = true;
-  g.add(body);
+  // ── Gatehouse body: split into piers + lintel so passage is truly open ──────
+  const pW = w * 0.40;                 // passage clear width
+  const pH = h * 0.64;                 // passage clear height (to spring of arch)
+  const archR   = pW / 2;             // arch radius
+  const pierW   = (w - pW) / 2;       // width of each side pier
+  const lintelH = h - pH - archR;     // height of solid wall above arch crown
 
+  // Left pier
+  const lp = new THREE.Mesh(new THREE.BoxGeometry(pierW, h, d), sm);
+  lp.position.set(-(pW / 2 + pierW / 2), h / 2, 0);
+  lp.castShadow = lp.receiveShadow = true;
+  g.add(lp);
+
+  // Right pier
+  const rp = lp.clone();
+  rp.position.x = pW / 2 + pierW / 2;
+  g.add(rp);
+
+  // Wall above arch (lintel band) — only if there's room above the arch crown
+  if (lintelH > 0.1) {
+    const lintel = new THREE.Mesh(new THREE.BoxGeometry(w, lintelH, d), sm);
+    lintel.position.y = pH + archR + lintelH / 2;
+    lintel.castShadow = lintel.receiveShadow = true;
+    g.add(lintel);
+  }
+
+  // Ceiling slab inside passage
+  const ceil = new THREE.Mesh(new THREE.BoxGeometry(pW, 0.18, d), sm);
+  ceil.position.y = pH;
+  ceil.receiveShadow = true;
+  g.add(ceil);
+
+  // ── Arch rings (front + back) using TorusGeometry half-circle ──────────────
+  // THREE.TorusGeometry revolves around Z by default → rotate so arch is in XY plane
+  const archTube = Math.min(0.22, d * 0.12);
+  [-(d / 2 - archTube), d / 2 - archTube].forEach(zOff => {
+    const archGeo = new THREE.TorusGeometry(archR, archTube, 8, 16, Math.PI);
+    const arch = new THREE.Mesh(archGeo, sm);
+    arch.position.set(0, pH, zOff);
+    // TorusGeometry default: ring in XY plane ✓, arc from +X → +Y → -X = top half
+    arch.castShadow = arch.receiveShadow = true;
+    g.add(arch);
+  });
+
+  // ── Keystone accent at arch crown ─────────────────────────────────────────
+  const ks = new THREE.Mesh(
+    new THREE.BoxGeometry(pW * 0.13, archR * 0.18, d * 0.52),
+    sm,
+  );
+  ks.position.set(0, pH + archR + archTube * 0.5, 0);
+  ks.castShadow = ks.receiveShadow = true;
+  g.add(ks);
+
+  // ── Hood course (decorative overhang above full gate) ─────────────────────
   const hood = new THREE.Mesh(new THREE.BoxGeometry(w * 1.02, 0.18, d * 1.02), sm);
   hood.position.y = h + 0.09;
-  hood.castShadow = true;
-  hood.receiveShadow = true;
+  hood.castShadow = hood.receiveShadow = true;
   g.add(hood);
 
-  // Passage opening — dark material creates visual depth
-  const pW = w * 0.38, pH = h * 0.62;
-  const pass = new THREE.Mesh(new THREE.BoxGeometry(pW, pH, d * 1.1), dm || sm);
-  pass.position.y = pH / 2;
-  g.add(pass);
-
-  // Portcullis bar hints (not for ancient style)
+  // ── Portcullis (vertical bars in groove, slightly recessed) ──────────────
+  const portY = pH * 0.48;
   if (style !== 'ancient') {
-    for (let bi = -1; bi <= 1; bi++) {
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.055, pH * 0.82, 0.055), dm || sm);
-      bar.position.set(bi * (pW / 3), pH * 0.41, -d * 0.52);
+    // Main cross-bar at top
+    const crossbar = new THREE.Mesh(new THREE.BoxGeometry(pW * 0.94, 0.08, 0.08), dm || sm);
+    crossbar.position.set(0, pH * 0.94, -(d * 0.45));
+    g.add(crossbar);
+    // Vertical bars
+    const nBars = Math.max(3, Math.round(pW / 0.32));
+    for (let bi = 0; bi < nBars; bi++) {
+      const bx = -pW / 2 + (bi + 0.5) * (pW / nBars);
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.06, portY * 0.90, 0.06), dm || sm);
+      bar.position.set(bx, portY * 0.45, -(d * 0.45));
       g.add(bar);
     }
   }
@@ -1622,6 +1729,7 @@ export function buildComponent(comp, sm, dm, rm, style = 'crusader', gm = null, 
     case 'SQUARE_TOWER':     return buildSquareTower(c, s, dm, rm, style);
     case 'GABLED_HALL':      return buildGabledHall(c, s, dm, rm);
     case 'STAIRWAY':         return buildStairway(c, s);
+    case 'STAIR_FLIGHT':     return buildStairFlight(c, s);
     case 'GATE':             return buildGate(c, s, dm, rm, style);
     case 'ABBEY_MODULE':     return buildAbbeyModule(c, s, rm);
     case 'CIVILIAN_HOUSING': return buildCivilianHousing(c, s, rm);

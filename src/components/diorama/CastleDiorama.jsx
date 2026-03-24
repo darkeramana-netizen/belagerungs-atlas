@@ -8,6 +8,7 @@ import { initPhysicsWorld } from './PhysicsWorld.js';
 import { RapierFPSController } from './RapierFPSController.js';
 import { buildScaleDummy } from './ScaleDummy.js';
 import { buildSky } from './SkySystem.js';
+import { buildTerrain } from './TerrainSystem.js';
 
 export default function CastleDiorama({ castle }) {
   const mountRef  = useRef(null);
@@ -70,13 +71,6 @@ export default function CastleDiorama({ castle }) {
       scene.environment = skySystem.envMap;   // IBL reflections on all PBR mats
       scene.fog = new T.FogExp2(skySystem.fogColor, skySystem.fogDensity);
 
-      // ── Ground disc ──────────────────────────────────────────────────────
-      const gnd = new T.Mesh(new T.CircleGeometry(55, 48), mats.ground);
-      gnd.rotation.x = -Math.PI / 2;
-      gnd.position.y = -0.05;
-      gnd.receiveShadow = true;
-      scene.add(gnd);
-
       // ── Lighting ─────────────────────────────────────────────────────────
       scene.add(new T.AmbientLight(scenePreset.ambient.color, scenePreset.ambient.intensity));
 
@@ -125,24 +119,14 @@ export default function CastleDiorama({ castle }) {
         ? Math.max(...rings.flatMap(r => (r.points || []).map(pt => Math.sqrt((pt.x || 0) ** 2 + (pt.z || 0) ** 2))))
         : 0;
 
-      // ── Rocky plateau for extreme-position castles ────────────────────────
-      const posR = castle.ratings?.position || 50;
-      if (model.terrainModel !== 'custom' && posR >= 90 && castle.type !== 'fantasy') {
-        const plateauR = maxRingR > 0 ? maxRingR + 3 : 18;
-        const mesaH = 3.5;
-        const mesa = new T.Mesh(
-          new T.CylinderGeometry(plateauR * 0.95, plateauR + 3, mesaH, 36),
-          mats.rock,
-        );
-        mesa.position.y = -(mesaH / 2);
-        mesa.receiveShadow = true;
-        mesa.castShadow   = true;
-        scene.add(mesa);
-      }
+      // ── Terrain (procedural FBM heightmap replaces flat ground disc) ─────
+      const terrainSeed = Math.abs(castle.id?.split('').reduce((a, c) => a + c.charCodeAt(0), 0) ?? 42) % 9999;
+      const terrain = buildTerrain(maxRingR || 20, style, terrainSeed, mats.ground);
+      scene.add(terrain.mesh);
 
       // ── Physics world (Rapier — async WASM init) ──────────────────────────
       if (cancelled) return;
-      const physWorld = await initPhysicsWorld(components);
+      const physWorld = await initPhysicsWorld(components, terrain);
       if (cancelled) { physWorld.dispose(); return; }
 
       // ── Scale dummy (1.80 m reference figure, hidden by default) ──────────
@@ -164,8 +148,10 @@ export default function CastleDiorama({ castle }) {
       };
       fpsCtrlRef.current = fpsCtrl;
 
-      // Default FPS spawn: just outside the main entrance, facing the castle
-      const fpsSpawnPos = new T.Vector3(0, 0, (maxRingR > 0 ? maxRingR : 18) * 1.12);
+      // Default FPS spawn: just outside the main entrance, on terrain surface
+      const spawnZ     = (maxRingR > 0 ? maxRingR : 18) * 1.12;
+      const spawnY     = terrain.getHeightAt(0, spawnZ) + 0.1;
+      const fpsSpawnPos = new T.Vector3(0, spawnY, spawnZ);
 
       // ── Toggle helpers exposed to React buttons ───────────────────────────
       toggleFpsRef.current = () => {
@@ -352,6 +338,7 @@ export default function CastleDiorama({ castle }) {
         fpsCtrl.dispose();
         physWorld.dispose();
         skySystem.dispose();
+        terrain.mesh.geometry.dispose();
         scene.environment = null;
         fpsModeRef.current = false;
         mount.removeEventListener('pointerdown',  onPD);
