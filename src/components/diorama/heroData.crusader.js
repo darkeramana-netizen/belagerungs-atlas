@@ -245,6 +245,84 @@ export const HERO_DIORAMAS_CRUSADER = {
         label: 'Zisternenbecken (Suedring)',
         info: 'Eine der Hauptauffangzisternen im Zwinger zwischen den beiden Mauerringen.',
       },
+
+      // ── PECHNASEN (MACHICOLATION) ─────────────────────────────────────────
+      // Innere Hochburg – die drei massiven Suedtuerme (historisch belegt durch
+      // Deschamps und die archaeologischen Grundrisse). Der Krak gehoert zu den
+      // fruehesten Kreuzfahrerbauten mit vollstaendiger Pechnasen-Krone.
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: 0, z: 10, y: 19.62,
+        r: 2.3, overhang: 0.55, gallH: 0.52, corbH: 0.32, count: 10, slotRatio: 0.38,
+        label: 'Pechnasen – Torre Grande',
+        info: 'Die umlaufende Abwurfgalerie am Scheitel des groessten Turms ermoeglichte senkrechten Beschuss auf Angreifer am Mauerfuss. Box-Machicoulis dieser Art waren im Krak komplexer ausgefuehrt als in zeitgenoessischen Bauten wie Saone oder Margat.',
+      },
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: -9.51, z: 3.09, y: 18.12,
+        r: 2.0, overhang: 0.52, gallH: 0.50, corbH: 0.30, count: 9, slotRatio: 0.40,
+        label: 'Pechnasen – Suedwestturm (Waechterturm)',
+        info: 'Die Abwurfkraenze am Waechterturm deckten den Glacisfuss und den Graben. Kein Angreifer konnte die Suedfront abschreiten, ohne unter direktem Beschuss von oben zu stehen.',
+      },
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: 9.51, z: 3.09, y: 17.62,
+        r: 1.9, overhang: 0.52, gallH: 0.50, corbH: 0.30, count: 9, slotRatio: 0.40,
+        label: 'Pechnasen – Torre del Maestre',
+        info: 'Der Turm des Ordensmeisters flankierte den Rampeneingang und erhielt als Statussymbol wie als Verteidigungsposten eine vollstaendige Pechnasen-Galerie.',
+      },
+      // Aeusserer Ring – drei am Zugang exponierte Tuerme
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: 20, z: 0, y: 7.48,
+        r: 1.3, overhang: 0.42, gallH: 0.42, corbH: 0.26, count: 7, slotRatio: 0.40,
+        label: 'Pechnasen – Aussenturm Ost (Torturm)',
+        info: 'Der ostliche Torturm hatte als erster sichtbarer Flankenposten nach der Rampe Pechnasen, die den Torzugang von oben deckten.',
+      },
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: 14.14, z: 14.14, y: 7.48,
+        r: 1.3, overhang: 0.42, gallH: 0.42, corbH: 0.26, count: 7, slotRatio: 0.40,
+        label: 'Pechnasen – Aussenturm SO',
+        info: 'Der suedoestliche Flankenturm kontrollierte das Torvorfeld und schloss den Kreuzfeuerbuegel zwischen den Suedtuerme.',
+      },
+      {
+        type: 'MACHICOLATION', mode: 'round',
+        x: 0, z: 20, y: 7.48,
+        r: 1.3, overhang: 0.42, gallH: 0.42, corbH: 0.26, count: 7, slotRatio: 0.40,
+        label: 'Pechnasen – Aussenturm Sued',
+        info: 'Der suedlichste Aussenturm direkt uber dem Glacis – seine Pechnasen deckten den kritischsten Abschnitt der gesamten Verteidigung.',
+      },
+
+      // ── ZUGBRUECKE (DRAWBRIDGE) ───────────────────────────────────────────
+      // Der historische Zugang fuehrte ueber eine auskragende Zugbruecke vor
+      // der Barbakane. Rampe (SLOPE_PATH) endet bei (~10.5, ~12.2); die Bruecke
+      // spannt den Zwischenraum zum Torturm bei (14.14, 14.14).
+      {
+        type: 'DRAWBRIDGE',
+        x: 14.14, z: 14.14, y: 1.98,
+        w: 4.6, d: 3.6, angle: 0, pitD: 1.3, pitH: 0.55,
+        rotation: Math.atan2(10.5 - 14.14, 12.2 - 14.14),
+        label: 'Zugbruecke – Haupttor (Barbakane)',
+        info: 'Vor dem Haupttor lag kein freier Platz, sondern eine Zugbruecke uber den Zwinggraben. Sie bildete die erste mechanische Barriere im mehrstufigen Eingangsystem und konnte bei Alarm hochgezogen werden, bevor Angreifer das Tor erreichten.',
+      },
+
+      // ── GOTISCHE LOGGIA (Arkadenhalle) ────────────────────────────────────
+      // Die beruehmt Arkadenhalle (Loggia) an der Suedseite des Konventsaals
+      // ist eines der aussergewoehnlichsten gotischen Bauelemente in Outremer.
+      // Rayonnant-Stil (Ile-de-France), fuenf Doppeljooche, Kragsteine mit
+      // Blattmotiven vergleichbar der Sainte-Chapelle – datiert um 1250.
+      // Position: an der Suedfront des Konventsaals (z=-5.5, Suedseite bei z=-3.75),
+      // Loggia schliesst direkt an und oeffnet sich nach Suden in den Hof.
+      {
+        type: 'GABLED_HALL',
+        x: 0.0, z: -2.82, y: 8.34,
+        w: 8.2, d: 1.75, h: 2.55, roofH: 0.22,
+        doorSide: 'front', porch: true, slitCount: 0,
+        gableStyle: 'triangular',
+        label: 'Gotische Loggia (Arkadenhalle des Konventsaals)',
+        info: 'Die Loggia an der Suedseite des grossen Saals ist eines der schoensten gotischen Bauelemente im gesamten Outremer. Die offene Arkadenhalle mit fuenf Doppeljochen, feinen Saulen und Ogivalgewoelbe war Wandelgang, Repraesentation und Verbindungsweg zugleich – ein Beleg dafuer, dass der Krak nicht nur Festung, sondern auch Ordensresidenz war.',
+      },
     ],
   },
   chateau_gaillard: {
