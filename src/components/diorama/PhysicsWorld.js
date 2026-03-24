@@ -53,17 +53,29 @@ function addWallBox(world, x1, z1, x2, z2, h, thick, baseY) {
  * Asynchronously initialise Rapier and build a physics world from diorama
  * component definitions.
  *
- * @param {Array}  components  — same array used by buildCollisionWorld()
+ * @param {Array}   components  — same array used by buildCollisionWorld()
+ * @param {object|null} terrainData — optional { heights, segs, size } from TerrainSystem
  * @returns {Promise<{world: RAPIER.World, RAPIER: object, step: Function, dispose: Function}>}
  */
-export async function initPhysicsWorld(components) {
+export async function initPhysicsWorld(components, terrainData = null) {
   await RAPIER.init();
 
   const gravity = { x: 0.0, y: -22.0, z: 0.0 };
   const world   = new RAPIER.World(gravity);
 
-  // ── Ground plane ─────────────────────────────────────────────────────────
-  addBox(world, 0, -0.2, 0, 150, 0.2, 150);
+  // ── Ground (heightfield terrain or flat fallback) ─────────────────────────
+  if (terrainData) {
+    const { heights, segs, size } = terrainData;
+    // Rapier heightfield: heights are in row-major order (rows = Z, cols = X)
+    // scale.x / scale.z = total terrain width/depth; scale.y = height multiplier
+    const body = world.createRigidBody(RAPIER.RigidBodyDesc.fixed().setTranslation(0, 0, 0));
+    world.createCollider(
+      RAPIER.ColliderDesc.heightfield(segs, segs, heights, { x: size, y: 1.0, z: size }),
+      body,
+    );
+  } else {
+    addBox(world, 0, -0.2, 0, 150, 0.2, 150);
+  }
 
   // ── Castle components ─────────────────────────────────────────────────────
   components.forEach(comp => {
@@ -114,12 +126,67 @@ export async function initPhysicsWorld(components) {
       addCylinder(world, comp.x || 0, y + hh, comp.z || 0, r + 0.06, hh);
     }
 
-    // ── Box-shaped structures ──────────────────────────────────────────────
-    if (['SQUARE_TOWER', 'GATE', 'GABLED_HALL', 'ABBEY_MODULE'].includes(comp.type)) {
+    // ── Box-shaped structures (non-gate) ──────────────────────────────────
+    if (['SQUARE_TOWER', 'GABLED_HALL', 'ABBEY_MODULE'].includes(comp.type)) {
       const w  = comp.w || 3, d = comp.d || 3, h = comp.h || 5;
       const ry = comp.rotation || 0;
       const cy = y + (h + 0.4) / 2;
       addBox(world, comp.x || 0, cy, comp.z || 0, (w + 0.1) / 2, (h + 0.4) / 2, (d + 0.1) / 2, ry);
+    }
+
+    // ── GATE — split into piers + lintel so passage is passable ───────────
+    if (comp.type === 'GATE') {
+      const w   = comp.w || 4.5, d = comp.d || 3.5, h = comp.h || 6.0;
+      const ry  = comp.rotation || 0;
+      const pW  = w * 0.40;           // passage clear width (matches buildGate)
+      const pH  = h * 0.64;           // passage clear height
+      const archR  = pW / 2;
+      const pierW  = (w - pW) / 2;
+      const lintelH = h - pH - archR;
+      const cx = comp.x || 0, cz = comp.z || 0;
+
+      // Left pier
+      addBox(world, cx, y + h / 2, cz, pierW / 2, h / 2, d / 2, ry);
+      // Right pier — mirror along local X
+      const offX = (pW / 2 + pierW / 2) * Math.cos(ry);
+      const offZ = (pW / 2 + pierW / 2) * Math.sin(ry);
+      addBox(world, cx + offX, y + h / 2, cz - offZ, pierW / 2, h / 2, d / 2, ry);
+      addBox(world, cx - offX, y + h / 2, cz + offZ, pierW / 2, h / 2, d / 2, ry);
+
+      // Lintel above arch crown
+      if (lintelH > 0.1) {
+        addBox(world, cx, y + pH + archR + lintelH / 2, cz, w / 2, lintelH / 2, d / 2, ry);
+      }
+    }
+
+    // ── STAIR_FLIGHT — one slope ramp collider per flight (smooth for capsule) ──
+    if (comp.type === 'STAIR_FLIGHT') {
+      const steps  = comp.steps  || 8;
+      const stepH  = comp.stepH  || 0.22;
+      const stepD  = comp.stepD  || 0.35;
+      const w      = comp.w      || 2.4;
+      const totalH = steps * stepH;
+      const totalD = steps * stepD;
+      const slopeLen = Math.sqrt(totalH * totalH + totalD * totalD);
+      const pitch    = Math.atan2(totalH, totalD);  // positive = tilts up
+      const yaw      = comp.rotation || 0;
+
+      // Center of the slope in world space
+      const lx   = (comp.x || 0), lz = (comp.z || 0);
+      const midDx = Math.cos(-yaw) * totalD / 2;
+      const midDz = Math.sin(-yaw) * totalD / 2;
+
+      // Quaternion: yaw around Y then pitch around X (in that order)
+      const cy2 = Math.cos(yaw   / 2), sy2 = Math.sin(yaw   / 2);
+      const cp2 = Math.cos(-pitch / 2), sp2 = Math.sin(-pitch / 2);
+      const qw  = cy2 * cp2,  qx = cy2 * sp2;
+      const qy  = sy2 * cp2,  qz = -sy2 * sp2;
+
+      const desc = RAPIER.RigidBodyDesc.fixed()
+        .setTranslation(lx + midDx, y + totalH / 2, lz + midDz)
+        .setRotation({ x: qx, y: qy, z: qz, w: qw });
+      const body = world.createRigidBody(desc);
+      world.createCollider(RAPIER.ColliderDesc.cuboid(w / 2, 0.12, slopeLen / 2), body);
     }
 
     // ── PLATEAU ───────────────────────────────────────────────────────────

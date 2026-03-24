@@ -329,6 +329,45 @@ export const HERO_DIORAMAS_CRUSADER = {
         info: 'Die laengste zusammenhaengende Holzkampfgalerie des aeusseren Mauerguertels sicherte den exponierten Suedwesthang. Von hier aus konnten Angreifer, die sich am Glacis vorbeigekaempft hatten, noch einmal unter kombiniertes Bogenfeuer von Mauer und Galerie genommen werden.',
       },
 
+      // ── TREPPENZUGÄNGE (STAIR FLIGHTS) ───────────────────────────────────
+      // Begehbare Treppengänge die das Erkunden der Burg zu Fuß ermöglichen.
+      // Aussenwalltreppe Ost  – Zugang zum Wehrgang des äusseren Rings
+      {
+        type: 'STAIR_FLIGHT',
+        x: 17.5, z: 4.5, y: 1.98,
+        steps: 7, stepH: 0.26, stepD: 0.38, w: 1.8,
+        rotation: Math.PI * 0.08,
+        label: 'Wandaufgang Ost – Äusserer Ring',
+        info: 'Treppenaufgang zur Wehrgangsplattform des östlichen Außenwalls. Über diesen Aufgang konnten Verteidiger schnell von der Hofebene auf den Kampfgang gelangen.',
+      },
+      // Innenringtreppe Süd – Glaciszugang zum inneren Hochburgring
+      {
+        type: 'STAIR_FLIGHT',
+        x: 3.8, z: 12.5, y: 4.92,
+        steps: 10, stepH: 0.32, stepD: 0.38, w: 2.0,
+        rotation: Math.PI * 0.5,
+        label: 'Glacisaufgang Süd – Innenring',
+        info: 'Breiter Treppenaufgang vom Zwingerhof auf das Plateau des inneren Mauerwerks. Der steile Glacis des Krak erzwang einen langen, exponierten Anmarsch für Angreifer.',
+      },
+      // Turmanstieg Torre Grande
+      {
+        type: 'STAIR_FLIGHT',
+        x: -1.5, z: 9.5, y: 8.12,
+        steps: 6, stepH: 0.28, stepD: 0.38, w: 1.6,
+        rotation: Math.PI * 0.85,
+        label: 'Zugang Torre Grande – Innenhof',
+        info: 'Kurzaufgang vom Innenhof zum Eingangsportal des Großturms Torre Grande. Der Turm war der letzte Rückzugsort der Besatzung.',
+      },
+      // Wehrgang Nordseite Aussenring
+      {
+        type: 'STAIR_FLIGHT',
+        x: -16.0, z: -2.0, y: 1.98,
+        steps: 7, stepH: 0.26, stepD: 0.38, w: 1.8,
+        rotation: -Math.PI * 0.12,
+        label: 'Wandaufgang Nord – Äusserer Ring',
+        info: 'Nördlicher Wandaufgang des äusseren Mauerrings. Ermöglichte schnellen Nachschub von Pfeilen und Geschossen auf den Nordwehrgang.',
+      },
+
       // ── ZUGBRUECKE (DRAWBRIDGE) ───────────────────────────────────────────
       // Der historische Zugang fuehrte ueber eine auskragende Zugbruecke vor
       // der Barbakane. Rampe (SLOPE_PATH) endet bei (~10.5, ~12.2); die Bruecke
