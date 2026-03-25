@@ -14,11 +14,12 @@ import { validateDiorama, printValidationReport } from './DioramaValidator.js';
 
 export default function CastleDiorama({ castle }) {
   const mountRef  = useRef(null);
-  const [ready,    setReady]    = useState(false);
-  const [info,     setInfo]     = useState(null);
-  const [hover,    setHover]    = useState(null);
-  const [fpsMode,  setFpsMode]  = useState(false);
-  const [showDummy, setShowDummy] = useState(false);
+  const [ready,      setReady]      = useState(false);
+  const [info,       setInfo]       = useState(null);
+  const [hover,      setHover]      = useState(null);
+  const [fpsMode,    setFpsMode]    = useState(false);
+  const [showDummy,  setShowDummy]  = useState(false);
+  const [valReport,  setValReport]  = useState(null);
 
   const infoRef   = useRef(null); infoRef.current   = setInfo;
   const hoverRef  = useRef(null); hoverRef.current  = setHover;
@@ -132,6 +133,7 @@ export default function CastleDiorama({ castle }) {
       // ── Principle 3 – Validation: reachability + snap connectivity ────────
       const validationReport = validateDiorama(components, { castleBaseY });
       printValidationReport(validationReport, castle.id || 'unknown');
+      setValReport(validationReport);
 
       const terrainSeed = Math.abs(castle.id?.split('').reduce((a, c) => a + c.charCodeAt(0), 0) ?? 42) % 9999;
       const terrain = new ChunkManager({
@@ -490,6 +492,22 @@ export default function CastleDiorama({ castle }) {
               WASD BEWEGEN · SHIFT RENNEN · LEERTASTE SPRINGEN · ESC VERLASSEN
             </div>
           </>
+        )}
+
+        {/* Validation badge — top-right, dev-mode indicator */}
+        {ready && valReport && (valReport.errors.length > 0 || valReport.warnings.length > 0) && (
+          <div title={[...valReport.errors, ...valReport.warnings].join('\n')} style={{
+            position: 'absolute', top: '8px', right: '10px',
+            fontSize: '9px', letterSpacing: '0.8px',
+            background: valReport.errors.length > 0 ? 'rgba(180,40,40,0.82)' : 'rgba(160,110,20,0.78)',
+            color: '#fff', padding: '2px 7px', borderRadius: '3px',
+            pointerEvents: 'auto', cursor: 'help',
+            textTransform: 'uppercase',
+          }}>
+            {valReport.errors.length > 0
+              ? `⚠ ${valReport.errors.length} Fehler · ${valReport.warnings.length} Warnung${valReport.warnings.length !== 1 ? 'en' : ''}`
+              : `${valReport.warnings.length} Warnung${valReport.warnings.length !== 1 ? 'en' : ''}`}
+          </div>
         )}
 
         {/* Sprint-1 controls: FPS button + Scale Dummy toggle */}

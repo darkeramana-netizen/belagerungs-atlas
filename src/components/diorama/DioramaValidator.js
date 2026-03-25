@@ -323,6 +323,22 @@ function checkStructure(components) {
     if (c.type === 'RING' && c.wall && (c.wall.h || 3) < 1.5) {
       issues.push({ severity: 'warning', idx, label: c.label, message: `RING wall height ${c.wall.h}m is unusually low — player may step over it` });
     }
+    // Entrance clearance — towers and halls must have a door tall enough for a player (≥1.8m)
+    if (c.type === 'ROUND_TOWER' || c.type === 'SQUARE_TOWER') {
+      const r    = c.r || Math.min(c.w, c.d) / 2 || 1.2;
+      const entH = Math.max(1.5, Math.min((c.h || 5) - 0.6, r * 1.2));
+      if (entH < 1.8) {
+        issues.push({ severity: 'warning', idx, label: c.label,
+          message: `Tower entrance clearance ${entH.toFixed(2)}m < 1.8m — player cannot enter` });
+      }
+    }
+    if (c.type === 'GABLED_HALL') {
+      const dh = c.doorH || Math.max(1.0, (c.h || 3.0) * 0.52);
+      if (dh < 1.8) {
+        issues.push({ severity: 'warning', idx, label: c.label,
+          message: `Hall door height ${dh.toFixed(2)}m < 1.8m — too low for player` });
+      }
+    }
   }
 
   return issues;

@@ -255,12 +255,84 @@ export function buildRoundTower(p, sm, dm, rm, style = 'crusader') {
   g.position.set(p.x, y, p.z);
   g.userData = { label: p.label || '', info: p.info || '' };
 
-  // Body with slight batter (wider base)
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 1.12, h, 18), sm);
+  // ── Hollow cylinder shell (Principle 2 — Interior Logic) ────────────────
+  const shellT     = Math.max(0.18, r * 0.22);     // wall thickness
+  const rInner     = r - shellT;
+  const entW       = Math.max(0.8, r * 0.70);      // entrance opening width
+  const entH       = Math.max(1.5, Math.min(h - 0.6, r * 1.2)); // entrance height
+  const entArcW    = Math.asin(Math.min(0.98, entW / (2 * r))) * 2; // gap in radians
+  const entAngle   = p.entranceAngle ?? 0;          // 0 = south (+z face)
+
+  // DoubleSide so interior face is visible from inside the tower
+  const smDS = (sm && typeof sm.clone === 'function') ? sm.clone() : sm;
+  if (smDS !== sm) smDS.side = THREE.DoubleSide;
+
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(r, r * 1.12, h, 18, 1, true,
+      entAngle + entArcW / 2, Math.PI * 2 - entArcW),
+    smDS,
+  );
   body.position.y = h / 2 + 0.002;
-  body.castShadow = true;
+  body.castShadow    = true;
   body.receiveShadow = true;
   g.add(body);
+
+  // Floor slab
+  const floor = new THREE.Mesh(
+    new THREE.CylinderGeometry(rInner, rInner * 1.06, 0.14, 18), sm,
+  );
+  floor.position.y = 0.07;
+  floor.receiveShadow = true;
+  g.add(floor);
+
+  // Entrance arch — two jambs + lintel frame the opening
+  {
+    const jambW = shellT * 1.1;
+    const jambH = entH + shellT * 0.4;
+    [-1, 1].forEach(side => {
+      const jAng = entAngle + side * (entArcW / 2 + Math.asin(Math.min(0.99, jambW / (2 * r))));
+      const jamb = new THREE.Mesh(new THREE.BoxGeometry(jambW, jambH, shellT * 1.4), sm);
+      jamb.position.set(Math.sin(jAng) * (r - shellT * 0.5), jambH / 2 + 0.002,
+                        Math.cos(jAng) * (r - shellT * 0.5));
+      jamb.rotation.y = -jAng;
+      jamb.castShadow = true;
+      g.add(jamb);
+    });
+    const lintel = new THREE.Mesh(
+      new THREE.BoxGeometry(entW + shellT * 1.8, shellT * 0.65, shellT * 1.4), sm,
+    );
+    lintel.position.set(Math.sin(entAngle) * (r - shellT * 0.5),
+                        entH + shellT * 0.35 + 0.002,
+                        Math.cos(entAngle) * (r - shellT * 0.5));
+    lintel.rotation.y = -entAngle;
+    lintel.castShadow = true;
+    g.add(lintel);
+  }
+
+  // Spiral staircase (InstancedMesh — 1 draw call for all treads)
+  if (h >= 4.0) {
+    const stepsN   = Math.ceil(h / 0.26);
+    const treadGeo = new THREE.BoxGeometry(rInner * 0.88, 0.09, rInner * 0.52);
+    const stairIM  = new THREE.InstancedMesh(treadGeo, sm, stepsN);
+    stairIM.castShadow    = true;
+    stairIM.receiveShadow = true;
+    const dummy  = new THREE.Object3D();
+    const turns  = h / 3.2; // full rotations over height
+    for (let i = 0; i < stepsN; i++) {
+      const t   = i / stepsN;
+      const ang = entAngle + Math.PI + t * turns * Math.PI * 2; // start at rear
+      dummy.position.set(
+        Math.sin(ang) * (rInner * 0.46),
+        t * (h - 1.0) + 0.23,
+        Math.cos(ang) * (rInner * 0.46),
+      );
+      dummy.rotation.set(0, -ang, 0);
+      dummy.updateMatrix();
+      stairIM.setMatrixAt(i, dummy.matrix);
+    }
+    stairIM.instanceMatrix.needsUpdate = true;
+    g.add(stairIM);
+  }
 
   const plinth = new THREE.Mesh(new THREE.CylinderGeometry(r * plinthTop, r * plinthBot, plinthH, 18), sm);
   plinth.position.y = Math.max(plinthH / 2 - plinthDrop, h * 0.045 - plinthDrop);
@@ -339,11 +411,43 @@ export function buildSquareTower(p, sm, dm, rm, style = 'crusader') {
   if (p.rotation) g.rotation.y = p.rotation;
   g.userData = { label: p.label || '', info: p.info || '' };
 
-  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), sm);
-  body.position.y = h / 2 + 0.002;
-  body.castShadow = true;
-  body.receiveShadow = true;
-  g.add(body);
+  // ── Hollow box shell (Principle 2 — Interior Logic) ──────────────────────
+  const shellT   = Math.max(0.15, Math.min(w, d) * 0.18);
+  const entW     = Math.max(0.9, Math.min(w, d) * 0.44);
+  const entH     = Math.max(1.5, h * 0.38);
+
+  // South face (+z) — split into left panel | door gap | right panel | above-door
+  const sideSpan = (w - entW) / 2;
+  [-(entW / 2 + sideSpan / 2), (entW / 2 + sideSpan / 2)].forEach(bx => {
+    const panel = new THREE.Mesh(new THREE.BoxGeometry(sideSpan, h, shellT), sm);
+    panel.position.set(bx, h / 2 + 0.002, d / 2 - shellT / 2);
+    panel.castShadow = true; panel.receiveShadow = true;
+    g.add(panel);
+  });
+  const topSpan = h - entH;
+  if (topSpan > 0.1) {
+    const topP = new THREE.Mesh(new THREE.BoxGeometry(w, topSpan, shellT), sm);
+    topP.position.set(0, entH + topSpan / 2 + 0.002, d / 2 - shellT / 2);
+    topP.castShadow = true;
+    g.add(topP);
+  }
+  // North face (-z, solid)
+  const nWall = new THREE.Mesh(new THREE.BoxGeometry(w, h, shellT), sm);
+  nWall.position.set(0, h / 2 + 0.002, -(d / 2 - shellT / 2));
+  nWall.castShadow = true; nWall.receiveShadow = true;
+  g.add(nWall);
+  // East + West faces
+  [-1, 1].forEach(side => {
+    const sw = new THREE.Mesh(new THREE.BoxGeometry(shellT, h, d - shellT * 2), sm);
+    sw.position.set(side * (w / 2 - shellT / 2), h / 2 + 0.002, 0);
+    sw.castShadow = true; sw.receiveShadow = true;
+    g.add(sw);
+  });
+  // Floor slab
+  const sqFloor = new THREE.Mesh(new THREE.BoxGeometry(w - shellT * 2, 0.14, d - shellT * 2), sm);
+  sqFloor.position.y = 0.07;
+  sqFloor.receiveShadow = true;
+  g.add(sqFloor);
 
   const plinth = new THREE.Mesh(new THREE.BoxGeometry(w * 1.08, Math.max(0.2, h * 0.08), d * 1.08), sm);
   plinth.position.y = Math.max(0.1, h * 0.04);
@@ -411,11 +515,60 @@ export function buildGabledHall(p, sm, dm, rm) {
   plinth.receiveShadow = true;
   g.add(plinth);
 
-  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), sm);
-  body.position.y = h / 2 + 0.002;
-  body.castShadow = true;
-  body.receiveShadow = true;
-  g.add(body);
+  // ── Hollow box shell (Principle 2 — Interior Logic) ──────────────────────
+  {
+    const shellT = Math.max(0.14, Math.min(w, d) * 0.16);
+    const doorOffset = p.doorOffset || 0;
+
+    const addPanel = (pw, ph, cx, cz, rotY = 0) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(pw, ph, shellT), sm);
+      m.position.set(cx, ph / 2 + 0.002, cz);
+      if (rotY) m.rotation.y = rotY;
+      m.castShadow = true; m.receiveShadow = true;
+      g.add(m);
+    };
+    const splitFace = (fz, fw, fh, eW, eH, eOff, rotY = 0) => {
+      const half = (fw - eW) / 2;
+      [-(eW / 2 + half / 2 + eOff), (eW / 2 + half / 2 + eOff)].forEach(cx => {
+        addPanel(half, fh, cx, fz, rotY);
+      });
+      const above = fh - eH;
+      if (above > 0.08) {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(fw, above, shellT), sm);
+        m.position.set(0, eH + above / 2 + 0.002, fz);
+        if (rotY) m.rotation.y = rotY;
+        m.castShadow = true;
+        g.add(m);
+      }
+    };
+
+    if (doorSide === 'front') {
+      splitFace( d / 2 - shellT / 2, w, h, doorW, doorH, doorOffset);
+      addPanel(w, h, 0, -(d / 2 - shellT / 2));
+      [-1, 1].forEach(s => addPanel(d - shellT * 2, h, s * (w / 2 - shellT / 2), 0, Math.PI / 2));
+    } else if (doorSide === 'back') {
+      addPanel(w, h, 0,  d / 2 - shellT / 2);
+      splitFace(-(d / 2 - shellT / 2), w, h, doorW, doorH, doorOffset);
+      [-1, 1].forEach(s => addPanel(d - shellT * 2, h, s * (w / 2 - shellT / 2), 0, Math.PI / 2));
+    } else if (doorSide === 'left') {
+      addPanel(w, h, 0,  d / 2 - shellT / 2);
+      addPanel(w, h, 0, -(d / 2 - shellT / 2));
+      addPanel(d - shellT * 2, h,  w / 2 - shellT / 2, 0, Math.PI / 2);
+      splitFace(0, d - shellT * 2, h, doorW, doorH, doorOffset, Math.PI / 2);
+    } else {
+      addPanel(w, h, 0,  d / 2 - shellT / 2);
+      addPanel(w, h, 0, -(d / 2 - shellT / 2));
+      splitFace(0, d - shellT * 2, h, doorW, doorH, doorOffset, Math.PI / 2);
+      addPanel(d - shellT * 2, h, -(w / 2 - shellT / 2), 0, Math.PI / 2);
+    }
+
+    const hallFloor = new THREE.Mesh(
+      new THREE.BoxGeometry(w - shellT * 2, 0.12, d - shellT * 2), sm,
+    );
+    hallFloor.position.y = 0.06;
+    hallFloor.receiveShadow = true;
+    g.add(hallFloor);
+  }
 
   if (buttressPairs > 0) {
     const step = w / (buttressPairs + 1);
@@ -446,17 +599,21 @@ export function buildGabledHall(p, sm, dm, rm) {
     }
   }
 
-  const door = new THREE.Mesh(new THREE.BoxGeometry(
-    doorSide === 'left' || doorSide === 'right' ? 0.07 : doorW,
-    doorH,
-    doorSide === 'left' || doorSide === 'right' ? doorW : 0.07,
-  ), dm || sm);
-  const doorOffset = p.doorOffset || 0;
-  if (doorSide === 'back') door.position.set(doorOffset, doorH / 2, -(d / 2 + 0.01));
-  else if (doorSide === 'left') door.position.set(-(w / 2 + 0.01), doorH / 2, doorOffset);
-  else if (doorSide === 'right') door.position.set(w / 2 + 0.01, doorH / 2, doorOffset);
-  else door.position.set(doorOffset, doorH / 2, d / 2 + 0.01);
-  g.add(door);
+  // Dark backing panel recessed inside the doorway (depth cue, replaces old outer-face slab)
+  {
+    const dOff = p.doorOffset || 0;
+    const inset = Math.max(0.14, Math.min(w, d) * 0.14); // ~1 shell thickness
+    const door = new THREE.Mesh(new THREE.BoxGeometry(
+      doorSide === 'left' || doorSide === 'right' ? 0.06 : doorW,
+      doorH,
+      doorSide === 'left' || doorSide === 'right' ? doorW : 0.06,
+    ), dm || sm);
+    if (doorSide === 'back')  door.position.set(dOff, doorH / 2, -(d / 2 - inset));
+    else if (doorSide === 'left')  door.position.set(-(w / 2 - inset), doorH / 2, dOff);
+    else if (doorSide === 'right') door.position.set( w / 2 - inset,  doorH / 2, dOff);
+    else                           door.position.set(dOff, doorH / 2, d / 2 - inset);
+    g.add(door);
+  }
 
   const roofH = addGabledRoof(g, w, d, h, sm, rm, {
     roofH: p.roofH,
