@@ -40,18 +40,18 @@ size = Vector2(600, 600)
 albedo_color = Color(0.25, 0.22, 0.18, 1)
 roughness    = 0.95
 
-# ── Root ─────────────────────────────────────────────────────────────────────
+# -- Root ---------------------------------------------------------------------
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_main")
 castle_id = "krak"
 
-# ── Environment ───────────────────────────────────────────────────────────────
+# -- Environment ---------------------------------------------------------------
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("env_res")
 
-# ── Lighting ──────────────────────────────────────────────────────────────────
+# -- Lighting ------------------------------------------------------------------
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 30, 0)
@@ -65,7 +65,7 @@ transform = Transform3D(0.707, 0.5, -0.5, 0, 0.707, 0.707, 0.707, -0.5, 0.5, 0, 
 light_color  = Color(0.55, 0.65, 0.90, 1)
 light_energy = 0.45
 
-# ── Terrain ───────────────────────────────────────────────────────────────────
+# -- Terrain -------------------------------------------------------------------
 
 [node name="TerrainManager" type="Node3D" parent="."]
 script = ExtResource("3_terrain")
@@ -82,11 +82,11 @@ cast_shadow = 0
 [node name="Col" type="CollisionShape3D" parent="FallbackGround"]
 shape = SubResource("fallback_col")
 
-# ── Castle ────────────────────────────────────────────────────────────────────
+# -- Castle --------------------------------------------------------------------
 
 [node name="CastleRoot" type="Node3D" parent="."]
 
-# ── Orbit Camera ──────────────────────────────────────────────────────────────
+# -- Orbit Camera --------------------------------------------------------------
 
 [node name="CameraRig" type="Node3D" parent="."]
 script = ExtResource("2_cam")
@@ -98,7 +98,7 @@ fov  = 52.0
 near = 0.1
 far  = 2000.0
 
-# ── Player (FPS + TPS) ────────────────────────────────────────────────────────
+# -- Player (FPS + TPS) --------------------------------------------------------
 
 [node name="PlayerController" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 30)
@@ -124,7 +124,7 @@ fov  = 65.0
 near = 0.1
 far  = 1500.0
 
-# ── UI ────────────────────────────────────────────────────────────────────────
+# -- UI ------------------------------------------------------------------------
 
 [node name="UI" type="CanvasLayer" parent="."]
 

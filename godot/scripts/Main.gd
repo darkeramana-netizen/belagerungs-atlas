@@ -10,7 +10,7 @@ extends Node3D
 
 @onready var castle_root: Node3D          = $CastleRoot
 @onready var cam_rig:     Node3D          = $CameraRig
-@onready var terrain:     Node3D          = $TerrainManager
+@onready var terrain                      = $TerrainManager
 @onready var player:      CharacterBody3D = $PlayerController
 @onready var hud_label:   Label           = $UI/HUD
 
