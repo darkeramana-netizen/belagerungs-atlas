@@ -48,8 +48,8 @@ func _build() -> void:
 	for j in n:
 		for i in n:
 			var vi  := j * n + i
-			var il  := max(0, i - 1);  var ir := min(segs, i + 1)
-			var jd  := max(0, j - 1);  var ju := min(segs, j + 1)
+			var il  := maxi(0, i - 1);  var ir := mini(segs, i + 1)
+			var jd  := maxi(0, j - 1);  var ju := mini(segs, j + 1)
 			var dhx := heights[j * n + ir] - heights[j * n + il]
 			var dhz := heights[ju * n + i] - heights[jd * n + i]
 			norms[vi] = Vector3(-dhx, 2.0 * step, -dhz).normalized()
