@@ -1,0 +1,3892 @@
+[
+  {
+    "id": "masada",
+    "name": "masada",
+    "style": "ancient",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 42,
+    "components": [
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0,
+        "z": 0,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -18.5,
+            "z": -13.8
+          },
+          {
+            "x": -13.5,
+            "z": -17.2
+          },
+          {
+            "x": -2.4,
+            "z": -18.8
+          },
+          {
+            "x": 9.8,
+            "z": -17.1
+          },
+          {
+            "x": 16.4,
+            "z": -12.8
+          },
+          {
+            "x": 18.2,
+            "z": -3.2
+          },
+          {
+            "x": 17.5,
+            "z": 8.8
+          },
+          {
+            "x": 12.2,
+            "z": 16.7
+          },
+          {
+            "x": 1.2,
+            "z": 18.6
+          },
+          {
+            "x": -10.6,
+            "z": 17.1
+          },
+          {
+            "x": -16.2,
+            "z": 10.8
+          },
+          {
+            "x": -18.4,
+            "z": 0.8
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.16,
+            "h": 1.5
+          },
+          {
+            "scale": 1.08,
+            "h": 1.5
+          },
+          {
+            "scale": 1.02,
+            "h": 1.4
+          },
+          {
+            "scale": 0.97,
+            "h": 1.2
+          },
+          {
+            "scale": 0.93,
+            "h": 0.8
+          }
+        ],
+        "label": "Masada-Plateau (Tafelberg)",
+        "info": "Das Diorama zeigt Masada als laengliches Plateau mit steilen Flanken. Die eigentliche Staerke der Festung war das Gelaende und nicht eine perfekte Mauergeometrie.",
+        "id": "masada/terrain_stack/1"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": -21,
+        "z": 1.6,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -2.8,
+            "z": -3.4
+          },
+          {
+            "x": 1.8,
+            "z": -5
+          },
+          {
+            "x": 5.6,
+            "z": -3.7
+          },
+          {
+            "x": 7.2,
+            "z": 0.2
+          },
+          {
+            "x": 5,
+            "z": 3.8
+          },
+          {
+            "x": 0.1,
+            "z": 4.8
+          },
+          {
+            "x": -3.6,
+            "z": 2.4
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.05,
+            "h": 1
+          },
+          {
+            "scale": 0.98,
+            "h": 0.9
+          },
+          {
+            "scale": 0.9,
+            "h": 0.8
+          }
+        ],
+        "label": "Silvas Belagerungsrampe (Westsporn)",
+        "info": "Hier setzte Flavius Silva an. Der Westsporn war die einzige Stelle, an der Roemer eine Rampe bis an die Plateaukante treiben konnten.",
+        "id": "masada/terrain_stack/2"
+      },
+      {
+        "type": "RING",
+        "y": 6.4,
+        "squareTowers": true,
+        "gate": {
+          "atIndex": 8,
+          "w": 2.2,
+          "d": 1.8,
+          "h": 3.8,
+          "label": "Westtor (Serpentinenweg)",
+          "info": "Einziger regulaerer Zugang ueber den gewundenen Fusspfad der Westseite."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -17,
+            "r": 0.85,
+            "h": 4.5,
+            "label": "Nordturm",
+            "info": "Beobachtet das noerdliche Ufer des Toten Meers und die Belagerungswerke der X. Legion."
+          },
+          {
+            "x": 6.4,
+            "z": -13.7,
+            "r": 0.8,
+            "h": 4,
+            "label": "Nordostturm",
+            "info": "Flankierungsturm entlang des Plateau-Rands."
+          },
+          {
+            "x": 10.5,
+            "z": -5.3,
+            "r": 0.8,
+            "h": 4,
+            "label": "Ostturm Nord",
+            "info": "Oestliche Steilseite mit praktisch unmoeglicher Angriffslinie."
+          },
+          {
+            "x": 10.5,
+            "z": 5.3,
+            "r": 0.8,
+            "h": 4,
+            "label": "Ostturm Sued",
+            "info": "Die Natur ersetzte hier fast die gesamte Mauer."
+          },
+          {
+            "x": 6.4,
+            "z": 13.7,
+            "r": 0.8,
+            "h": 4,
+            "label": "Suedostturm",
+            "info": "Suedoestliche Ecke ueber dem Toten Meer."
+          },
+          {
+            "x": 0,
+            "z": 17,
+            "r": 0.85,
+            "h": 4.5,
+            "label": "Suedturm",
+            "info": "Suedende des Plateaus und schmalster Punkt der Anlage."
+          },
+          {
+            "x": -6.4,
+            "z": 13.7,
+            "r": 0.8,
+            "h": 4,
+            "label": "Suedwestturm",
+            "info": "Kontrolle ueber den westlichen Serpentinenweg."
+          },
+          {
+            "x": -10.5,
+            "z": 5.3,
+            "r": 0.85,
+            "h": 4.5,
+            "label": "Westturm Sued",
+            "info": "Ueber dem westlichen Gelaendesporn."
+          },
+          {
+            "x": -10.5,
+            "z": -5.3,
+            "r": 0.85,
+            "h": 4.5,
+            "label": "Westturm Nord",
+            "info": "Direkt ueber dem Ansatzpunkt der roemischen Belagerungsrampe."
+          },
+          {
+            "x": -6.4,
+            "z": -13.7,
+            "r": 0.8,
+            "h": 4,
+            "label": "Nordwestturm",
+            "info": "Blick auf die komplette Circumvallation der X. Legion."
+          }
+        ],
+        "wall": {
+          "h": 3,
+          "thick": 0.9
+        },
+        "id": "masada/ring/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 1.5,
+        "z": -12.8,
+        "w": 6.8,
+        "d": 2.6,
+        "h": 0.5,
+        "y": 6.5,
+        "label": "Nordpalast-Terrasse",
+        "info": "Der Nordpalast lag terrassiert an der Felskante und wird hier bewusst als vorgelagerte Plattform lesbar gemacht.",
+        "id": "masada/plateau/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 1.5,
+        "z": -12.8,
+        "w": 5.5,
+        "d": 2.5,
+        "h": 2.8,
+        "y": 7.04,
+        "label": "Herodianischer Nordpalast",
+        "info": "Dreistufige Palastanlage auf Felsvorspruengen als Zeichen der luxurioesen Herodes-Architektur.",
+        "id": "masada/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -3.5,
+        "z": 0,
+        "w": 7,
+        "d": 2,
+        "h": 1.8,
+        "y": 6.4,
+        "noRoof": true,
+        "label": "Magazingebaeude (Zehn Speicher)",
+        "info": "Lange Lagerhaeuser mit Vorraeten fuer Jahre und Bezug zu den in den Fels gehauenen Zisternen.",
+        "id": "masada/square_tower/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 2.81,
+        "z": -7.58,
+        "y": 0.05,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – masada",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "masada/gabled_hall/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "krak",
+    "name": "krak",
+    "style": "crusader",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 44,
+    "components": [
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0.4,
+        "z": 0.1,
+        "y": 4.92,
+        "footprint": [
+          {
+            "x": -13.6,
+            "z": -10.4
+          },
+          {
+            "x": -10.4,
+            "z": -13.2
+          },
+          {
+            "x": -1.6,
+            "z": -14.4
+          },
+          {
+            "x": 6.8,
+            "z": -13.1
+          },
+          {
+            "x": 10.9,
+            "z": -9.1
+          },
+          {
+            "x": 11.8,
+            "z": -1
+          },
+          {
+            "x": 11.2,
+            "z": 7
+          },
+          {
+            "x": 7.8,
+            "z": 11.6
+          },
+          {
+            "x": 0.8,
+            "z": 12.9
+          },
+          {
+            "x": -6.8,
+            "z": 11.8
+          },
+          {
+            "x": -10.8,
+            "z": 7
+          },
+          {
+            "x": -13.6,
+            "z": -0.6
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.04,
+            "h": 0.78
+          },
+          {
+            "scale": 0.98,
+            "h": 0.74
+          },
+          {
+            "scale": 0.93,
+            "h": 0.68
+          },
+          {
+            "scale": 0.88,
+            "h": 0.56
+          },
+          {
+            "scale": 0.84,
+            "h": 0.44
+          }
+        ],
+        "label": "Glacis (Massiver Steinsockel)",
+        "info": "Der Krak-Sockel wird hier nicht mehr als runder Kegel gelesen, sondern als polygonaler, an die Hochburg angepasster Steinmantel. So schliesst der Glacis sauber an den Burgberg an und traegt den inneren Ring glaubwuerdiger.",
+        "id": "krak/terrain_stack/1"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": -9.5,
+        "z": 3.1,
+        "y": 5.16,
+        "footprint": [
+          {
+            "x": -2,
+            "z": -1.2
+          },
+          {
+            "x": -1.2,
+            "z": -2.2
+          },
+          {
+            "x": 0.3,
+            "z": -2.4
+          },
+          {
+            "x": 1.6,
+            "z": -1.4
+          },
+          {
+            "x": 1.9,
+            "z": 0.3
+          },
+          {
+            "x": 1.4,
+            "z": 1.8
+          },
+          {
+            "x": -0.1,
+            "z": 2.4
+          },
+          {
+            "x": -1.7,
+            "z": 1.6
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.18,
+            "h": 0.78
+          },
+          {
+            "scale": 1.08,
+            "h": 0.72
+          },
+          {
+            "scale": 0.99,
+            "h": 0.6
+          },
+          {
+            "scale": 0.92,
+            "h": 0.48
+          },
+          {
+            "scale": 0.86,
+            "h": 0.4
+          }
+        ],
+        "label": "Felsstuetze unter dem Suedwestturm",
+        "info": "Kleine lokale Felsstuetze direkt unter dem Waechterturm statt eines rundum sichtbaren Podests.",
+        "id": "krak/terrain_stack/2"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0,
+        "z": 9.8,
+        "y": 5.18,
+        "footprint": [
+          {
+            "x": -2.3,
+            "z": -1.5
+          },
+          {
+            "x": -1.4,
+            "z": -2.5
+          },
+          {
+            "x": 0.1,
+            "z": -2.8
+          },
+          {
+            "x": 1.8,
+            "z": -1.9
+          },
+          {
+            "x": 2.3,
+            "z": -0.2
+          },
+          {
+            "x": 1.8,
+            "z": 1.7
+          },
+          {
+            "x": 0.4,
+            "z": 2.7
+          },
+          {
+            "x": -1.6,
+            "z": 2.4
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.2,
+            "h": 0.82
+          },
+          {
+            "scale": 1.1,
+            "h": 0.74
+          },
+          {
+            "scale": 1,
+            "h": 0.62
+          },
+          {
+            "scale": 0.92,
+            "h": 0.5
+          },
+          {
+            "scale": 0.86,
+            "h": 0.4
+          }
+        ],
+        "label": "Felsstuetze unter dem Torre Grande",
+        "info": "Lokaler Felskeil unter dem grossen Suedturm, damit die Auflage wie Teil des Berges statt wie eine Scheibe wirkt.",
+        "id": "krak/terrain_stack/3"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": 9.5,
+        "z": 3.1,
+        "y": 5.16,
+        "footprint": [
+          {
+            "x": -1.9,
+            "z": -1.3
+          },
+          {
+            "x": -1,
+            "z": -2.3
+          },
+          {
+            "x": 0.6,
+            "z": -2.5
+          },
+          {
+            "x": 1.8,
+            "z": -1.6
+          },
+          {
+            "x": 2,
+            "z": 0.1
+          },
+          {
+            "x": 1.4,
+            "z": 1.8
+          },
+          {
+            "x": -0.2,
+            "z": 2.4
+          },
+          {
+            "x": -1.7,
+            "z": 1.5
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.18,
+            "h": 0.78
+          },
+          {
+            "scale": 1.08,
+            "h": 0.72
+          },
+          {
+            "scale": 0.99,
+            "h": 0.6
+          },
+          {
+            "scale": 0.92,
+            "h": 0.48
+          },
+          {
+            "scale": 0.86,
+            "h": 0.4
+          }
+        ],
+        "label": "Felsstuetze unter dem Suedostturm",
+        "info": "Lokale Bergstuetze unter der Torre del Maestre, damit der Turm sauber auf dem Glacis steht.",
+        "id": "krak/terrain_stack/4"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0.4,
+        "z": 0.1,
+        "y": 1.98,
+        "footprint": [
+          {
+            "x": -15,
+            "z": -11.5
+          },
+          {
+            "x": -11.5,
+            "z": -14.5
+          },
+          {
+            "x": -2,
+            "z": -16
+          },
+          {
+            "x": 7.5,
+            "z": -14.5
+          },
+          {
+            "x": 12,
+            "z": -10
+          },
+          {
+            "x": 13,
+            "z": -1.2
+          },
+          {
+            "x": 12.4,
+            "z": 7.8
+          },
+          {
+            "x": 8.6,
+            "z": 12.8
+          },
+          {
+            "x": 1,
+            "z": 14.2
+          },
+          {
+            "x": -7.5,
+            "z": 13
+          },
+          {
+            "x": -11.8,
+            "z": 7.8
+          },
+          {
+            "x": -15,
+            "z": -0.8
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.04,
+            "h": 0.74
+          },
+          {
+            "scale": 1,
+            "h": 0.72
+          },
+          {
+            "scale": 0.96,
+            "h": 0.76
+          },
+          {
+            "scale": 0.92,
+            "h": 0.72
+          }
+        ],
+        "label": "Oberes Felsplateau (Burgfels)",
+        "info": "Der natürliche Felsuntergrund des Krak steigt hier vom äusseren Hof zum Glacis an. Diese mittlere Geländestufe bildet den Übergang zwischen dem Zwingerhof und dem mächtigen Steinmantel der Hochburg.",
+        "id": "krak/terrain_stack/5"
+      },
+      {
+        "type": "RING",
+        "y": 8.12,
+        "matVariant": "limestone",
+        "gate": {
+          "atIndex": 4,
+          "w": 3.5,
+          "d": 3,
+          "h": 6.5,
+          "label": "Inneres Tor - Rampeneingang (Hochburg)",
+          "info": "Der verschlungene Eingang in den Innenhof: eine ueberdachte Rampe, die in engen Kehren nach oben fuehrt."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": 10,
+            "r": 2.3,
+            "h": 11.5,
+            "noRoof": true,
+            "plinthH": 1.2,
+            "plinthDrop": 0.62,
+            "plinthTopScale": 1.2,
+            "plinthBottomScale": 1.34,
+            "skirtH": 3,
+            "skirtTopScale": 1.34,
+            "skirtBottomScale": 1.54,
+            "label": "Torre Grande (Grosser Turm)",
+            "info": "Der maechtigste Turm des Krak und letzter Rueckzugspunkt der Johanniter."
+          },
+          {
+            "x": -9.51,
+            "z": 3.09,
+            "r": 2,
+            "h": 10,
+            "noRoof": true,
+            "plinthH": 1.02,
+            "plinthDrop": 0.56,
+            "plinthTopScale": 1.2,
+            "plinthBottomScale": 1.34,
+            "skirtH": 2.8,
+            "skirtTopScale": 1.34,
+            "skirtBottomScale": 1.52,
+            "label": "Suedwestturm (Waechterturm)",
+            "info": "Einer der drei massiven Suedtuerme mit senkrechten Abwurfwinkeln auf Angreifer am Mauerfuss."
+          },
+          {
+            "x": -5.88,
+            "z": -8.09,
+            "r": 1.5,
+            "h": 7.5,
+            "label": "Nordwestturm (Innen)",
+            "info": "Verbindungsturm zwischen Sued- und Nordmauer des Innenhofs."
+          },
+          {
+            "x": 5.88,
+            "z": -8.09,
+            "r": 1.5,
+            "h": 7.5,
+            "label": "Nordostturm (Innen)",
+            "info": "Ueberblickte das aeussere Ostfeld und deckte das Haupttor von oben."
+          },
+          {
+            "x": 9.51,
+            "z": 3.09,
+            "r": 1.9,
+            "h": 9.5,
+            "noRoof": true,
+            "plinthH": 0.98,
+            "plinthDrop": 0.54,
+            "plinthTopScale": 1.2,
+            "plinthBottomScale": 1.34,
+            "skirtH": 2.7,
+            "skirtTopScale": 1.34,
+            "skirtBottomScale": 1.5,
+            "label": "Suedostturm (Torre del Maestre)",
+            "info": "Flankiert den Rampeneingang zum Innenhof und schliesst die starke Suedfront."
+          }
+        ],
+        "wall": {
+          "h": 6,
+          "thick": 1.3
+        },
+        "id": "krak/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 1.98,
+        "gate": {
+          "atIndex": 3,
+          "w": 5.5,
+          "d": 4.5,
+          "h": 7.5,
+          "label": "Haupttor - Befestigte Rampe (Barbakane)",
+          "info": "Der historische Eingang des Krak fuehrte ueber eine lange, ueberdachte Rampe mit mehreren Engstellen."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -20,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm Nord",
+            "info": "Beobachtungsposten fuer den Nordhang."
+          },
+          {
+            "x": 14.14,
+            "z": -14.14,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm NO",
+            "info": "Flankierungsturm fuer Kreuzfeuer zwischen Ost- und Nordmauer."
+          },
+          {
+            "x": 20,
+            "z": 0,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm Ost",
+            "info": "Turm neben dem Haupttor mit Deckung des Torzugangs."
+          },
+          {
+            "x": 14.14,
+            "z": 14.14,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm SO",
+            "info": "Suedoestlicher Flankierungsturm des Torbereichs."
+          },
+          {
+            "x": 0,
+            "z": 20,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm Sued",
+            "info": "Suedturm des aeusseren Rings direkt unter der Glacis-Front."
+          },
+          {
+            "x": -14.14,
+            "z": 14.14,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm SW",
+            "info": "Suedwestturm mit Sichtlinie ueber das Vorgelaende."
+          },
+          {
+            "x": -20,
+            "z": 0,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm West",
+            "info": "Westturm, teilweise im Felsgelaende eingebettet."
+          },
+          {
+            "x": -14.14,
+            "z": -14.14,
+            "r": 1.3,
+            "h": 5.5,
+            "label": "Aussenturm NW",
+            "info": "Nordwestturm zur Sicherung des kritischen Nordhangs."
+          }
+        ],
+        "wall": {
+          "h": 3,
+          "thick": 0.8,
+          "buttresses": true
+        },
+        "id": "krak/ring/2"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 0.5,
+        "z": 5.8,
+        "y": 5.02,
+        "w": 6.2,
+        "d": 6,
+        "h": 3,
+        "steps": 6,
+        "landingD": 1,
+        "label": "Grosser Steinaufgang zur Hochburg",
+        "info": "Der Zugang zur Hochburg war kein glatter Hang, sondern eine gestaffelte Steinrampe mit Treppen und kleinen Podesten unter Beschuss der inneren Tuerme.",
+        "id": "krak/stairway/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0.1,
+        "z": -0.8,
+        "y": 8.18,
+        "w": 11.6,
+        "d": 8.2,
+        "h": 0.22,
+        "label": "Innenhof-Terrasse (Hochburg)",
+        "info": "Unsichtbar-stabile Trageflaeche fuer die Hofbauten, damit Hallen und Kleinobjekte sauber aufliegen.",
+        "id": "krak/plateau/1"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 0,
+        "z": -5.5,
+        "w": 8.8,
+        "d": 3.5,
+        "h": 3.2,
+        "y": 8.44,
+        "roofH": 1.9,
+        "buttressPairs": 3,
+        "slitCount": 2,
+        "doorSide": "front",
+        "doorW": 0.9,
+        "chimneyCount": 2,
+        "gableStyle": "triangular",
+        "label": "Konventsaal der Johanniter",
+        "info": "Der lange Saal der Johanniter bildet das zeremonielle und politische Herz der Hochburg. Ein eigener Hallenbau macht den Innenhof nun lesbarer als bewohnte Ordensburg.",
+        "id": "krak/gabled_hall/1"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 4.9,
+        "z": -0.5,
+        "w": 2.9,
+        "d": 2.4,
+        "h": 3.8,
+        "y": 8.44,
+        "roofH": 1.55,
+        "slitCount": 1,
+        "doorSide": "front",
+        "doorOffset": -0.2,
+        "porch": true,
+        "gableStyle": "triangular",
+        "label": "Johanniterkapelle",
+        "info": "Die Kapelle der Hospitaliter erscheint hier als eigener kleiner Sakralbau mit Vorbau, statt nur als austauschbarer Block im Hof zu verschwinden.",
+        "id": "krak/gabled_hall/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -2.8,
+        "z": 1.7,
+        "w": 3.5,
+        "d": 2.4,
+        "h": 2.5,
+        "y": 8.44,
+        "roofH": 1.15,
+        "doorSide": "front",
+        "slitCount": 0,
+        "gableStyle": "triangular",
+        "label": "Kasernen- und Magazinbau",
+        "info": "Niedriger Wirtschafts- und Magazintrakt im inneren Hof. Solche Nebengebaeude machen den Krak als bewohnte Ordensburg lesbarer und brechen die Leere im Hof.",
+        "id": "krak/gabled_hall/3"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 0.5,
+        "z": 0.8,
+        "w": 1.5,
+        "d": 1.5,
+        "h": 0.95,
+        "y": 8.44,
+        "noRoof": true,
+        "label": "Innenhof-Zisterne",
+        "info": "Kleine sichtbare Hofzisterne als Erinnerung daran, dass Wasserwirtschaft im Krak ueberlebenswichtig war.",
+        "id": "krak/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -1.2,
+        "z": 4.4,
+        "w": 1.2,
+        "d": 0.8,
+        "h": 0.45,
+        "y": 8.26,
+        "noRoof": true,
+        "label": "Lagerkisten und Vorratsstapel",
+        "info": "Niedrige Vorratsstapel und Hofgut brechen die Leere im Innenbereich und lassen die Burg bewohnt wirken.",
+        "id": "krak/square_tower/2"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 1,
+        "z": 4.1,
+        "w": 1,
+        "d": 0.7,
+        "h": 0.38,
+        "y": 8.44,
+        "noRoof": true,
+        "label": "Werkhof",
+        "info": "Kleiner Werk- und Lagerbereich im Hof vor dem inneren Mauerzug.",
+        "id": "krak/square_tower/3"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": -13.5,
+        "z": 8.5,
+        "y": 1.98,
+        "w": 1.6,
+        "d": 5.2,
+        "h": 3,
+        "steps": 8,
+        "landingD": 0.5,
+        "rotation": 0.92,
+        "label": "Wehrgangstreppe West",
+        "info": "Seitentreppe vom aeusseren Zwingerhof auf den westlichen Wehrgang des Aussenrings.",
+        "id": "krak/stairway/2"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 13.5,
+        "z": 8.5,
+        "y": 1.98,
+        "w": 1.6,
+        "d": 5.2,
+        "h": 3,
+        "steps": 8,
+        "landingD": 0.5,
+        "rotation": -0.92,
+        "label": "Wehrgangstreppe Ost",
+        "info": "Gegenstueck am oestlichen Abschnitt des aeusseren Rings fuer Wachwechsel und schnelle Verstaerkung.",
+        "id": "krak/stairway/3"
+      },
+      {
+        "type": "PLATEAU",
+        "x": -10.2,
+        "z": 10.6,
+        "y": 3.9,
+        "w": 5.3,
+        "d": 2.7,
+        "h": 1.2,
+        "rotation": -0.52,
+        "label": "Fundament Stall- und Werkhaus",
+        "info": "Kleines steinernes Fundamentplateau, damit der Baukoerper sauber auf dem ansteigenden Terrain sitzt.",
+        "id": "krak/plateau/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -10.2,
+        "z": 10.6,
+        "y": 5.14,
+        "w": 4.8,
+        "d": 2.2,
+        "h": 2.2,
+        "roofH": 1,
+        "slitCount": 1,
+        "doorSide": "front",
+        "doorOffset": 0.2,
+        "rotation": -0.52,
+        "chimneyCount": 1,
+        "gableStyle": "triangular",
+        "label": "Stall- und Werkhaus des aeusseren Werks",
+        "info": "Auch der aeussere Hof war kein leerer Schiessplatz. Kleine Stall- und Werkbauten machten den Krak im Alltag erst funktionsfaehig.",
+        "id": "krak/gabled_hall/4"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 10,
+        "z": 10.7,
+        "y": 3.9,
+        "w": 5.1,
+        "d": 2.7,
+        "h": 1.2,
+        "rotation": 0.52,
+        "label": "Fundament Backhaus und Vorratshaus",
+        "info": "Leicht angehobenes Fundament fuer den oestlichen Wirtschaftsbereich.",
+        "id": "krak/plateau/3"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 10,
+        "z": 10.7,
+        "y": 5.14,
+        "w": 4.7,
+        "d": 2.15,
+        "h": 2.2,
+        "roofH": 0.95,
+        "slitCount": 1,
+        "doorSide": "front",
+        "doorOffset": -0.2,
+        "rotation": 0.52,
+        "chimneyCount": 1,
+        "gableStyle": "triangular",
+        "label": "Backhaus und Vorratshaus",
+        "info": "Ein kleiner Ofen- und Vorratsbau im aeusseren Werk ergaenzt den grossen Hallen- und Magazinkern der Hochburg.",
+        "id": "krak/gabled_hall/5"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -6.8,
+        "z": 8.1,
+        "y": 4.22,
+        "w": 0.85,
+        "d": 0.65,
+        "h": 0.42,
+        "noRoof": true,
+        "label": "Futterkisten Westhof",
+        "info": "Vorratskisten fuer Stalltiere und Marschproviant im westlichen Wirtschaftshof.",
+        "id": "krak/square_tower/4"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -6.2,
+        "z": 9.3,
+        "y": 4.22,
+        "w": 0.82,
+        "d": 0.62,
+        "h": 0.38,
+        "noRoof": true,
+        "label": "Werkkisten Westhof",
+        "info": "Werk- und Materialstapel fuer Reparaturen an Wehrgang und Toren.",
+        "id": "krak/square_tower/5"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 6.3,
+        "z": 9.4,
+        "y": 4.22,
+        "w": 0.9,
+        "d": 0.68,
+        "h": 0.42,
+        "noRoof": true,
+        "label": "Holzstapel Osthof",
+        "info": "Brennholz und Bauholz fuer Backhaus, Werkhof und winterliche Versorgung.",
+        "id": "krak/square_tower/6"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 6.9,
+        "z": 8.2,
+        "y": 4.22,
+        "w": 0.82,
+        "d": 0.62,
+        "h": 0.36,
+        "noRoof": true,
+        "label": "Vorratsstapel Osthof",
+        "info": "Kleiner Lagerstapel im aeußeren Hof als Teil der Alltagslogistik.",
+        "id": "krak/square_tower/7"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 0.7,
+        "z": 3.2,
+        "w": 1.9,
+        "d": 1.3,
+        "h": 1.45,
+        "y": 8.44,
+        "roofH": 0.62,
+        "doorSide": "front",
+        "slitCount": 0,
+        "chimneyCount": 0,
+        "gableStyle": "triangular",
+        "label": "Hofunterstand",
+        "info": "Kleiner Unterstand im inneren Hof fuer Werkzeug, Ersatzteile und Wachdienstmaterial.",
+        "id": "krak/gabled_hall/6"
+      },
+      {
+        "type": "GLACIS",
+        "x": 0,
+        "z": 16,
+        "y": 1.72,
+        "rTop": 3,
+        "rBot": 3.8,
+        "h": 0.7,
+        "label": "Zisternenbecken (Suedring)",
+        "info": "Eine der Hauptauffangzisternen im Zwinger zwischen den beiden Mauerringen.",
+        "id": "krak/glacis/1"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": 0,
+        "z": 10,
+        "y": 19.62,
+        "r": 2.3,
+        "overhang": 0.55,
+        "gallH": 0.52,
+        "corbH": 0.32,
+        "count": 10,
+        "slotRatio": 0.38,
+        "label": "Pechnasen – Torre Grande",
+        "info": "Die umlaufende Abwurfgalerie am Scheitel des groessten Turms ermoeglichte senkrechten Beschuss auf Angreifer am Mauerfuss. Box-Machicoulis dieser Art waren im Krak komplexer ausgefuehrt als in zeitgenoessischen Bauten wie Saone oder Margat.",
+        "id": "krak/machicolation/1"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": -9.51,
+        "z": 3.09,
+        "y": 18.12,
+        "r": 2,
+        "overhang": 0.52,
+        "gallH": 0.5,
+        "corbH": 0.3,
+        "count": 9,
+        "slotRatio": 0.4,
+        "label": "Pechnasen – Suedwestturm (Waechterturm)",
+        "info": "Die Abwurfkraenze am Waechterturm deckten den Glacisfuss und den Graben. Kein Angreifer konnte die Suedfront abschreiten, ohne unter direktem Beschuss von oben zu stehen.",
+        "id": "krak/machicolation/2"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": 9.51,
+        "z": 3.09,
+        "y": 17.62,
+        "r": 1.9,
+        "overhang": 0.52,
+        "gallH": 0.5,
+        "corbH": 0.3,
+        "count": 9,
+        "slotRatio": 0.4,
+        "label": "Pechnasen – Torre del Maestre",
+        "info": "Der Turm des Ordensmeisters flankierte den Rampeneingang und erhielt als Statussymbol wie als Verteidigungsposten eine vollstaendige Pechnasen-Galerie.",
+        "id": "krak/machicolation/3"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": 20,
+        "z": 0,
+        "y": 7.48,
+        "r": 1.3,
+        "overhang": 0.42,
+        "gallH": 0.42,
+        "corbH": 0.26,
+        "count": 7,
+        "slotRatio": 0.4,
+        "label": "Pechnasen – Aussenturm Ost (Torturm)",
+        "info": "Der ostliche Torturm hatte als erster sichtbarer Flankenposten nach der Rampe Pechnasen, die den Torzugang von oben deckten.",
+        "id": "krak/machicolation/4"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": 14.14,
+        "z": 14.14,
+        "y": 7.48,
+        "r": 1.3,
+        "overhang": 0.42,
+        "gallH": 0.42,
+        "corbH": 0.26,
+        "count": 7,
+        "slotRatio": 0.4,
+        "label": "Pechnasen – Aussenturm SO",
+        "info": "Der suedoestliche Flankenturm kontrollierte das Torvorfeld und schloss den Kreuzfeuerbuegel zwischen den Suedtuerme.",
+        "id": "krak/machicolation/5"
+      },
+      {
+        "type": "MACHICOLATION",
+        "mode": "round",
+        "x": 0,
+        "z": 20,
+        "y": 7.48,
+        "r": 1.3,
+        "overhang": 0.42,
+        "gallH": 0.42,
+        "corbH": 0.26,
+        "count": 7,
+        "slotRatio": 0.4,
+        "label": "Pechnasen – Aussenturm Sued",
+        "info": "Der suedlichste Aussenturm direkt uber dem Glacis – seine Pechnasen deckten den kritischsten Abschnitt der gesamten Verteidigung.",
+        "id": "krak/machicolation/6"
+      },
+      {
+        "type": "HOARDING",
+        "x": 4.76,
+        "z": 6.55,
+        "y": 14.12,
+        "w": 6.5,
+        "d": 1.2,
+        "h": 1.4,
+        "rotation": 0.6285022336414338,
+        "label": "Hurde – Suedostmauer Innenring (Richtung Torre Grande)",
+        "info": "Die holzernen Kampfgalerien (Hurden) der suedlichen Innenringmauer konnten bei Belagerung in wenigen Stunden eingehängt werden. Sie gaben Bogenschuetzen und Steinwerfern eine komplett ueberdachte Stellungslinie ueber dem freien Abfall der Hangmauer.",
+        "id": "krak/hoarding/1"
+      },
+      {
+        "type": "HOARDING",
+        "x": -4.76,
+        "z": 6.55,
+        "y": 14.12,
+        "w": 6.5,
+        "d": 1.2,
+        "h": 1.4,
+        "rotation": -0.6285022336414338,
+        "label": "Hurde – Suedwestmauer Innenring (Grande–Suedwestturm)",
+        "info": "Der symmetrische Gegenabschnitt der Suedfront schloss die Lucke zwischen Torre Grande und dem Waechterturm. Zusammen mit den Pechnasen auf den Tuermen entstand eine lueckenlose Beschusslinie ueber die gesamte Suedfront des Innenrings.",
+        "id": "krak/hoarding/2"
+      },
+      {
+        "type": "HOARDING",
+        "x": -7.07,
+        "z": 17.07,
+        "y": 4.98,
+        "w": 8,
+        "d": 1.1,
+        "h": 1.3,
+        "rotation": -0.3929453938867673,
+        "label": "Hurde – Suedwestmauer Aussenring (Sued–SW)",
+        "info": "Die laengste zusammenhaengende Holzkampfgalerie des aeusseren Mauerguertels sicherte den exponierten Suedwesthang. Von hier aus konnten Angreifer, die sich am Glacis vorbeigekaempft hatten, noch einmal unter kombiniertes Bogenfeuer von Mauer und Galerie genommen werden.",
+        "id": "krak/hoarding/3"
+      },
+      {
+        "type": "STAIR_FLIGHT",
+        "x": 14.5,
+        "z": 2,
+        "y": 1.98,
+        "steps": 12,
+        "stepH": 0.25,
+        "stepD": 0.38,
+        "w": 1.8,
+        "rotation": 1.413716694115407,
+        "label": "Wandaufgang Ost – Äusserer Ring",
+        "info": "Treppenaufgang zur Wehrgangsplattform des östlichen Außenwalls. Über diesen Aufgang konnten Verteidiger schnell von der Hofebene auf den Kampfgang gelangen.",
+        "id": "krak/stair_flight/1"
+      },
+      {
+        "type": "STAIR_FLIGHT",
+        "x": 3.8,
+        "z": 12.5,
+        "y": 4.92,
+        "steps": 10,
+        "stepH": 0.32,
+        "stepD": 0.38,
+        "w": 2,
+        "rotation": 1.5707963267948966,
+        "label": "Glacisaufgang Süd – Innenring",
+        "info": "Breiter Treppenaufgang vom Zwingerhof auf das Plateau des inneren Mauerwerks. Der steile Glacis des Krak erzwang einen langen, exponierten Anmarsch für Angreifer.",
+        "id": "krak/stair_flight/2"
+      },
+      {
+        "type": "STAIR_FLIGHT",
+        "x": -1.5,
+        "z": 9.5,
+        "y": 8.12,
+        "steps": 6,
+        "stepH": 0.28,
+        "stepD": 0.38,
+        "w": 1.6,
+        "rotation": 2.670353755551324,
+        "label": "Zugang Torre Grande – Innenhof",
+        "info": "Kurzaufgang vom Innenhof zum Eingangsportal des Großturms Torre Grande. Der Turm war der letzte Rückzugsort der Besatzung.",
+        "id": "krak/stair_flight/3"
+      },
+      {
+        "type": "STAIR_FLIGHT",
+        "x": -14.5,
+        "z": -3,
+        "y": 1.98,
+        "steps": 12,
+        "stepH": 0.25,
+        "stepD": 0.38,
+        "w": 1.8,
+        "rotation": -1.382300767579509,
+        "label": "Wandaufgang Nord – Äusserer Ring",
+        "info": "Nördlicher Wandaufgang des äusseren Mauerrings. Ermöglichte schnellen Nachschub von Pfeilen und Geschossen auf den Nordwehrgang.",
+        "id": "krak/stair_flight/4"
+      },
+      {
+        "type": "DRAWBRIDGE",
+        "x": 7.07,
+        "z": 17.07,
+        "y": 2.05,
+        "w": 4.8,
+        "d": 5.5,
+        "angle": 0,
+        "pitD": 1.6,
+        "pitH": 0.6,
+        "rotation": 2.5279785112870976,
+        "label": "Zugbruecke – Haupttor (Barbakane)",
+        "info": "Vor dem Haupttor lag kein freier Platz, sondern eine Zugbruecke uber den Zwinggraben. Sie bildete die erste mechanische Barriere im mehrstufigen Eingangsystem und konnte bei Alarm hochgezogen werden, bevor Angreifer das Tor erreichten.",
+        "id": "krak/drawbridge/1"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 0,
+        "z": -2.82,
+        "y": 8.44,
+        "w": 8.2,
+        "d": 1.75,
+        "h": 2.55,
+        "roofH": 0.22,
+        "doorSide": "front",
+        "porch": true,
+        "slitCount": 0,
+        "gableStyle": "triangular",
+        "label": "Gotische Loggia (Arkadenhalle des Konventsaals)",
+        "info": "Die Loggia an der Suedseite des grossen Saals ist eines der schoensten gotischen Bauelemente im gesamten Outremer. Die offene Arkadenhalle mit fuenf Doppeljochen, feinen Saulen und Ogivalgewoelbe war Wandelgang, Repraesentation und Verbindungsweg zugleich – ein Beleg dafuer, dass der Krak nicht nur Festung, sondern auch Ordensresidenz war.",
+        "id": "krak/gabled_hall/7"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "chateau_gaillard",
+    "name": "chateau_gaillard",
+    "style": "crusader",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 38,
+    "components": [
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0,
+        "z": -4,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -8,
+            "z": 22
+          },
+          {
+            "x": -5,
+            "z": 12
+          },
+          {
+            "x": -7,
+            "z": -4
+          },
+          {
+            "x": -9,
+            "z": -18
+          },
+          {
+            "x": -6,
+            "z": -28
+          },
+          {
+            "x": 0,
+            "z": -34
+          },
+          {
+            "x": 6,
+            "z": -28
+          },
+          {
+            "x": 9,
+            "z": -18
+          },
+          {
+            "x": 7,
+            "z": -4
+          },
+          {
+            "x": 5,
+            "z": 12
+          },
+          {
+            "x": 8,
+            "z": 22
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.08,
+            "h": 1.3
+          },
+          {
+            "scale": 1,
+            "h": 1.1
+          },
+          {
+            "scale": 0.93,
+            "h": 0.9
+          }
+        ],
+        "label": "Felssporn von Chateau Gaillard",
+        "info": "Die Burg sitzt auf einem schmalen Felssporn ueber der Seine. Das Diorama liest die Anlage deshalb als nach Norden auslaufenden Sporn statt als kreisfoermige Hoehenburg.",
+        "id": "chateau_gaillard/terrain_stack/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0,
+        "z": -6,
+        "y": 3.35,
+        "w": 13,
+        "d": 38,
+        "h": 0.6,
+        "label": "Oberer Spornruecken",
+        "info": "Auf dem schmalen Hochruecken staffeln sich Vorwerk, mittlere Enceinte und Hochburg hintereinander. Genau diese Tiefenstaffelung macht Gaillard so schwer lesbar und so stark.",
+        "id": "chateau_gaillard/plateau/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 0,
+        "z1": 23,
+        "x2": 0,
+        "z2": 15,
+        "y1": 0.3,
+        "y2": 3.45,
+        "w": 3.4,
+        "thick": 0.2,
+        "label": "Zugang vom Sueden",
+        "info": "Der suedliche Zugang lief ueber den schmalsten Teil des Sporns. Jeder Angreifer musste sich nacheinander durch Vorwerk, Mittelring und Hochburg arbeiten.",
+        "id": "chateau_gaillard/slope_path/1"
+      },
+      {
+        "type": "RING",
+        "y": 3.45,
+        "gate": {
+          "atIndex": 3,
+          "w": 3,
+          "d": 2.2,
+          "h": 4.5,
+          "label": "Aeusseres Vorwerk (Suedtor)",
+          "info": "Erster Verteidigungsring auf dem Felssporn. Philip II. brauchte Monate, um ueberhaupt bis an die mittlere Enceinte heranzukommen."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": 3,
+            "r": 1,
+            "h": 4.5,
+            "label": "Vorwerkturm N",
+            "info": "Noerdlicher Anschlussturm zwischen Vorwerk und Mittelring."
+          },
+          {
+            "x": 4.76,
+            "z": 7,
+            "r": 1,
+            "h": 4,
+            "label": "Vorwerkturm NO",
+            "info": "Flankenturm des aeusseren Vorwerks."
+          },
+          {
+            "x": 4.76,
+            "z": 15,
+            "r": 1,
+            "h": 4,
+            "label": "Vorwerkturm SO",
+            "info": "Suedoestlicher Eckturm des Vorwerks."
+          },
+          {
+            "x": 0,
+            "z": 19,
+            "r": 1,
+            "h": 4.5,
+            "label": "Vorwerkturm S",
+            "info": "Suedspitze des Vorwerks und erster echter Engpass."
+          },
+          {
+            "x": -4.76,
+            "z": 15,
+            "r": 1,
+            "h": 4,
+            "label": "Vorwerkturm SW",
+            "info": "Suedwestturm des Vorwerks."
+          },
+          {
+            "x": -4.76,
+            "z": 7,
+            "r": 1,
+            "h": 4,
+            "label": "Vorwerkturm NW",
+            "info": "Nordwestturm und Uebergang zum Mittelring."
+          }
+        ],
+        "wall": {
+          "h": 3.5,
+          "thick": 0.8
+        },
+        "id": "chateau_gaillard/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 3.55,
+        "gate": {
+          "atIndex": 0,
+          "w": 3,
+          "d": 2.2,
+          "h": 5.5,
+          "label": "Mittlere Enceinte (Suedtor)",
+          "info": "Die beruehmte corrugated wall von Richard Loewenherz verdoppelte die Abwehrwinkel und minimierte tote Winkel entlang des Mittelteils."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": 6,
+            "r": 1.1,
+            "h": 6,
+            "label": "Mittlerer Ring S",
+            "info": "Suedtor der mittleren Enceinte."
+          },
+          {
+            "x": -4.28,
+            "z": 1.5,
+            "r": 1.1,
+            "h": 5.5,
+            "label": "Mittlerer Ring SW",
+            "info": "Wellenfoermige Mauerfuehrung als Signatur der Burg."
+          },
+          {
+            "x": -2.64,
+            "z": -5.5,
+            "r": 1.1,
+            "h": 5.5,
+            "label": "Mittlerer Ring NW",
+            "info": "Nahe der beruechtigten Latrinenoeffnung in der Kapellenwand."
+          },
+          {
+            "x": 2.64,
+            "z": -5.5,
+            "r": 1.1,
+            "h": 5.5,
+            "label": "Mittlerer Ring NO",
+            "info": "Nordostturm der mittleren Enceinte."
+          },
+          {
+            "x": 4.28,
+            "z": 1.5,
+            "r": 1.1,
+            "h": 5.5,
+            "label": "Mittlerer Ring SO",
+            "info": "Suedostturm zur Flankierung des Mittelrings."
+          }
+        ],
+        "wall": {
+          "h": 5,
+          "thick": 1.1
+        },
+        "id": "chateau_gaillard/ring/2"
+      },
+      {
+        "type": "RING",
+        "y": 3.75,
+        "gate": {
+          "atIndex": 1,
+          "w": 2.8,
+          "d": 2.2,
+          "h": 6.5,
+          "label": "Innerer Ring (Hochburg)",
+          "info": "Die Hochburg war Richards staerkster Abschnitt. Nach dem Fall der Latrinengalerie war auch dieser Ring psychologisch kaum noch zu halten."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -7,
+            "r": 1.2,
+            "h": 7,
+            "label": "Hochburg N",
+            "info": "Nordturm der Kernburg ueber dem Spornende."
+          },
+          {
+            "x": 4,
+            "z": -12,
+            "r": 1.2,
+            "h": 6.5,
+            "label": "Hochburg NO",
+            "info": "Nordostturm der Hochburg."
+          },
+          {
+            "x": 0,
+            "z": -17,
+            "r": 1.2,
+            "h": 6.5,
+            "label": "Hochburg S",
+            "info": "Suedlicher Abschluss der Hochburg."
+          },
+          {
+            "x": -4,
+            "z": -12,
+            "r": 1.2,
+            "h": 6.5,
+            "label": "Hochburg NW",
+            "info": "Nordwestturm der Hochburg."
+          }
+        ],
+        "wall": {
+          "h": 6,
+          "thick": 1.2
+        },
+        "id": "chateau_gaillard/ring/3"
+      },
+      {
+        "type": "ROUND_TOWER",
+        "x": 0,
+        "z": -14,
+        "r": 2,
+        "h": 12,
+        "y": 3.8,
+        "label": "Donjon von Chateau Gaillard",
+        "info": "Richards zylindrischer Donjon eliminierte tote Winkel fast vollstaendig. Die letzte Bastion der Burg fiel nicht durch Sturm, sondern durch eine schmale Oeffnung in der Kapelle.",
+        "id": "chateau_gaillard/round_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -1.6,
+        "z": -6.6,
+        "w": 2.6,
+        "d": 1.8,
+        "h": 3.6,
+        "y": 3.6,
+        "label": "Kapellenbereich / Latrinenoeffnung",
+        "info": "Hier lag die beruechtigte Schwaeche: Ein franzoesischer Soldat drang durch eine Latrinenoeffnung in die Kapelle ein und oeffnete danach das Tor.",
+        "id": "chateau_gaillard/square_tower/1"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": 0,
+        "z": -2.31,
+        "y": 3.99,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – chateau_gaillard",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "chateau_gaillard/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": -4.09,
+        "z": -0.4,
+        "y": 0.05,
+        "w": 1.6,
+        "d": 3.4,
+        "h": 1.2,
+        "steps": 4,
+        "landingD": 0.45,
+        "rotation": 4.71238898038469,
+        "label": "Wehrgangstreppe – chateau_gaillard",
+        "info": "Interner Schnellzugang auf den Wehrgang fuer Wachwechsel und Reserve.",
+        "id": "chateau_gaillard/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "conwy_castle",
+    "name": "conwy_castle",
+    "style": "crusader",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 40,
+    "components": [
+      {
+        "type": "WATER_PLANE",
+        "x": -20,
+        "z": 6,
+        "y": 0.08,
+        "w": 34,
+        "d": 42,
+        "label": "Conwy-Muendung",
+        "info": "Die Muendung sicherte Conwy strategisch doppelt: Schutz auf der Westseite und Versorgung ueber das Wassertor. Solange Schiffe anlegen konnten, blieb die Burg lebensfaehig.",
+        "id": "conwy_castle/water_plane/1"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": 2,
+        "z": 0,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -17,
+            "z": -13
+          },
+          {
+            "x": -12,
+            "z": -16
+          },
+          {
+            "x": 15,
+            "z": -15
+          },
+          {
+            "x": 19,
+            "z": -8
+          },
+          {
+            "x": 20,
+            "z": 10
+          },
+          {
+            "x": 14,
+            "z": 16
+          },
+          {
+            "x": -6,
+            "z": 16
+          },
+          {
+            "x": -13,
+            "z": 12
+          },
+          {
+            "x": -15,
+            "z": 0
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.12,
+            "h": 1.3
+          },
+          {
+            "scale": 1.03,
+            "h": 1.15
+          },
+          {
+            "scale": 0.96,
+            "h": 0.95
+          }
+        ],
+        "label": "Felsruecken von Conwy",
+        "info": "Conwy sitzt auf einem langgestreckten Felsruecken direkt ueber der Muendung. Der Burgkoerper folgt deshalb dem Ruecken und weitet sich nicht kreisfoermig aus.",
+        "id": "conwy_castle/terrain_stack/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 2.5,
+        "z": 0.8,
+        "y": 3.42,
+        "w": 31,
+        "d": 14,
+        "h": 0.6,
+        "label": "Burgplateau von Conwy",
+        "info": "Auf dem langgezogenen Plateau staffeln sich aeusserer Ward, innerer Ward und die Wohnbauten des Koenigs entlang der Felskante.",
+        "id": "conwy_castle/plateau/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 19.5,
+        "z1": 11.5,
+        "x2": 12.8,
+        "z2": 7.8,
+        "y1": 0.35,
+        "y2": 3.5,
+        "w": 3.2,
+        "thick": 0.2,
+        "label": "Landseitiger Zugang",
+        "info": "Der Zugang von Osten fuehrte ueber einen kontrollierten Anstieg in Richtung Vorburg. Auch in Conwy war der Weg zur Hauptpforte selbst schon Teil der Verteidigung.",
+        "id": "conwy_castle/slope_path/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": -9.8,
+        "z1": 7.5,
+        "x2": -18.8,
+        "z2": 12.5,
+        "y1": 3.45,
+        "y2": 0.3,
+        "w": 1.8,
+        "thick": 0.18,
+        "label": "Wassertor-Abgang",
+        "info": "Das Wassertor verband die Burg direkt mit der Muendung. Gerade diese Verbindung machte Conwy auch in Einschliessungssituationen widerstandsfaehig.",
+        "id": "conwy_castle/slope_path/2"
+      },
+      {
+        "type": "RING",
+        "y": 3.48,
+        "gate": {
+          "atIndex": 2,
+          "w": 3.5,
+          "d": 2.8,
+          "h": 7.5,
+          "label": "Aeusseres Tor von Conwy",
+          "info": "Der oestliche Hauptzugang in den aeusseren Ward war die zuerst sichtbare Verdichtung der Burg. Von hier musste jeder Angreifer unter Turm- und Mauerfeuer weiter in die Anlage hinein."
+        },
+        "points": [
+          {
+            "x": -10.5,
+            "z": -5.8,
+            "r": 1.55,
+            "h": 8.5,
+            "label": "Westturm NW",
+            "info": "Nordwestlicher Turm ueber der Wasserseite."
+          },
+          {
+            "x": -2.5,
+            "z": -6.3,
+            "r": 1.45,
+            "h": 8,
+            "label": "Westturm NO",
+            "info": "Nordseite des westlichen Burgabschnitts."
+          },
+          {
+            "x": 7,
+            "z": -6.2,
+            "r": 1.55,
+            "h": 8.4,
+            "label": "Osttor-Nordturm",
+            "info": "Nordturm der landseitigen Torfront."
+          },
+          {
+            "x": 13.8,
+            "z": -2.2,
+            "r": 1.55,
+            "h": 8.4,
+            "label": "Aeusserer Ostturm",
+            "info": "Oestlicher Flankierungsturm des aeusseren Wards."
+          },
+          {
+            "x": 13.4,
+            "z": 4.8,
+            "r": 1.55,
+            "h": 8.4,
+            "label": "Aeusserer SO-Turm",
+            "info": "Suedoestliche Ecke des aeusseren Burgteils."
+          },
+          {
+            "x": 6.8,
+            "z": 7.2,
+            "r": 1.55,
+            "h": 8.3,
+            "label": "Osttor-Suedturm",
+            "info": "Suedturm der Torfront mit Blick auf den Anmarsch."
+          },
+          {
+            "x": -1.6,
+            "z": 7.6,
+            "r": 1.45,
+            "h": 8,
+            "label": "Westturm SO",
+            "info": "Suedseite des westlichen Abschnitts."
+          },
+          {
+            "x": -10,
+            "z": 6.8,
+            "r": 1.55,
+            "h": 8.5,
+            "label": "Westturm SW",
+            "info": "Suedwestlicher Turm nahe Wassertor und Felskante."
+          }
+        ],
+        "wall": {
+          "h": 6.1,
+          "thick": 0.95
+        },
+        "id": "conwy_castle/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 3.62,
+        "gate": {
+          "atIndex": 6,
+          "w": 3,
+          "d": 2.4,
+          "h": 7.2,
+          "label": "Innerer Ward",
+          "info": "Conwys innerer Ward ist keine vollstaendig getrennte Festung, aber doch klar als zweiter konzentrierter Verteidigungsraum lesbar. Hier lagen auch die koeniglichen Wohnraeume."
+        },
+        "points": [
+          {
+            "x": -8,
+            "z": -4.6,
+            "r": 1.45,
+            "h": 8.2,
+            "label": "Innerer NW-Turm",
+            "info": "Nordwestturm des inneren Wards."
+          },
+          {
+            "x": -1.2,
+            "z": -4.8,
+            "r": 1.35,
+            "h": 7.8,
+            "label": "Innerer N-Mitte",
+            "info": "Noerdlicher Zwischenpunkt des inneren Abschnitts."
+          },
+          {
+            "x": 4.8,
+            "z": -4.7,
+            "r": 1.45,
+            "h": 8,
+            "label": "Innerer NO-Turm",
+            "info": "Nordostturm des inneren Wards."
+          },
+          {
+            "x": 8,
+            "z": -0.4,
+            "r": 1.35,
+            "h": 7.6,
+            "label": "Innerer O",
+            "info": "Oestliche Verbindungszone zwischen den Wards."
+          },
+          {
+            "x": 7.1,
+            "z": 5,
+            "r": 1.45,
+            "h": 8,
+            "label": "Innerer SO-Turm",
+            "info": "Suedoestlicher Turm des inneren Wards."
+          },
+          {
+            "x": 1.2,
+            "z": 5.5,
+            "r": 1.35,
+            "h": 7.8,
+            "label": "Innerer S-Mitte",
+            "info": "Suedlicher Zwischenpunkt des inneren Bereichs."
+          },
+          {
+            "x": -6.8,
+            "z": 5.2,
+            "r": 1.45,
+            "h": 8.2,
+            "label": "Innerer SW-Turm",
+            "info": "Suedwestturm des inneren Wards."
+          }
+        ],
+        "wall": {
+          "h": 6,
+          "thick": 0.9
+        },
+        "id": "conwy_castle/ring/2"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -2.8,
+        "z": 0.8,
+        "w": 6.5,
+        "d": 2.8,
+        "h": 4.8,
+        "y": 4.06,
+        "noRoof": true,
+        "label": "Koenigsappartements",
+        "info": "Die Wohnbauten Eduards I. machen Conwy zur Mischung aus Feldfestung und koeniglicher Residenz. Sie liegen im Diorama bewusst als langgezogener Baukoerper entlang des inneren Wards.",
+        "id": "conwy_castle/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -9.2,
+        "z": 4.8,
+        "w": 2.2,
+        "d": 1.7,
+        "h": 3.6,
+        "y": 3.5,
+        "label": "Wassertor",
+        "info": "Das Wassertor ist klein, aber strategisch ueberproportional wichtig. Ohne diese Oeffnung waere Conwy nur eine weitere steinerne Ringburg statt einer widerstandsfaehigen Seefestung.",
+        "id": "conwy_castle/square_tower/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -1.21,
+        "z": 1.89,
+        "y": 4.06,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – conwy_castle",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "conwy_castle/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 4.41,
+        "z": 4.32,
+        "y": 0.05,
+        "w": 1.6,
+        "d": 3.4,
+        "h": 1.2,
+        "steps": 4,
+        "landingD": 0.45,
+        "rotation": 2.4167265099744517,
+        "label": "Wehrgangstreppe – conwy_castle",
+        "info": "Interner Schnellzugang auf den Wehrgang fuer Wachwechsel und Reserve.",
+        "id": "conwy_castle/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "harlech",
+    "name": "harlech",
+    "style": "crusader",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 42,
+    "components": [
+      {
+        "type": "WATER_PLANE",
+        "x": -22,
+        "z": 5,
+        "y": 0.06,
+        "w": 28,
+        "d": 40,
+        "label": "Irische See / Kuestenzugang",
+        "info": "Harlechs eigentliche Superkraft war lange Zeit die Verbindung zur See. Solange der Kuestenzugang offen blieb, konnte die kleine Garnison durchhalten.",
+        "id": "harlech/water_plane/1"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": -2,
+        "z": 0,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -18,
+            "z": -16
+          },
+          {
+            "x": -13,
+            "z": -19
+          },
+          {
+            "x": 6,
+            "z": -18
+          },
+          {
+            "x": 13,
+            "z": -14
+          },
+          {
+            "x": 16,
+            "z": -4
+          },
+          {
+            "x": 16,
+            "z": 11
+          },
+          {
+            "x": 7,
+            "z": 17
+          },
+          {
+            "x": -10,
+            "z": 17
+          },
+          {
+            "x": -17,
+            "z": 9
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.14,
+            "h": 1.5
+          },
+          {
+            "scale": 1.05,
+            "h": 1.3
+          },
+          {
+            "scale": 0.98,
+            "h": 1.1
+          }
+        ],
+        "label": "Felsklippe von Harlech",
+        "info": "Harlech steht auf einem steilen Kuestenfelsen. Das Diorama staffelt die Felsmasse bewusst nach Westen und Norden steiler ab als nach Osten, weil dort der einzige ernsthafte Zugang lag.",
+        "id": "harlech/terrain_stack/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": -1.2,
+        "z": 0.5,
+        "y": 3.9,
+        "w": 18,
+        "d": 12,
+        "h": 0.65,
+        "label": "Burgplateau von Harlech",
+        "info": "Auf dem oberen Felskopf sitzt der kompakte, fast rechteckige Burgkoerper. Anders als bei Conwy ist Harlech noch staerker als kompakter Block lesbar.",
+        "id": "harlech/plateau/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 14,
+        "z1": 1,
+        "x2": 8.2,
+        "z2": 1.2,
+        "y1": 0.3,
+        "y2": 4,
+        "w": 3.8,
+        "thick": 0.2,
+        "label": "Ostzugang",
+        "info": "Die Ostseite war Harlechs einzige realistische Angriffsrichtung. Jeder Belagerer musste genau hier seine Maschinen und Sturmkolonnen ansetzen.",
+        "id": "harlech/slope_path/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": -8.8,
+        "z1": 5.8,
+        "x2": -18.5,
+        "z2": 14,
+        "y1": 4,
+        "y2": 0.3,
+        "w": 1.8,
+        "thick": 0.18,
+        "label": "Seegang / Versorgungspfad",
+        "info": "Der legendaere Weg zur See machte Harlech zu einer Ausnahmeerscheinung. Selbst mit minimaler Garnison blieb die Burg dadurch jahrelang versorgbar.",
+        "id": "harlech/slope_path/2"
+      },
+      {
+        "type": "RING",
+        "y": 3.95,
+        "points": [
+          {
+            "x": -8,
+            "z": -5.6,
+            "r": 1.85,
+            "h": 9.2,
+            "label": "Nordwestturm",
+            "info": "Eckturm ueber dem Felsabfall. Die Westseite war so schwer angreifbar, dass dieser Turm vor allem Beobachtung und Seezugang deckte."
+          },
+          {
+            "x": 0.2,
+            "z": -5.8,
+            "r": 1.7,
+            "h": 8.6,
+            "label": "Nordostturm",
+            "info": "Noerdlicher Ostturm flankierte die verwundbarere Landseite."
+          },
+          {
+            "x": 6.8,
+            "z": -1.2,
+            "r": 2,
+            "h": 9.8,
+            "label": "Torhausturm Nord",
+            "info": "Teil des maechtigen Osttorhauses. Hier verdichtete Harlech seine ganze landseitige Abwehr."
+          },
+          {
+            "x": 6.8,
+            "z": 4.6,
+            "r": 2,
+            "h": 9.8,
+            "label": "Torhausturm Sued",
+            "info": "Zweiter Torturm der Ostfront. Zusammen mit dem noerdlichen Turm bildete er die staerkste kuenstliche Verteidigung der Anlage."
+          },
+          {
+            "x": 0.6,
+            "z": 7.2,
+            "r": 1.7,
+            "h": 8.6,
+            "label": "Suedostturm",
+            "info": "Suedlicher Ostturm der Hauptkurtine."
+          },
+          {
+            "x": -7.8,
+            "z": 7.4,
+            "r": 1.9,
+            "h": 9.3,
+            "label": "Suedwestturm",
+            "info": "Suedwestlicher Eckturm ueber der steilsten Felskante und dem Seegang."
+          }
+        ],
+        "gate": {
+          "atIndex": 2,
+          "w": 3.8,
+          "d": 3,
+          "h": 8.3,
+          "label": "Harlechs Osttorhaus",
+          "info": "Das Osttorhaus ist die eigentliche Nahkampfmaschine der Burg. Jeder Angriff auf Harlech musste durch diesen Flaschenhals."
+        },
+        "wall": {
+          "h": 6.7,
+          "thick": 1
+        },
+        "id": "harlech/ring/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -1.8,
+        "z": 0.8,
+        "w": 5.8,
+        "d": 2.6,
+        "h": 4.4,
+        "y": 4.59,
+        "noRoof": true,
+        "label": "Innerer Hof / Hallenbau",
+        "info": "Der innere Burgraum blieb bewusst kompakt. Harlech war keine ausufernde Palastburg, sondern eine hoch effiziente Festung mit konzentrierten Abwehr- und Wohnzonen.",
+        "id": "harlech/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -7.7,
+        "z": 4.8,
+        "w": 2.1,
+        "d": 1.7,
+        "h": 3.4,
+        "y": 3.95,
+        "label": "Seetor",
+        "info": "Das Seetor war unscheinbar, aber strategisch entscheidend. Ohne diesen Zugang waere die legendaere Langzeitverteidigung Harlechs nicht moeglich gewesen.",
+        "id": "harlech/square_tower/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -3.1,
+        "z": -8.45,
+        "y": 0.05,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – harlech",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "harlech/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 1.17,
+        "z": -2.35,
+        "y": 0.05,
+        "w": 1.6,
+        "d": 3.4,
+        "h": 1.2,
+        "steps": 4,
+        "landingD": 0.45,
+        "rotation": 2.9669204545815537,
+        "label": "Wehrgangstreppe – harlech",
+        "info": "Interner Schnellzugang auf den Wehrgang fuer Wachwechsel und Reserve.",
+        "id": "harlech/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "constantinople",
+    "name": "constantinople",
+    "style": "crusader",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 46,
+    "components": [
+      {
+        "type": "WATER_PLANE",
+        "x": 0,
+        "z": 26,
+        "y": 0.05,
+        "w": 54,
+        "d": 10,
+        "label": "Marmara / Stadtseite",
+        "info": "Die Suedseite des Dioramas oeffnet sich zur Stadt- und Wasserwelt Konstantinopels. Die eigentliche Dramatik spielt sich aber entlang der Landmauer ab.",
+        "id": "constantinople/water_plane/1"
+      },
+      {
+        "type": "DITCH",
+        "x": 0,
+        "z": 0,
+        "y": 0.9,
+        "rTop": 24,
+        "rBot": 21.5,
+        "h": 1.1,
+        "label": "Vorgraben",
+        "info": "Vor den Theodosianischen Mauern lag ein breiter Graben. Schon bevor ein Angreifer die erste Mauer beruehrte, musste er also einen offenen Todeskorridor ueberwinden.",
+        "id": "constantinople/ditch/1"
+      },
+      {
+        "type": "RING",
+        "y": 1.2,
+        "squareTowers": true,
+        "gate": {
+          "atIndex": 1,
+          "w": 2,
+          "d": 1.5,
+          "h": 3.5,
+          "label": "Kerkaporta",
+          "info": "Das kleine Tor, das 1453 offen geblieben sein soll, steht hier absichtlich nicht monumentaler als die Umgebung. Gerade seine Banalitaet macht die historische Pointe aus."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -22,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma N",
+            "info": "Niedrige Vormauer als erste Abwehrlinie."
+          },
+          {
+            "x": 2.6,
+            "z": -16,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma NNO",
+            "info": "Noerdlicher Abschnitt der Vormauer."
+          },
+          {
+            "x": 3,
+            "z": -8,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma Mitte-N",
+            "info": "Mittlerer noerdlicher Abschnitt."
+          },
+          {
+            "x": 3,
+            "z": 0,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma Mitte",
+            "info": "Hier konzentrierten sich osmanische Angriffe."
+          },
+          {
+            "x": 3,
+            "z": 8,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma Mitte-S",
+            "info": "Suedlicher Mittelteil."
+          },
+          {
+            "x": 2.6,
+            "z": 16,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma SSO",
+            "info": "Suedlicher Abschnitt der Vormauer."
+          },
+          {
+            "x": 0,
+            "z": 22,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma S",
+            "info": "Suedende der Vormauer."
+          },
+          {
+            "x": -2.6,
+            "z": 16,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma SSW",
+            "info": "Suedwestabschnitt."
+          },
+          {
+            "x": -3,
+            "z": 8,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma W-S",
+            "info": "Westlicher Suedteil."
+          },
+          {
+            "x": -3,
+            "z": 0,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma W-Mitte",
+            "info": "Westliche Mitte."
+          },
+          {
+            "x": -3,
+            "z": -8,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma W-N",
+            "info": "Westlicher Nordteil."
+          },
+          {
+            "x": -2.6,
+            "z": -16,
+            "r": 0.8,
+            "h": 3.2,
+            "label": "Proteichisma NNW",
+            "info": "Nahe der Kerkaporta."
+          }
+        ],
+        "wall": {
+          "h": 2.5,
+          "thick": 0.6
+        },
+        "id": "constantinople/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 1.35,
+        "squareTowers": true,
+        "gate": {
+          "atIndex": 3,
+          "w": 3,
+          "d": 2.2,
+          "h": 6,
+          "label": "Mittlere Mauer",
+          "info": "Zwischen Vormauer und Hauptmauer lag der Peribolos, ein toedlicher Zwingerraum. Diese mittlere Linie machte Durchbrueche extrem schwer ausnutzbar."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -20,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer N",
+            "info": "Noerdlicher Turm der mittleren Mauer."
+          },
+          {
+            "x": 4,
+            "z": -14,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer NNO",
+            "info": "Noerdlicher Zwischenabschnitt."
+          },
+          {
+            "x": 5,
+            "z": -6,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer NO",
+            "info": "Noerdlicher Ostabschnitt."
+          },
+          {
+            "x": 5,
+            "z": 0,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer O-Mitte",
+            "info": "Zentrales Segment der mittleren Mauer."
+          },
+          {
+            "x": 5,
+            "z": 6,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer SO",
+            "info": "Suedoestlicher Abschnitt."
+          },
+          {
+            "x": 4,
+            "z": 14,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer SSO",
+            "info": "Suedlicher Zwischenabschnitt."
+          },
+          {
+            "x": 0,
+            "z": 20,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer S",
+            "info": "Suedende der mittleren Linie."
+          },
+          {
+            "x": -4,
+            "z": 14,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer SSW",
+            "info": "Suedwestabschnitt."
+          },
+          {
+            "x": -5,
+            "z": 6,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer SW",
+            "info": "Westlicher Suedteil."
+          },
+          {
+            "x": -5,
+            "z": 0,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer W-Mitte",
+            "info": "Westliche Mitte."
+          },
+          {
+            "x": -5,
+            "z": -6,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer NW",
+            "info": "Westlicher Nordteil."
+          },
+          {
+            "x": -4,
+            "z": -14,
+            "r": 1,
+            "h": 5.5,
+            "label": "Mittelmauer NNW",
+            "info": "Nahe dem Kerkaporta-Bereich."
+          }
+        ],
+        "wall": {
+          "h": 5,
+          "thick": 0.8
+        },
+        "id": "constantinople/ring/2"
+      },
+      {
+        "type": "RING",
+        "y": 1.6,
+        "squareTowers": true,
+        "gate": {
+          "atIndex": 4,
+          "w": 4,
+          "d": 3,
+          "h": 10,
+          "label": "Innere Hauptmauer",
+          "info": "Die eigentliche Theodosianische Hauptmauer war fast uneinnehmbar. Das Diorama zeigt sie als dominanteste Linie mit massivem Mesoteichion-Mittelteil."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -18,
+            "r": 1.4,
+            "h": 9,
+            "label": "Hauptmauer N",
+            "info": "Noerdlichster Turm der Hauptmauer."
+          },
+          {
+            "x": 5.5,
+            "z": -12,
+            "r": 1.4,
+            "h": 9.5,
+            "label": "Hauptmauer NNO",
+            "info": "Noerdlicher Turm der Hauptmauer."
+          },
+          {
+            "x": 7,
+            "z": -4,
+            "r": 1.4,
+            "h": 10,
+            "label": "Hauptmauer NO",
+            "info": "Abschnitt nahe der grossen osmanischen Beschusszone."
+          },
+          {
+            "x": 7,
+            "z": 0,
+            "r": 1.4,
+            "h": 10,
+            "label": "Mesoteichion",
+            "info": "Das kritische Mittelstueck der Hauptmauer. Hier konzentrierten sich Kanonen und Sturmangriffe."
+          },
+          {
+            "x": 7,
+            "z": 4,
+            "r": 1.4,
+            "h": 10,
+            "label": "Hauptmauer SO",
+            "info": "Suedoestlicher Mesoteichion-Abschnitt."
+          },
+          {
+            "x": 5.5,
+            "z": 12,
+            "r": 1.4,
+            "h": 9.5,
+            "label": "Hauptmauer SSO",
+            "info": "Suedlicher Turm der Hauptmauer."
+          },
+          {
+            "x": 0,
+            "z": 18,
+            "r": 1.4,
+            "h": 9,
+            "label": "Hauptmauer S",
+            "info": "Suedende der Landmauer."
+          },
+          {
+            "x": -5.5,
+            "z": 12,
+            "r": 1.4,
+            "h": 9.5,
+            "label": "Hauptmauer SSW",
+            "info": "Suedwestlicher Abschnitt."
+          },
+          {
+            "x": -7,
+            "z": 4,
+            "r": 1.4,
+            "h": 10,
+            "label": "Hauptmauer SW",
+            "info": "Westlicher Suedteil der Hauptmauer."
+          },
+          {
+            "x": -7,
+            "z": 0,
+            "r": 1.4,
+            "h": 10,
+            "label": "Hauptmauer W-Mitte",
+            "info": "Westliche Mitte der Hauptmauer."
+          },
+          {
+            "x": -7,
+            "z": -4,
+            "r": 1.4,
+            "h": 10,
+            "label": "Hauptmauer NW",
+            "info": "Westlicher Nordteil."
+          },
+          {
+            "x": -5.5,
+            "z": -12,
+            "r": 1.4,
+            "h": 9.5,
+            "label": "Hauptmauer NNW",
+            "info": "Nahe dem Blachernae-Abschnitt."
+          },
+          {
+            "x": -2,
+            "z": -16,
+            "r": 1.6,
+            "h": 11,
+            "label": "Blachernae-Palastturm",
+            "info": "Sonderturm des Blachernae-Bereichs, nahe dem beruechtigten Nebentor."
+          },
+          {
+            "x": 2,
+            "z": -16,
+            "r": 1.4,
+            "h": 9.5,
+            "label": "Hauptmauer NNO 2",
+            "info": "Zweiter noerdlicher Grossabschnitt."
+          }
+        ],
+        "wall": {
+          "h": 8.5,
+          "thick": 1.5
+        },
+        "id": "constantinople/ring/3"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -0.65,
+        "z": 4.02,
+        "y": 0.05,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – constantinople",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "constantinople/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 8.6,
+        "z": 1.4,
+        "y": 0.05,
+        "w": 1.6,
+        "d": 3.4,
+        "h": 1.2,
+        "steps": 4,
+        "landingD": 0.45,
+        "rotation": 1.731888231332477,
+        "label": "Wehrgangstreppe – constantinople",
+        "info": "Interner Schnellzugang auf den Wehrgang fuer Wachwechsel und Reserve.",
+        "id": "constantinople/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "himeji",
+    "name": "himeji",
+    "style": "japanese",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 41,
+    "components": [
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0,
+        "z": 0,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -23,
+            "z": -18
+          },
+          {
+            "x": -16,
+            "z": -24
+          },
+          {
+            "x": -2,
+            "z": -26
+          },
+          {
+            "x": 12,
+            "z": -22
+          },
+          {
+            "x": 22,
+            "z": -12
+          },
+          {
+            "x": 24,
+            "z": 2
+          },
+          {
+            "x": 19,
+            "z": 16
+          },
+          {
+            "x": 7,
+            "z": 23
+          },
+          {
+            "x": -8,
+            "z": 22
+          },
+          {
+            "x": -20,
+            "z": 13
+          },
+          {
+            "x": -24,
+            "z": -2
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.1,
+            "h": 1.2
+          },
+          {
+            "scale": 1,
+            "h": 1
+          },
+          {
+            "scale": 0.92,
+            "h": 0.8
+          }
+        ],
+        "label": "Himeyama-Burgberg",
+        "info": "Himeji sitzt auf dem Himeyama-Huegel, nicht auf einer flachen Buehne. Die Anlage steigt in Terrassen und Stuetzmauern an, sodass jeder naechste Hof hoeher und enger wirkt als der vorherige.",
+        "id": "himeji/terrain_stack/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0.5,
+        "z": 0.8,
+        "y": 2.95,
+        "w": 30,
+        "d": 22,
+        "h": 0.45,
+        "label": "Untere Hangterrasse",
+        "info": "Die breite erste Terrasse traegt die ausgedehnten Zugangs- und Irrgartenzonen. Hier verlieren Angreifer bereits Zeit, Formation und Uebersicht.",
+        "id": "himeji/plateau/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0.2,
+        "z": 0.4,
+        "y": 5.5,
+        "w": 16,
+        "d": 13,
+        "h": 0.4,
+        "label": "Oberer Kernhuegel",
+        "info": "Auf der oberen Terrasse verdichtet sich die Burg zum Hon-maru. Von hier dominiert der Tenshu die gesamte Anlage und das Vorland.",
+        "id": "himeji/plateau/2"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 18.5,
+        "z1": 16.5,
+        "x2": 10.8,
+        "z2": 8.2,
+        "y1": 0.35,
+        "y2": 2.95,
+        "w": 3.2,
+        "thick": 0.2,
+        "label": "Geknickter Anmarschweg",
+        "info": "Der Anmarsch nach Himeji verlief nicht frontal, sondern ueber geknickte Wege und Torfolgen. Genau diese kontrollierte Verwirrung war ein Kern der Verteidigung.",
+        "id": "himeji/slope_path/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 9.2,
+        "z1": 7.4,
+        "x2": 4.5,
+        "z2": 2.8,
+        "y1": 2.95,
+        "y2": 5.55,
+        "w": 2.4,
+        "thick": 0.18,
+        "label": "Innerer Aufstieg",
+        "info": "Je hoeher der Weg steigt, desto enger und manipulierter wird er. Die Burg fuehrt Angreifer absichtlich in einen zermuerbenden Ablauf aus Drehungen, Toren und Sichtverlusten.",
+        "id": "himeji/slope_path/2"
+      },
+      {
+        "type": "RING",
+        "y": 0.2,
+        "gate": {
+          "atIndex": 2,
+          "w": 3.2,
+          "d": 2.5,
+          "h": 5,
+          "label": "Hishi-no-mon",
+          "info": "Eines der markantesten Tore des aeusseren Zugangs. In Himeji ist das Tor nicht bloss Oeffnung, sondern Teil eines ganzen Labyrinths aus Richtungswechseln und Feuerwinkeln."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -20,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura N",
+            "info": "Noerdlicher Flankierungsturm des aeusseren Bezirks."
+          },
+          {
+            "x": 17.4,
+            "z": -10.5,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura NO",
+            "info": "Nordoestlicher Turm ueber den ersten geknickten Zugangswegen."
+          },
+          {
+            "x": 17.2,
+            "z": 9.5,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura SO",
+            "info": "Landseitiger Flankierungsturm des vorderen Bezirks."
+          },
+          {
+            "x": 0.5,
+            "z": 19.5,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura S",
+            "info": "Suedlicher Turm im weiteren Vorfeld des Burgbergs."
+          },
+          {
+            "x": -17.2,
+            "z": 9.2,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura SW",
+            "info": "Suedwestlicher Eckturm des aeusseren Rings."
+          },
+          {
+            "x": -17.4,
+            "z": -10.2,
+            "r": 1.2,
+            "h": 5.4,
+            "label": "Aeusserer Yagura NW",
+            "info": "Nordwestlicher Abschluss des ersten Bezirks."
+          }
+        ],
+        "wall": {
+          "h": 3.8,
+          "thick": 0.75
+        },
+        "id": "himeji/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 3,
+        "gate": {
+          "atIndex": 2,
+          "w": 2.8,
+          "d": 2.2,
+          "h": 5.5,
+          "label": "Ni-no-mon",
+          "info": "Der zweite groessere Torabschnitt zwingt Angreifer weiter in den Hang hinein. Jeder Abschnitt der Wegfuehrung fragmentiert den Angriff in kleine, kontrollierbare Kaempfe."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -13.2,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura N",
+            "info": "Noerdlicher Turm auf der mittleren Hangterrasse."
+          },
+          {
+            "x": 11.5,
+            "z": -6.8,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura NO",
+            "info": "Nordoestlicher Turm des zweiten Wehrguertels."
+          },
+          {
+            "x": 11.2,
+            "z": 6.4,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura SO",
+            "info": "Landseitiger Zwischenpunkt im zweiten Verteidigungsring."
+          },
+          {
+            "x": 0.2,
+            "z": 13.1,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura S",
+            "info": "Suedlicher Turm auf der breiteren Hangstufe."
+          },
+          {
+            "x": -11.2,
+            "z": 6.6,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura SW",
+            "info": "Suedwestlicher Turm des mittleren Bezirks."
+          },
+          {
+            "x": -11.5,
+            "z": -6.8,
+            "r": 1.1,
+            "h": 6.1,
+            "label": "Mittlerer Yagura NW",
+            "info": "Nordwestturm der inneren Hangstufe."
+          }
+        ],
+        "wall": {
+          "h": 4.8,
+          "thick": 0.85
+        },
+        "id": "himeji/ring/2"
+      },
+      {
+        "type": "RING",
+        "y": 5.65,
+        "gate": {
+          "atIndex": 1,
+          "w": 2.5,
+          "d": 2,
+          "h": 6.5,
+          "label": "San-no-mon",
+          "info": "Im innersten Bezirk ist der Raum bereits maximal verdichtet. Wer hier ankommt, hat den eigentlichen Zweck der Burg bereits erlebt: Erschoepfung durch Choreografie."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -7.2,
+            "r": 1.25,
+            "h": 7,
+            "label": "Hon-maru Yagura N",
+            "info": "Noerdlicher Eckturm des Kernbezirks."
+          },
+          {
+            "x": 7.1,
+            "z": 0,
+            "r": 1.25,
+            "h": 7,
+            "label": "Hon-maru Yagura O",
+            "info": "Oestlicher Eckturm des Kernbezirks."
+          },
+          {
+            "x": 0,
+            "z": 7.2,
+            "r": 1.25,
+            "h": 7,
+            "label": "Hon-maru Yagura S",
+            "info": "Suedlicher Turm des Hauptbezirks."
+          },
+          {
+            "x": -7.1,
+            "z": 0,
+            "r": 1.25,
+            "h": 7,
+            "label": "Hon-maru Yagura W",
+            "info": "Westlicher letzter Rueckzugspunkt vor dem Hauptturm."
+          }
+        ],
+        "wall": {
+          "h": 5.9,
+          "thick": 1
+        },
+        "id": "himeji/ring/3"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 0.4,
+        "z": 0.2,
+        "w": 5.2,
+        "d": 4.7,
+        "h": 17.5,
+        "y": 5.65,
+        "label": "Tenshu von Himeji",
+        "info": "Der grosse Tenshu ist zugleich Symbol, Beobachtungspunkt und psychologischer Mittelpunkt der Anlage. Seine weisse Silhouette machte Himeji schon aus grosser Entfernung lesbar.",
+        "id": "himeji/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -4.8,
+        "z": 3.9,
+        "w": 2.8,
+        "d": 2.2,
+        "h": 4.4,
+        "y": 5.65,
+        "noRoof": true,
+        "label": "Verbindungsbau / Kernhof",
+        "info": "Zwischen den Hauptkoerpern des innersten Bezirks liegen kleinere Hoefe und Verbindungsbauten. Gerade diese Verdichtung macht Himeji glaubwuerdig anders als westliche Ringburgen.",
+        "id": "himeji/square_tower/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -4,
+        "z": -2.34,
+        "y": 3.4400000000000004,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – himeji",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "himeji/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 12.52,
+        "z": 6.91,
+        "y": 0.05,
+        "w": 2.4,
+        "d": 4.6,
+        "h": 1.8,
+        "steps": 7,
+        "landingD": 0.8,
+        "rotation": 1.0661693942359176,
+        "label": "Masugata-Aufstieg – himeji",
+        "info": "Gestufter Aufstieg in den Masugata-Bereich fuer kontrollierte Bewegungen.",
+        "id": "himeji/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "osaka",
+    "name": "osaka",
+    "style": "japanese",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 44,
+    "components": [
+      {
+        "type": "WATER_PLANE",
+        "x": 0,
+        "z": 0,
+        "y": 0.05,
+        "w": 54,
+        "d": 54,
+        "label": "Aeusserer Wassergraben",
+        "info": "Osakas breite Wassergraben machten direkte Sturmangriffe extrem teuer. 1615 war ihre politische Entschaerfung entscheidender als jede Bresche in der Mauer.",
+        "id": "osaka/water_plane/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0,
+        "z": 0,
+        "y": 0.2,
+        "w": 42,
+        "d": 42,
+        "h": 0.5,
+        "label": "Sannomaru-Dammzone",
+        "info": "Zwischen Graben und aeusserem Mauerband lag kein leerer Rand, sondern ein kontrollierter Vorbereich mit Dammwegen, Torlinien und Artilleriestellungen.",
+        "id": "osaka/plateau/1"
+      },
+      {
+        "type": "WATER_PLANE",
+        "x": 0.8,
+        "z": 0.2,
+        "y": 0.95,
+        "w": 31,
+        "d": 31,
+        "label": "Innerer Wassergraben",
+        "info": "Die innere Grabenstaffelung trennte den eigentlichen Kernbereich vom aeusseren Hof. Solange hier Wasser stand, blieb der Honmaru schwer direkt auszunutzen.",
+        "id": "osaka/water_plane/2"
+      },
+      {
+        "type": "PLATEAU",
+        "x": 0.6,
+        "z": 0.3,
+        "y": 1.18,
+        "w": 22.5,
+        "d": 22.5,
+        "h": 0.55,
+        "label": "Honmaru-Grundplatte",
+        "info": "Der Kernhof sitzt als kompakter, kuenstlich gefasster Block ueber den Grabenlinien. Schon dieser Absatz trennt Osaka klar in Aussen- und Innenwelt.",
+        "id": "osaka/plateau/2"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0.6,
+        "z": 0.3,
+        "y": 1.72,
+        "footprint": [
+          {
+            "x": -8.5,
+            "z": -8.2
+          },
+          {
+            "x": -4.5,
+            "z": -10.8
+          },
+          {
+            "x": 3.2,
+            "z": -10.5
+          },
+          {
+            "x": 8.8,
+            "z": -7.6
+          },
+          {
+            "x": 10.4,
+            "z": -1.4
+          },
+          {
+            "x": 9.1,
+            "z": 6.2
+          },
+          {
+            "x": 4.2,
+            "z": 9.3
+          },
+          {
+            "x": -3.8,
+            "z": 9.6
+          },
+          {
+            "x": -8.9,
+            "z": 6.1
+          },
+          {
+            "x": -10.2,
+            "z": -1.5
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.08,
+            "h": 0.9
+          },
+          {
+            "scale": 1,
+            "h": 0.85
+          },
+          {
+            "scale": 0.9,
+            "h": 0.7
+          }
+        ],
+        "label": "Ishigaki-Steinpodium",
+        "info": "Osakas eigentliche Signatur sind die gewaltigen Steinmauern. Das Diorama staffelt den Tenshu-Sockel daher als massiven, ansteigenden Steinberg ueber dem Honmaru.",
+        "id": "osaka/terrain_stack/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 21.5,
+        "z1": 1.8,
+        "x2": 14.2,
+        "z2": 1.2,
+        "y1": 0.32,
+        "y2": 1.2,
+        "w": 3.4,
+        "thick": 0.18,
+        "label": "Ote-Anmarsch",
+        "info": "Der landseitige Zugang fuehrte ueber Damm und Torstaffel in die Grabenwelt hinein. Nicht der Turm, sondern die kontrollierte Annahmezone machte Osaka so schwer zu stuermen.",
+        "id": "osaka/slope_path/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 11.5,
+        "z1": 1,
+        "x2": 6.8,
+        "z2": 0.8,
+        "y1": 1.2,
+        "y2": 3.22,
+        "w": 2.4,
+        "thick": 0.18,
+        "label": "Rampe zum Tenshu-Sockel",
+        "info": "Der letzte Aufstieg fuehrt ueber steile Steinpodien in den Kernhof. Gerade diese aufsteigende Sequenz aus Mauern, Graben und Sockel strukturierte die Verteidigung von Osaka.",
+        "id": "osaka/slope_path/2"
+      },
+      {
+        "type": "RING",
+        "y": 0.72,
+        "gate": {
+          "atIndex": 2,
+          "w": 3.4,
+          "d": 2.8,
+          "h": 5.8,
+          "label": "Sannomaru-Torlinie",
+          "info": "Der aeussere Ring bewachte nicht bloss eine Mauer, sondern die entscheidende Zone zwischen Dammweg und Wassergraben. Hier begann die eigentliche Zugriffskontrolle der Burg."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -18,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru N",
+            "info": "Noerdlicher Abschnitt des aeusseren Verteidigungsbezirks."
+          },
+          {
+            "x": 13.5,
+            "z": -13.5,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru NO",
+            "info": "Nordoestlicher Yagura ueber dem Vorfeld der Grabenanlagen."
+          },
+          {
+            "x": 18.5,
+            "z": 0,
+            "r": 1.15,
+            "h": 6,
+            "label": "Sannomaru O",
+            "info": "Landseitige Flankierung des grossen Ostrandes."
+          },
+          {
+            "x": 13.5,
+            "z": 13.5,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru SO",
+            "info": "Suedoestlicher Turm des aeusseren Rings."
+          },
+          {
+            "x": 0,
+            "z": 18,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru S",
+            "info": "Suedlicher Abschnitt des breiten Aussenbezirks."
+          },
+          {
+            "x": -13.5,
+            "z": 13.5,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru SW",
+            "info": "Suedwestlicher Yagura des aeusseren Rings."
+          },
+          {
+            "x": -18.5,
+            "z": 0,
+            "r": 1.15,
+            "h": 6,
+            "label": "Sannomaru W",
+            "info": "Westlicher Flankierungspunkt zwischen Graben und Mauer."
+          },
+          {
+            "x": -13.5,
+            "z": -13.5,
+            "r": 1.1,
+            "h": 5.8,
+            "label": "Sannomaru NW",
+            "info": "Nordwestlicher Turm des aeusseren Verteidigungsbandes."
+          }
+        ],
+        "wall": {
+          "h": 4,
+          "thick": 0.8
+        },
+        "id": "osaka/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 1.78,
+        "gate": {
+          "atIndex": 2,
+          "w": 3,
+          "d": 2.4,
+          "h": 6.4,
+          "label": "Honmaru-Ote",
+          "info": "Am inneren Ring verdichtet sich Osaka vom grossen Wasserfestungssystem zur eigentlichen Kernburg. Tokugawas Strategie zielte genau darauf, diesen Kern vor dem zweiten Angriff politisch freizulegen."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -10.2,
+            "r": 1.25,
+            "h": 6.6,
+            "label": "Honmaru N",
+            "info": "Noerdlicher Kernhof-Turm ueber den massiven Ishigaki-Sockeln."
+          },
+          {
+            "x": 8.2,
+            "z": -5.6,
+            "r": 1.2,
+            "h": 6.4,
+            "label": "Honmaru NO",
+            "info": "Nordoestlicher Turm des inneren Hauptbezirks."
+          },
+          {
+            "x": 10.5,
+            "z": 0.8,
+            "r": 1.3,
+            "h": 7,
+            "label": "Ote-Torfront",
+            "info": "Landseitige Front des inneren Rings mit konzentrierter Torverteidigung."
+          },
+          {
+            "x": 7.4,
+            "z": 7.4,
+            "r": 1.2,
+            "h": 6.4,
+            "label": "Honmaru SO",
+            "info": "Suedoestlicher Turm des Kernhofs."
+          },
+          {
+            "x": 0,
+            "z": 10.8,
+            "r": 1.25,
+            "h": 6.6,
+            "label": "Honmaru S",
+            "info": "Suedlicher Abschnitt des innersten Wehrbandes."
+          },
+          {
+            "x": -8,
+            "z": 7,
+            "r": 1.2,
+            "h": 6.4,
+            "label": "Honmaru SW",
+            "info": "Suedwestlicher Turm des Hauptbezirks."
+          },
+          {
+            "x": -10,
+            "z": 0.4,
+            "r": 1.25,
+            "h": 6.8,
+            "label": "Honmaru W",
+            "info": "Westlicher Eckturm mit Blick in die Grabenstaffelung."
+          },
+          {
+            "x": -7.8,
+            "z": -7.2,
+            "r": 1.2,
+            "h": 6.4,
+            "label": "Honmaru NW",
+            "info": "Nordwestlicher Flankierungsturm des Kernrings."
+          }
+        ],
+        "wall": {
+          "h": 5,
+          "thick": 0.95
+        },
+        "id": "osaka/ring/2"
+      },
+      {
+        "type": "RING",
+        "y": 3.25,
+        "gate": {
+          "atIndex": 1,
+          "w": 2.4,
+          "d": 1.9,
+          "h": 6.8,
+          "label": "Tenshu-Hof",
+          "info": "Der kleinste innere Hof dient vor allem der Inszenierung des Hauptturms. Im Diorama steht er als letzter gestaffelter Rueckzugsraum ueber den Steinmassen."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -6.2,
+            "r": 1.2,
+            "h": 7.2,
+            "label": "Tenshu-Kern N",
+            "info": "Noerdlicher Kernhofturm direkt unter dem Hauptturm."
+          },
+          {
+            "x": 5.8,
+            "z": 0,
+            "r": 1.2,
+            "h": 7.2,
+            "label": "Tenshu-Kern O",
+            "info": "Oestlicher Kernhofturm des Tenshu-Sockels."
+          },
+          {
+            "x": 0,
+            "z": 6.2,
+            "r": 1.2,
+            "h": 7.2,
+            "label": "Tenshu-Kern S",
+            "info": "Suedlicher Kernhofturm am oberen Steinpodium."
+          },
+          {
+            "x": -5.8,
+            "z": 0,
+            "r": 1.2,
+            "h": 7.2,
+            "label": "Tenshu-Kern W",
+            "info": "Westlicher Rueckzugspunkt des innersten Hofes."
+          }
+        ],
+        "wall": {
+          "h": 5.8,
+          "thick": 0.95
+        },
+        "id": "osaka/ring/3"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 0.8,
+        "z": 0.3,
+        "w": 5.4,
+        "d": 4.9,
+        "h": 16.8,
+        "y": 3.25,
+        "label": "Tenshukaku von Osaka",
+        "info": "Der Hauptturm war Toyotomis Machtzeichen im Massstab einer Hauptstadt. Seine Silhouette ueber den Steinpodien machte Osaka politisch wie militaerisch zu einer Ansage.",
+        "id": "osaka/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -4.2,
+        "z": -2.6,
+        "w": 2.9,
+        "d": 2.2,
+        "h": 4.2,
+        "y": 3.25,
+        "noRoof": true,
+        "label": "Kernhofbau / Magazin",
+        "info": "Neben dem Hauptturm verdichten kleinere Bauten den innersten Hof. Sie machen das Diorama weniger zu einem Solitaer und naeher an eine belebte, geschichtete Festungsplattform.",
+        "id": "osaka/square_tower/2"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -3.6,
+        "z": 0.43,
+        "y": 0.74,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – osaka",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "osaka/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 13.44,
+        "z": 0,
+        "y": 0.05,
+        "w": 2.4,
+        "d": 4.6,
+        "h": 1.8,
+        "steps": 7,
+        "landingD": 0.8,
+        "rotation": 1.5707963267948968,
+        "label": "Masugata-Aufstieg – osaka",
+        "info": "Gestufter Aufstieg in den Masugata-Bereich fuer kontrollierte Bewegungen.",
+        "id": "osaka/stairway/1"
+      }
+    ],
+    "validation": null
+  },
+  {
+    "id": "kumamoto",
+    "name": "kumamoto",
+    "style": "japanese",
+    "historicalMode": "surveyed",
+    "scale": 1,
+    "cameraRadius": 43,
+    "components": [
+      {
+        "type": "TERRAIN_STACK",
+        "x": 0,
+        "z": 0,
+        "y": 0,
+        "footprint": [
+          {
+            "x": -20,
+            "z": -18
+          },
+          {
+            "x": -12,
+            "z": -23
+          },
+          {
+            "x": 2,
+            "z": -22
+          },
+          {
+            "x": 14,
+            "z": -18
+          },
+          {
+            "x": 19,
+            "z": -9
+          },
+          {
+            "x": 20,
+            "z": 5
+          },
+          {
+            "x": 13,
+            "z": 16
+          },
+          {
+            "x": 0,
+            "z": 20
+          },
+          {
+            "x": -12,
+            "z": 16
+          },
+          {
+            "x": -19,
+            "z": 8
+          },
+          {
+            "x": -21,
+            "z": -5
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.08,
+            "h": 1.15
+          },
+          {
+            "scale": 1,
+            "h": 1
+          },
+          {
+            "scale": 0.94,
+            "h": 0.85
+          }
+        ],
+        "label": "Burgberg von Kumamoto",
+        "info": "Kumamoto verteilt sich ueber eine gestufte Huegelkante. Die Anlage wirkt deshalb weniger wie ein einziger Zentralberg und mehr wie mehrere zusammengezogene Verteidigungsterrassen.",
+        "id": "kumamoto/terrain_stack/1"
+      },
+      {
+        "type": "PLATEAU",
+        "x": -1.5,
+        "z": 1,
+        "y": 3.05,
+        "w": 28,
+        "d": 20,
+        "h": 0.5,
+        "label": "Unterer Hauptbezirk",
+        "info": "Die untere Hauptstufe traegt die grossen Hofraeume und den Zugang zum Kern. Schon hier erzwingen Mauern und Sockel eine gebrochene, langsame Annaeherung.",
+        "id": "kumamoto/plateau/1"
+      },
+      {
+        "type": "TERRAIN_STACK",
+        "x": -0.8,
+        "z": 0.4,
+        "y": 3.55,
+        "footprint": [
+          {
+            "x": -8.8,
+            "z": -9.5
+          },
+          {
+            "x": -3.6,
+            "z": -11.8
+          },
+          {
+            "x": 4.8,
+            "z": -10.6
+          },
+          {
+            "x": 9.4,
+            "z": -6.5
+          },
+          {
+            "x": 10.2,
+            "z": 0.4
+          },
+          {
+            "x": 8.8,
+            "z": 7.2
+          },
+          {
+            "x": 3.1,
+            "z": 10.6
+          },
+          {
+            "x": -4.7,
+            "z": 10.3
+          },
+          {
+            "x": -9,
+            "z": 6.4
+          },
+          {
+            "x": -10.3,
+            "z": -0.8
+          }
+        ],
+        "layers": [
+          {
+            "scale": 1.06,
+            "h": 0.95
+          },
+          {
+            "scale": 1,
+            "h": 0.85
+          },
+          {
+            "scale": 0.92,
+            "h": 0.72
+          }
+        ],
+        "label": "Oberes Ishigaki-Podium",
+        "info": "Der innere Kern sitzt auf hochgezogenen Steinpodien mit den beruehmten konkaven Ishigaki-Linien. Diese Sockel machen Kumamoto schon ohne Wassergraben schwer erkletterbar und fast unminierbar.",
+        "id": "kumamoto/terrain_stack/2"
+      },
+      {
+        "type": "GLACIS",
+        "x": -0.6,
+        "z": 0.5,
+        "y": 3.45,
+        "rTop": 10.5,
+        "rBot": 13.6,
+        "h": 1.2,
+        "label": "Konkaver Ishigaki-Ring",
+        "info": "Der nach aussen weitende Steinsockel ueberzeichnet bewusst die konkave Wirkung der Kumamoto-Ishigaki. Er soll zeigen, warum Leitern, Haken und Minen an dieser Burg so schlecht funktionierten.",
+        "id": "kumamoto/glacis/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 17.8,
+        "z1": 6.5,
+        "x2": 9.8,
+        "z2": 3.4,
+        "y1": 0.35,
+        "y2": 3.05,
+        "w": 3,
+        "thick": 0.18,
+        "label": "Suedost-Anmarsch",
+        "info": "Der suedostoestliche Zugang fuehrte nicht direkt auf den Tenshu, sondern in gebrochene Hof- und Mauerfolgen. Kumamoto verteidigt sich durch steile Sockel plus Richtungswechsel.",
+        "id": "kumamoto/slope_path/1"
+      },
+      {
+        "type": "SLOPE_PATH",
+        "x1": 7.6,
+        "z1": 2.8,
+        "x2": 3,
+        "z2": 1.2,
+        "y1": 3.1,
+        "y2": 5.95,
+        "w": 2.3,
+        "thick": 0.18,
+        "label": "Rampe zum Karasu-Kern",
+        "info": "Der letzte Aufstieg in den Hauptkern fuehrt ueber einen engen, steilen Uebergang. Genau dort verdichten sich Sockel, Torstellung und Schusswinkel zu Kumamotos eigentlicher Nahverteidigung.",
+        "id": "kumamoto/slope_path/2"
+      },
+      {
+        "type": "RING",
+        "y": 3.1,
+        "gate": {
+          "atIndex": 2,
+          "w": 3,
+          "d": 2.5,
+          "h": 5.9,
+          "label": "Aeusseres Kernhof-Tor",
+          "info": "Kumamotos aeussere Hoflinie ist weniger weit ausgreifend als Osaka, aber dichter und steiler. Jeder Angriff verliert hier Schwung, bevor er den Hauptsockel ueberhaupt beruehrt."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -11.8,
+            "r": 1.15,
+            "h": 5.8,
+            "label": "Aeusserer Hof N",
+            "info": "Noerdlicher Turm des unteren Hauptbezirks."
+          },
+          {
+            "x": 8.8,
+            "z": -6.4,
+            "r": 1.1,
+            "h": 5.7,
+            "label": "Aeusserer Hof NO",
+            "info": "Nordoestlicher Flankierungsturm der unteren Stufe."
+          },
+          {
+            "x": 11.6,
+            "z": 1,
+            "r": 1.2,
+            "h": 6,
+            "label": "Aeusserer Hof O",
+            "info": "Oestliche Tor- und Flankierungszone des unteren Hofes."
+          },
+          {
+            "x": 7.4,
+            "z": 8.2,
+            "r": 1.1,
+            "h": 5.7,
+            "label": "Aeusserer Hof SO",
+            "info": "Suedoestlicher Turm der unteren Hofkante."
+          },
+          {
+            "x": -0.2,
+            "z": 11.2,
+            "r": 1.15,
+            "h": 5.8,
+            "label": "Aeusserer Hof S",
+            "info": "Suedlicher Abschnitt der unteren Hauptstufe."
+          },
+          {
+            "x": -8.4,
+            "z": 8,
+            "r": 1.1,
+            "h": 5.7,
+            "label": "Aeusserer Hof SW",
+            "info": "Suedwestlicher Flankierungsturm."
+          },
+          {
+            "x": -11,
+            "z": 0.6,
+            "r": 1.2,
+            "h": 5.9,
+            "label": "Aeusserer Hof W",
+            "info": "Westliche Hofkante mit Blick auf die fallende Hangseite."
+          },
+          {
+            "x": -8.6,
+            "z": -7,
+            "r": 1.1,
+            "h": 5.7,
+            "label": "Aeusserer Hof NW",
+            "info": "Nordwestturm des unteren Hauptbezirks."
+          }
+        ],
+        "wall": {
+          "h": 4.4,
+          "thick": 0.82
+        },
+        "id": "kumamoto/ring/1"
+      },
+      {
+        "type": "RING",
+        "y": 6,
+        "gate": {
+          "atIndex": 1,
+          "w": 2.5,
+          "d": 2,
+          "h": 6.7,
+          "label": "Karasu-Kern",
+          "info": "Am innersten Ring verschmilzt Kumamotos schwarze Silhouette mit den Ishigaki-Sockeln. Dieser Kern ist die eigentliche Kraehenburg, dicht, hoch und schwer frontal lesbar."
+        },
+        "points": [
+          {
+            "x": 0,
+            "z": -6.8,
+            "r": 1.25,
+            "h": 7.1,
+            "label": "Karasu-Kern N",
+            "info": "Noerdlicher Kernhofturm ueber dem steilen Ishigaki-Sockel."
+          },
+          {
+            "x": 6.4,
+            "z": 0,
+            "r": 1.25,
+            "h": 7.1,
+            "label": "Karasu-Kern O",
+            "info": "Oestlicher Flankierungsturm des Hauptplateaus."
+          },
+          {
+            "x": 0,
+            "z": 6.8,
+            "r": 1.25,
+            "h": 7.1,
+            "label": "Karasu-Kern S",
+            "info": "Suedlicher Kernhofturm der oberen Burgstufe."
+          },
+          {
+            "x": -6.4,
+            "z": 0,
+            "r": 1.25,
+            "h": 7.1,
+            "label": "Karasu-Kern W",
+            "info": "Westlicher Rueckzugspunkt des innersten Hofes."
+          }
+        ],
+        "wall": {
+          "h": 5.7,
+          "thick": 0.95
+        },
+        "id": "kumamoto/ring/2"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -0.4,
+        "z": 0.3,
+        "w": 5.1,
+        "d": 4.6,
+        "h": 16.2,
+        "y": 6,
+        "label": "Karasu-jo Hauptturm",
+        "info": "Der schwarze Hauptturm gab Kumamoto seinen Beinamen Kraehenburg. Im Diorama sitzt er als dunkler, vertikaler Kontrapunkt direkt ueber dem steilen Ishigaki-Sockel.",
+        "id": "kumamoto/square_tower/1"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": 8.8,
+        "z": -3.6,
+        "w": 3.4,
+        "d": 2.8,
+        "h": 10.5,
+        "y": 3.2,
+        "label": "Uto-Turm",
+        "info": "Der Uto-Turm ist Kumamotos zweites grosses Zeichen im Grundriss. Seine Eigenstaendigkeit macht die Burg komplexer als einen blossen Tenshu-mit-Hof-Typ.",
+        "id": "kumamoto/square_tower/2"
+      },
+      {
+        "type": "SQUARE_TOWER",
+        "x": -4.6,
+        "z": 3.4,
+        "w": 2.8,
+        "d": 2.2,
+        "h": 4.3,
+        "y": 6,
+        "noRoof": true,
+        "label": "Innerer Magazinbau",
+        "info": "Kleinere Nebengebaeude verdichten den Kernhof und unterstreichen Kumamotos Charakter als genutzte, vielschichtige Verteidigungsanlage statt isoliertem Einzelturm.",
+        "id": "kumamoto/square_tower/3"
+      },
+      {
+        "type": "GABLED_HALL",
+        "x": -2.3,
+        "z": -0.2,
+        "y": 4.7,
+        "w": 4.3,
+        "d": 2.1,
+        "h": 2.3,
+        "roofH": 1.05,
+        "slitCount": 1,
+        "doorSide": "front",
+        "chimneyCount": 1,
+        "label": "Magazinbau – kumamoto",
+        "info": "Versorgungs- und Lagerbau zur Unterstuetzung der Garnison (50/100).",
+        "id": "kumamoto/gabled_hall/1"
+      },
+      {
+        "type": "STAIRWAY",
+        "x": 8.09,
+        "z": 0.7,
+        "y": 0.05,
+        "w": 2.4,
+        "d": 4.6,
+        "h": 1.8,
+        "steps": 7,
+        "landingD": 0.8,
+        "rotation": 1.484802035600656,
+        "label": "Masugata-Aufstieg – kumamoto",
+        "info": "Gestufter Aufstieg in den Masugata-Bereich fuer kontrollierte Bewegungen.",
+        "id": "kumamoto/stairway/1"
+      }
+    ],
+    "validation": null
+  }
+]

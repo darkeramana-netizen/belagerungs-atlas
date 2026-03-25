@@ -1,0 +1,12 @@
+{
+  "name": "castle-gen",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "CLI bridge: generates castle component JSON from castle metadata",
+  "bin": {
+    "castle-gen": "./generate.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
