@@ -1,30 +1,36 @@
 extends Node3D
-## Main -- entry point.
+## Main -- entry point for the voxel world.
 ##
-## Castle selection (in order of priority):
-##   1. CLI argument  --castle=<id>   load named hero castle
-##   2. CLI argument  --seed=<int>    procedural castle from seed
-##   3. Export var    castle_id       named hero castle (default "krak")
-##   4. castle_id=""  or  "random"    procedural castle from world_seed
+## Boot sequence:
+##   1. Create VoxelWorld + VoxelTerrainGen, link them.
+##   2. Load castle DNA (hero JSON or procedural) and write blocks via
+##      CastleVoxelBuilder into the VoxelWorld.
+##   3. Spawn player at terrain surface above the castle gate.
+##   4. Each frame: stream chunks around the active camera.
 ##
-## World:
-##   world_seed drives terrain noise AND procedural castle generation.
-##   Same world_seed = identical world, identical castles, every launch.
+## Castle selection priority (highest first):
+##   --castle=<id>   named hero castle from hero_castles.json
+##   --seed=<int>    procedural castle, sets world_seed
+##   @export castle_id  scene property (default "krak")
+##   castle_id=""    procedural castle derived from world_seed
 
-@export var castle_id:  String = "krak"   # set "" or "random" for procedural
-@export var world_seed: int    = 12345    # master seed for world + castles
+@export var castle_id:  String = "krak"   # "" or "random" = procedural
+@export var world_seed: int    = 12345
 @export var data_dir:   String = "res://data/castles/"
 
-@onready var castle_root: Node3D          = $CastleRoot
-@onready var cam_rig:     Node3D          = $CameraRig
-@onready var terrain                      = $TerrainManager
-@onready var player:      CharacterBody3D = $PlayerController
-@onready var hud_label:   Label           = $UI/HUD
+@onready var cam_rig:   Node3D          = $CameraRig
+@onready var player:    CharacterBody3D = $PlayerController
+@onready var hud_label: Label           = $UI/HUD
 
-const CastleLoader      = preload("res://scripts/CastleLoader.gd")
+const CastleLoader        = preload("res://scripts/CastleLoader.gd")
 const ProceduralCastleGen = preload("res://scripts/ProceduralCastleGen.gd")
+const VoxelWorldScript    = preload("res://scripts/voxel/VoxelWorld.gd")
+const VoxelTerrainScript  = preload("res://scripts/voxel/VoxelTerrainGen.gd")
+const CastleVoxelBuilder  = preload("res://scripts/voxel/CastleVoxelBuilder.gd")
 
-var _cam_pos: Vector3 = Vector3.ZERO
+var _world:  Object = null   # VoxelWorld
+var _gen:    Object = null   # VoxelTerrainGen
+var _builder: Object = null  # CastleVoxelBuilder
 
 
 func _ready() -> void:
@@ -36,10 +42,7 @@ func _ready() -> void:
 			world_seed = int(arg.substr(7))
 			castle_id  = "random"
 
-	# Pass world seed to terrain before first update
-	terrain.world_seed = world_seed
-	terrain.reinit()
-
+	_boot_voxel_world()
 	_load_castle(castle_id)
 
 	player.mode_changed.connect(_on_mode_changed)
@@ -47,93 +50,124 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	# Stream terrain chunks around the active camera
 	var cam: Camera3D = get_viewport().get_camera_3d()
-	if cam:
-		_cam_pos = cam.global_position
-	terrain.update_chunks(_cam_pos)
+	if cam and _world:
+		_world.update(cam.global_position)
 
-	if Input.is_action_just_pressed("toggle_fps"):
-		if player.mode == player.Mode.ORBIT:
-			player.position = _gate_spawn_pos()
-			player.activate_fps()
-			cam_rig.get_node("Camera3D").current = false
+	# Mode toggle keys (handled here for orbit mode; PlayerController handles FPS/TPS)
+	if Input.is_action_just_pressed("toggle_fps") and player.mode == player.Mode.ORBIT:
+		player.position = _spawn_pos()
+		player.activate_fps()
+		cam_rig.get_node("Camera3D").current = false
 
-	if Input.is_action_just_pressed("toggle_tps"):
-		if player.mode == player.Mode.ORBIT:
-			player.position = _gate_spawn_pos()
-			player.activate_tps()
-			cam_rig.get_node("Camera3D").current = false
+	if Input.is_action_just_pressed("toggle_tps") and player.mode == player.Mode.ORBIT:
+		player.position = _spawn_pos()
+		player.activate_tps()
+		cam_rig.get_node("Camera3D").current = false
 
 
 func _on_mode_changed(new_mode) -> void:
 	match new_mode:
 		player.Mode.FPS:
-			hud_label.text = "[FPS]  WASD bewegen · Shift rennen · Leertaste springen · Esc zurueck"
+			hud_label.text = "[FPS]  WASD bewegen - Shift rennen - Leertaste springen - Esc zurueck"
 			cam_rig.get_node("Camera3D").current = false
 		player.Mode.TPS:
-			hud_label.text = "[TPS]  WASD bewegen · Shift rennen · Leertaste springen · Esc zurueck"
+			hud_label.text = "[TPS]  WASD bewegen - Shift rennen - Leertaste springen - Esc zurueck"
 			cam_rig.get_node("Camera3D").current = false
 		_:
 			hud_label.text = "Orbit: Maus ziehen + Scroll  -  F = FPS  -  T = TPS"
 			cam_rig.get_node("Camera3D").current = true
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Boot
+# ---------------------------------------------------------------------------
+
+func _boot_voxel_world() -> void:
+	# VoxelTerrainGen
+	_gen = VoxelTerrainScript.new()
+	_gen.world_seed = world_seed
+	add_child(_gen)   # triggers _ready() -> _init_noise()
+
+	# VoxelWorld
+	_world = VoxelWorldScript.new()
+	_world.world_seed    = world_seed
+	_world.castle_flat_r = 32   # default; overridden after castle load
+	_world._gen          = _gen
+	add_child(_world)
+
+	# CastleVoxelBuilder
+	_builder = CastleVoxelBuilder.new()
+	_builder.world = _world
+	add_child(_builder)
+
+	print("[Main] Voxel world booted (seed=%d)" % world_seed)
+
+
+# ---------------------------------------------------------------------------
 # Castle loading
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 func _load_castle(id: String) -> void:
-	for child in castle_root.get_children():
-		child.queue_free()
-
 	var model: Dictionary
-	var is_procedural := (id == "" or id == "random")
+	var procedural := (id == "" or id == "random")
 
-	if is_procedural:
-		# Procedural castle -- derived entirely from world_seed
+	if procedural:
 		model = ProceduralCastleGen.generate(world_seed, 0.0, 0.0)
-		print("[Main] Procedural castle seed=%d -> '%s'" % [world_seed, model.get("name", "?")])
+		print("[Main] Procedural castle: '%s'" % model.get("name", "?"))
 	else:
 		model = CastleLoader.load_castle(data_dir, id)
 		if model.is_empty():
-			push_error("[Main] Castle '%s' not found -- falling back to procedural." % id)
+			push_warning("[Main] Castle '%s' not found, falling back to procedural." % id)
 			model = ProceduralCastleGen.generate(world_seed, 0.0, 0.0)
-			is_procedural = true
+			procedural = true
 
-	var loader := CastleLoader.new()
-	loader.build_into(castle_root, model)
+	# Adjust flat zone radius from camera radius
+	var cam_r: float = float(model.get("cameraRadius", 60.0))
+	var flat_r: int  = maxi(24, int((cam_r / 2.45) * 1.35))
+	_world.castle_flat_r = flat_r
 
-	# Orbit camera scale
-	var cam_r: float = model.get("cameraRadius", 50.0)
+	# Scale orbit camera
 	cam_rig.scale = Vector3.ONE * clampf(cam_r / 28.0, 0.5, 4.5)
 
-	# Flat zone radius -- proportional to castle footprint
-	var flat_r: float = (cam_r / 2.45) * 1.35
-	terrain.castle_flat_r = maxf(22.0, flat_r)
+	# Pre-generate terrain columns in the castle zone before placing blocks
+	# (foundation logic needs surface_y to be known)
+	_gen.world_seed = world_seed
+	_gen.reinit()
+	_preload_castle_terrain(flat_r)
 
-	# Terrain seed from world_seed (terrain was already seeded in _ready,
-	# but re-apply in case _load_castle is called later with a new castle)
-	terrain.world_seed = world_seed
-	terrain.reinit()
+	# Place castle blocks into the world
+	_builder.build(model)
 
-	var name_str: String = model.get("name", id) if not is_procedural else model.get("name", "Procedural")
-	print("[Main] '%s' loaded -- %d components, flat_r=%.1fm, world_seed=%d" % [
-		name_str,
-		model.get("components", []).size(),
-		terrain.castle_flat_r,
-		world_seed,
-	])
+	var name_str: String = model.get("name", id)
+	print("[Main] '%s' built into voxel world — flat_r=%d blocks" % [name_str, flat_r])
 
 
-# ----------------------------------------------------------------------------
+## Pre-fill terrain chunks covering the castle footprint so foundations work.
+func _preload_castle_terrain(flat_r: int) -> void:
+	var cs := 16
+	var chunk_r: int = (flat_r / cs) + 2
+	for cx in range(-chunk_r, chunk_r + 1):
+		for cz in range(-chunk_r, chunk_r + 1):
+			for cy in _world.WORLD_HEIGHT_CHUNKS:
+				var key := Vector3i(cx, cy, cz)
+				if not _world._chunks.has(key):
+					_world._create_chunk(key)
+					_gen.fill_chunk(key, _world)
+					_world._chunks[key].rebuild()
+
+
+# ---------------------------------------------------------------------------
 # Player spawn
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-func _gate_spawn_pos() -> Vector3:
-	# Spawn in front of the castle gate at terrain height + 3m buffer
-	var flat_r: float = terrain.castle_flat_r
-	var gx := 0.0
-	var gz := flat_r * 0.55
-	# Terrain height at spawn point (castle flat zone returns BASE_HEIGHT)
-	var ground_h: float = terrain.get_height_at(gx, gz)
-	return Vector3(gx, ground_h + 3.0, gz)
+func _spawn_pos() -> Vector3:
+	# Spawn in front of the castle gate, on top of terrain
+	var flat_r: float = float(_world.castle_flat_r)
+	var gx: int = 0
+	var gz: int = int(flat_r * 0.55)
+	var sy: int = _world.get_surface_y(gx, gz)
+	if sy < 0:
+		sy = _world.BASE_Y
+	return Vector3(float(gx), float(sy + 2), float(gz))
