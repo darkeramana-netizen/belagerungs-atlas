@@ -18,11 +18,14 @@
 //   within_tile uses half-texel inset derived from atlas_size so samples
 //     never land on atlas tile borders regardless of block or atlas dimensions.
 //
-// cull_back eliminates back-face "floating brown rectangle" artefacts.
-// All mesh quads use outward-facing CCW winding (verified via cross product).
+// cull_disabled + explicit per-face discard:
+//   Side faces (abs(wn.y) < 0.5): discard if camera is on the back side
+//     → eliminates floating-rectangle artefacts without winding-order dependency.
+//   Top/bottom faces (abs(wn.y) >= 0.5): always rendered double-sided
+//     → top faces visible from above; bottom faces from underground / editor.
 
 shader_type spatial;
-render_mode unshaded, cull_back, depth_draw_opaque, shadows_disabled;
+render_mode unshaded, cull_disabled, depth_draw_opaque, shadows_disabled;
 
 uniform sampler2D atlas      : source_color, filter_nearest, repeat_disable;
 uniform vec2      atlas_grid = vec2(20.0, 3.0);    // (num_cols, num_rows)
@@ -42,6 +45,17 @@ void vertex() {
 void fragment() {
 	// ── Re-normalise (varying interpolation can drift off unit length) ────
 	vec3 wn = normalize(world_normal);
+
+	// ── Back-face discard for side quads only ─────────────────────────────
+	// Side faces have |wn.y| < 0.5 (normals ±X or ±Z).
+	// Use dot-product with camera vector (world-space, independent of winding).
+	// Top/bottom faces (|wn.y| >= 0.5) are left double-sided intentionally.
+	if (abs(wn.y) < 0.5) {
+		vec3 to_cam = INV_VIEW_MATRIX[3].xyz - world_pos;
+		if (dot(to_cam, wn) <= 0.0) {
+			discard;
+		}
+	}
 
 	// ── Triplanar UV selection ────────────────────────────────────────────
 	// +0.001 snap keeps us safely above the previous integer block boundary
