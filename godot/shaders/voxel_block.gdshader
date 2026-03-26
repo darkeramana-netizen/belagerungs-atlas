@@ -13,13 +13,12 @@
 // UV2.x = float(block_id) / BLOCK_COUNT  — atlas column selector.
 // Vertex COLOR.rgb = per-vertex AO greyscale (1 = bright, 0 = occluded).
 //
-// Triplanar UV selection (dominant world normal axis):
-//   ±Y (top/bottom)  →  fract(world_pos.xz)
-//   ±X (side)        →  fract(world_pos.zy)   (z=horiz, y=height)
-//   ±Z (side)        →  fract(world_pos.xy)   (x=horiz, y=height)
-//
-// A 0.001 inset on each edge of the atlas tile prevents sampling the
-// adjacent tile at floating-point block boundaries.
+// Precision notes:
+//   world_pos via MODEL_MATRIX accounts for chunk-node world offset.
+//   world_normal via MODEL_NORMAL_MATRIX (inverse-transpose of model mat3)
+//     gives correct normals even under non-uniform scaling.
+//   +0.001 snap before fract() prevents 15.9999... rounding at block edges
+//     from sampling the wrong block-row pixel.
 
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_opaque, shadows_disabled;
@@ -32,12 +31,20 @@ varying vec3 world_pos;
 varying vec3 world_normal;
 
 void vertex() {
+	// Full world-space position including chunk node offset.
 	world_pos    = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	world_normal = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	// MODEL_NORMAL_MATRIX = transpose(inverse(mat3(MODEL_MATRIX))).
+	// Correct for non-uniform scale; avoids skewed normals.
+	world_normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
 }
 
 void fragment() {
 	// ── Triplanar UV selection ─────────────────────────────────────────────
+	// +0.001 snap: shifts coords slightly away from integer block boundaries
+	// so that floating-point values like 15.9999 become 16.0009 before fract(),
+	// landing in the correct [0,1) tile rather than the previous tile's tail.
+	vec3 snapped = world_pos + vec3(0.001);
+
 	float any = abs(world_normal.y);
 	float anx = abs(world_normal.x);
 	float anz = abs(world_normal.z);
@@ -47,26 +54,26 @@ void fragment() {
 
 	if (any > 0.5) {
 		// Top (+Y, row 0) or Bottom (-Y, row 2)
-		tile_uv     = fract(world_pos.xz);
+		tile_uv     = fract(snapped.xz);
 		atlas_row_f = (world_normal.y > 0.0) ? 0.0 : 2.0;
 	} else if (anx >= anz) {
 		// ±X side face: horizontal = Z, vertical = Y
-		tile_uv     = fract(world_pos.zy);
+		tile_uv     = fract(snapped.zy);
 		atlas_row_f = 1.0;
 	} else {
 		// ±Z side face: horizontal = X, vertical = Y
-		tile_uv     = fract(world_pos.xy);
+		tile_uv     = fract(snapped.xy);
 		atlas_row_f = 1.0;
 	}
 
 	// ── Atlas sampling ────────────────────────────────────────────────────
-	vec2 tile_size  = 1.0 / atlas_grid;
+	vec2 tile_size = 1.0 / atlas_grid;
 
 	// Atlas tile origin: column from block-ID (UV2.x), row from face normal.
 	vec2 atlas_base = vec2(UV2.x, atlas_row_f / atlas_grid.y);
 
 	// Inset tile_uv by ±0.001 so samples never reach tile boundaries,
-	// preventing bleed from adjacent tiles at block edges.
+	// preventing bleed from adjacent tiles.
 	vec2 within_tile = tile_uv * (tile_size - vec2(0.002)) + vec2(0.001);
 
 	vec4 tex = texture(atlas, atlas_base + within_tile);
