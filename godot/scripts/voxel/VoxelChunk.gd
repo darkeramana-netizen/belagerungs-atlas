@@ -147,9 +147,12 @@ func rebuild() -> void:
 						base_col.r * ao, base_col.g * ao, base_col.b * ao, 1.0)
 
 					var vi: int = verts.size()
-					var bx := float(wx)
-					var by_ := float(wy)
-					var bz := float(wz)
+					# LOCAL coords (0..15): node is already at chunk_pos*SIZE.
+					# Using world coords caused a double-offset -- chunks appeared
+					# displaced by their own origin a second time.
+					var bx := float(lx)
+					var by_ := float(ly)
+					var bz := float(lz)
 
 					# Add 4 vertices using face offsets (index 2..5)
 					verts.append(Vector3(bx + face[2].x, by_ + face[2].y, bz + face[2].z))

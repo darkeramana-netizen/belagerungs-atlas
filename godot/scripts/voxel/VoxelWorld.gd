@@ -28,8 +28,9 @@ const BASE_Y := 20
 var _chunks: Dictionary = {}             # Vector3i -> VoxelChunk
 var _gen: Node = null                    # VoxelTerrainGen (set by Main after _ready)
 
-## How many dirty chunks may be rebuilt per frame.
-const REBUILDS_PER_FRAME := 2
+## New XZ columns created + filled + rebuilt per update() call.
+## One column = WORLD_HEIGHT_CHUNKS actual chunks.
+const NEW_COLS_PER_FRAME := 4
 
 
 func _ready() -> void:
@@ -85,15 +86,31 @@ func update(player_pos: Vector3) -> void:
 	var pcx := int(floor(player_pos.x / 16.0))
 	var pcz := int(floor(player_pos.z / 16.0))
 
-	# Load needed chunks (all Y levels for each X/Z)
+	# Load new XZ columns (all Y levels at once), fill + rebuild immediately.
+	# NEW_COLS_PER_FRAME caps per-frame CPU cost.
+	var new_cols := 0
 	for dx in range(-view_dist, view_dist + 1):
 		for dz in range(-view_dist, view_dist + 1):
+			var any_missing := false
+			for cy in WORLD_HEIGHT_CHUNKS:
+				if not _chunks.has(Vector3i(pcx + dx, cy, pcz + dz)):
+					any_missing = true
+					break
+			if not any_missing:
+				continue
+			if new_cols >= NEW_COLS_PER_FRAME:
+				continue
+			new_cols += 1
 			for cy in WORLD_HEIGHT_CHUNKS:
 				var key := Vector3i(pcx + dx, cy, pcz + dz)
 				if not _chunks.has(key):
 					_create_chunk(key)
 					if _gen != null:
 						_gen.fill_chunk(key, self)
+			for cy in WORLD_HEIGHT_CHUNKS:
+				var key2 := Vector3i(pcx + dx, cy, pcz + dz)
+				if _chunks.has(key2):
+					_chunks[key2].rebuild()
 
 	# Unload distant chunks
 	for key in _chunks.keys():
@@ -101,15 +118,10 @@ func update(player_pos: Vector3) -> void:
 		if abs(k.x - pcx) > view_dist + 1 or abs(k.z - pcz) > view_dist + 1:
 			_unload_chunk(key)
 
-	# Rebuild dirty chunks, spread over frames
-	var rebuilt := 0
+	# Rebuild any chunks dirtied by block edits (not terrain gen)
 	for key in _chunks.keys():
-		if rebuilt >= REBUILDS_PER_FRAME:
-			break
-		var chunk: Object = _chunks[key]
-		if chunk.is_dirty():
-			chunk.rebuild()
-			rebuilt += 1
+		if _chunks[key].is_dirty():
+			_chunks[key].rebuild()
 
 
 # ---------------------------------------------------------------------------
