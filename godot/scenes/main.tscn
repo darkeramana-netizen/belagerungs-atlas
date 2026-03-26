@@ -1,16 +1,15 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/CameraRig.gd" id="2_cam"]
-[ext_resource type="Script" path="res://scripts/TerrainManager.gd" id="3_terrain"]
-[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="4_player"]
+[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="3_player"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
-sky_top_color = Color(0.15, 0.30, 0.58, 1)
-sky_horizon_color = Color(0.60, 0.72, 0.88, 1)
-ground_bottom_color = Color(0.20, 0.18, 0.15, 1)
-ground_horizon_color = Color(0.40, 0.36, 0.30, 1)
-sun_angle_max = 30.0
+sky_top_color = Color(0.12, 0.26, 0.54, 1)
+sky_horizon_color = Color(0.58, 0.70, 0.86, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.12, 1)
+ground_horizon_color = Color(0.38, 0.32, 0.26, 1)
+sun_angle_max = 28.0
 
 [sub_resource type="Sky" id="sky_res"]
 sky_material = SubResource("sky_mat")
@@ -19,26 +18,17 @@ sky_material = SubResource("sky_mat")
 background_mode = 2
 sky = SubResource("sky_res")
 ambient_light_source = 3
-ambient_light_color = Color(0.48, 0.53, 0.64, 1)
-ambient_light_energy = 0.65
+ambient_light_color = Color(0.46, 0.50, 0.62, 1)
+ambient_light_energy = 0.60
 tonemap_mode = 2
 glow_enabled = true
-glow_intensity = 0.35
+glow_intensity = 0.30
 ssao_enabled = true
-ssao_radius = 1.2
+ssao_radius = 1.0
 
 [sub_resource type="CapsuleShape3D" id="player_col"]
 radius = 0.4
 height = 1.8
-
-[sub_resource type="WorldBoundaryShape3D" id="fallback_col"]
-
-[sub_resource type="PlaneMesh" id="fallback_mesh"]
-size = Vector2(600, 600)
-
-[sub_resource type="StandardMaterial3D" id="fallback_mat"]
-albedo_color = Color(0.25, 0.22, 0.18, 1)
-roughness = 0.95
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_main")
@@ -49,46 +39,30 @@ world_seed = 12345
 environment = SubResource("env_res")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 30, 0)
-light_color = Color(1, 0.95, 0.82, 1)
-light_energy = 2.0
+transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 50, 0)
+light_color = Color(1, 0.96, 0.84, 1)
+light_energy = 2.2
 shadow_enabled = true
-shadow_bias = 0.05
+shadow_bias = 0.04
 
 [node name="AmbientFill" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707, 0.5, -0.5, 0, 0.707, 0.707, 0.707, -0.5, 0.5, 0, 10, 0)
 light_color = Color(0.55, 0.65, 0.90, 1)
-light_energy = 0.45
-
-[node name="TerrainManager" type="Node3D" parent="."]
-script = ExtResource("3_terrain")
-
-[node name="FallbackGround" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="FallbackGround"]
-mesh = SubResource("fallback_mesh")
-surface_material_override/0 = SubResource("fallback_mat")
-cast_shadow = 0
-
-[node name="Col" type="CollisionShape3D" parent="FallbackGround"]
-shape = SubResource("fallback_col")
-
-[node name="CastleRoot" type="Node3D" parent="."]
+light_energy = 0.40
 
 [node name="CameraRig" type="Node3D" parent="."]
 script = ExtResource("2_cam")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
-transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0, 18, 36)
+transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0, 20, 40)
 current = true
 fov = 52.0
 near = 0.1
 far = 2000.0
 
 [node name="PlayerController" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 30)
-script = ExtResource("4_player")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22, 20)
+script = ExtResource("3_player")
 
 [node name="ColShape" type="CollisionShape3D" parent="PlayerController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -122,14 +96,3 @@ offset_top = -40.0
 offset_bottom = -8.0
 horizontal_alignment = 1
 text = "Orbit: Maus ziehen + Scroll  -  F = FPS  -  T = TPS"
-
-[node name="InfoPanel" type="Panel" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-offset_left = -320.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 200.0
