@@ -14,9 +14,10 @@ extends Node3D
 ##   @export castle_id  scene property (default "krak")
 ##   castle_id=""    procedural castle derived from world_seed
 
-@export var castle_id:  String = "krak"   # "" or "random" = procedural
-@export var world_seed: int    = 12345
-@export var data_dir:   String = "res://data/castles/"
+@export var castle_id:       String = "krak"   # "" or "random" = procedural
+@export var world_seed:      int    = 0        # 0 = random on each run
+@export var skip_castle:     bool   = true     # set false to build castle
+@export var data_dir:        String = "res://data/castles/"
 
 @onready var cam_rig:   Node3D          = $CameraRig
 @onready var player:    CharacterBody3D = $PlayerController
@@ -34,7 +35,11 @@ var _builder: Object = null  # CastleVoxelBuilder
 
 
 func _ready() -> void:
-	# CLI overrides
+	# Randomise seed on each run unless a fixed seed is set or passed via CLI.
+	if world_seed == 0:
+		world_seed = randi()
+
+	# CLI overrides (--castle=krak  --seed=12345)
 	for arg in OS.get_cmdline_args():
 		if arg.begins_with("--castle="):
 			castle_id  = arg.substr(9)
@@ -43,7 +48,10 @@ func _ready() -> void:
 			castle_id  = "random"
 
 	_boot_voxel_world()
-	_load_castle(castle_id)
+	if skip_castle:
+		_setup_world_only()
+	else:
+		_load_castle(castle_id)
 
 	player.mode_changed.connect(_on_mode_changed)
 	_on_mode_changed(player.Mode.ORBIT)
@@ -83,6 +91,17 @@ func _on_mode_changed(new_mode) -> void:
 # ---------------------------------------------------------------------------
 # Boot
 # ---------------------------------------------------------------------------
+
+## World-only startup: no castle, just terrain + camera.
+func _setup_world_only() -> void:
+	_world.castle_flat_r = 0   # no flat zone; pure noise terrain
+	cam_rig.scale = Vector3.ONE * 1.5
+	_gen.world_seed = world_seed
+	_gen.reinit()
+	# Preload the 3x3 center columns synchronously so the player spawns on terrain.
+	_preload_castle_terrain(16)
+	print("[Main] World-only mode (seed=%d, no castle)" % world_seed)
+
 
 func _boot_voxel_world() -> void:
 	# VoxelTerrainGen
