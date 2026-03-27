@@ -164,9 +164,17 @@ func _load_castle(id: String) -> void:
 
 
 ## Pre-fill terrain chunks covering the castle footprint so foundations work.
+##
+## Two-pass approach so every chunk's ncache sees correct neighbour data:
+##   Pass 1 — create + fill ALL chunks (block data written, no mesh yet).
+##   Pass 2 — rebuild ALL chunks (ncache now covers fully-populated neighbours).
+## Without the split, chunks rebuilt in Pass 1 would see AIR at boundaries
+## where neighbour chunks had not been filled yet, producing ghost side-faces.
 func _preload_castle_terrain(flat_r: int) -> void:
 	var cs := 16
 	var chunk_r: int = int(float(flat_r) / float(cs)) + 2
+
+	# Pass 1: create and fill every chunk in the region.
 	for cx in range(-chunk_r, chunk_r + 1):
 		for cz in range(-chunk_r, chunk_r + 1):
 			for cy in _world.WORLD_HEIGHT_CHUNKS:
@@ -174,6 +182,13 @@ func _preload_castle_terrain(flat_r: int) -> void:
 				if not _world._chunks.has(key):
 					_world._create_chunk(key)
 					_gen.fill_chunk(key, _world)
+
+	# Pass 2: rebuild all chunks now that every neighbour is populated.
+	for cx in range(-chunk_r, chunk_r + 1):
+		for cz in range(-chunk_r, chunk_r + 1):
+			for cy in _world.WORLD_HEIGHT_CHUNKS:
+				var key := Vector3i(cx, cy, cz)
+				if _world._chunks.has(key):
 					_world._chunks[key].rebuild()
 
 
