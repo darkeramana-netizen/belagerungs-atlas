@@ -15,6 +15,14 @@ extends StaticBody3D
 ## Performance:
 ##   18x18x18 padded neighbour cache built once per rebuild() to replace
 ##   per-lookup Dictionary calls (world.get_block) with fast array indexing.
+##
+## Greedy meshing correctness guarantee:
+##   - A face is generated ONLY when the block is solid AND its neighbour is
+##     exactly BT.AIR (== 0). Water and other non-solid blocks are NOT AIR.
+##   - During greedy expansion every candidate cell is verified independently
+##     via _face_visible_at(), which re-queries the ncache directly — not just
+##     the pre-built mask. This prevents any stale mask entry from expanding
+##     a quad into cells where the face is not actually visible.
 
 const BT    = preload("res://scripts/voxel/BlockTypes.gd")
 const Atlas = preload("res://scripts/voxel/VoxelAtlas.gd")
@@ -187,13 +195,15 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 		uv2s: PackedVector2Array,
 		colors: PackedColorArray, idxs: PackedInt32Array) -> void:
 
-	var normal:   Vector3 = _NORMALS[fi]
-	var dir_ao:   float   = _DIR_AO[fi]
-	var nx:        int    = _NX[fi]
-	var ny:        int    = _NY[fi]
-	var nz:        int    = _NZ[fi]
+	var normal:  Vector3 = _NORMALS[fi]
+	var dir_ao:  float   = _DIR_AO[fi]
+	var nx:      int     = _NX[fi]
+	var ny:      int     = _NY[fi]
+	var nz:      int     = _NZ[fi]
 
-	# mask[v*SIZE+w] = block_id if face visible, else 0
+	# mask[v*SIZE+w] = block_id if the face is visible at that cell, else 0.
+	# Face is visible iff block is solid AND its neighbour in face-direction is
+	# exactly BT.AIR (== 0).  Built fresh for each u-slice.
 	var mask: PackedInt32Array = PackedInt32Array()
 	mask.resize(SIZE * SIZE)
 
@@ -206,22 +216,19 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 				var ly: int
 				var lz: int
 				match fi:
-					0, 1:
-						lx = u; ly = v; lz = w
-					2, 3:
-						lx = v; ly = u; lz = w
-					_:   # 4, 5
-						lx = v; ly = w; lz = u
+					0, 1: lx = u; ly = v; lz = w
+					2, 3: lx = v; ly = u; lz = w
+					_:    lx = v; ly = w; lz = u   # fi 4, 5
 
 				var bid: int = _data[ly * SIZE * SIZE + lz * SIZE + lx]
 				if bid == BT.AIR:
 					continue
 
-				var neighbour: int = _cache_get(ncache, lx + nx, ly + ny, lz + nz)
-				if neighbour == BT.AIR:
+				# RULE 1 — Face-Visibility: solid block + neighbour exactly AIR.
+				if _cache_get(ncache, lx + nx, ly + ny, lz + nz) == BT.AIR:
 					mask[v * SIZE + w] = bid
 
-		# Greedy rectangle scan
+		# ── Greedy rectangle scan ────────────────────────────────────────────
 		var used: PackedByteArray = PackedByteArray()
 		used.resize(SIZE * SIZE)
 		used.fill(0)
@@ -233,33 +240,74 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 
 				var bid: int = mask[v0 * SIZE + w0]
 
-				# Extend in +w
+				# Extend in +w.
+				# RULE 2 — Greedy-Sperre: every new cell is re-verified against
+				# the ncache directly, not just the pre-built mask, so no stale
+				# mask entry can silently expand the quad.
 				var dw: int = 1
 				while w0 + dw < SIZE:
 					var ni: int = v0 * SIZE + w0 + dw
-					if mask[ni] != bid or used[ni]:
+					if used[ni] or mask[ni] != bid:
+						break
+					if not _face_visible_at(fi, u, v0, w0 + dw, bid, nx, ny, nz, ncache):
 						break
 					dw += 1
 
-				# Extend in +v
+				# Extend in +v.
+				# Every cell in the new row must pass both the mask check and
+				# the explicit ncache visibility check before the row is accepted.
 				var dv: int = 1
 				var ok := true
 				while ok and v0 + dv < SIZE:
 					for k in dw:
 						var ni2: int = (v0 + dv) * SIZE + w0 + k
-						if mask[ni2] != bid or used[ni2]:
+						if used[ni2] or mask[ni2] != bid:
+							ok = false
+							break
+						# RULE 2 (continued) — explicit ncache check per cell.
+						if not _face_visible_at(fi, u, v0 + dv, w0 + k, bid, nx, ny, nz, ncache):
 							ok = false
 							break
 					if ok:
 						dv += 1
 
-				# Mark used
+				# Mark all cells in this rectangle as consumed.
 				for pv in dv:
 					for pw in dw:
 						used[(v0 + pv) * SIZE + w0 + pw] = 1
 
 				_emit_quad(fi, u, v0, w0, dv, dw, dir_ao, bid, normal,
 						ncache, verts, norms, uv2s, colors, idxs)
+
+
+# ---------------------------------------------------------------------------
+# Explicit per-cell face-visibility check (used during greedy expansion).
+# Re-queries the ncache directly instead of relying on the pre-built mask.
+# Returns true iff:
+#   - (lx, ly, lz) is inside this chunk
+#   - the block at that position matches bid
+#   - the neighbour in the face direction is exactly BT.AIR
+# ---------------------------------------------------------------------------
+
+func _face_visible_at(fi: int, u: int, v: int, w: int, bid: int,
+		nx: int, ny: int, nz: int, ncache: PackedByteArray) -> bool:
+	var lx: int
+	var ly: int
+	var lz: int
+	match fi:
+		0, 1: lx = u; ly = v; lz = w
+		2, 3: lx = v; ly = u; lz = w
+		_:    lx = v; ly = w; lz = u
+
+	if lx < 0 or lx >= SIZE or ly < 0 or ly >= SIZE or lz < 0 or lz >= SIZE:
+		return false
+
+	# RULE 3 — ID-Check: block type must match the quad's bid exactly.
+	if _data[ly * SIZE * SIZE + lz * SIZE + lx] != bid:
+		return false
+
+	# Neighbour must be exactly AIR (== 0).
+	return _cache_get(ncache, lx + nx, ly + ny, lz + nz) == BT.AIR
 
 
 # ---------------------------------------------------------------------------
