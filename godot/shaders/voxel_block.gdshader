@@ -30,6 +30,9 @@ render_mode unshaded, cull_disabled, depth_draw_opaque, shadows_disabled;
 uniform sampler2D atlas      : source_color, filter_nearest, repeat_disable;
 uniform vec2      atlas_grid = vec2(20.0, 3.0);    // (num_cols, num_rows)
 uniform vec2      atlas_size = vec2(320.0, 48.0);  // (width_px, height_px) for half-texel
+uniform vec3      fog_color  = vec3(0.62, 0.77, 0.90);  // sky horizon colour
+uniform float     fog_start  = 60.0;   // metres from camera where fog begins
+uniform float     fog_end    = 130.0;  // metres where fog is fully opaque
 
 varying vec3 world_pos;
 varying vec3 world_normal;
@@ -98,6 +101,15 @@ void fragment() {
 	vec2 within_tile = tile_uv * (tile_size - 2.0 * half_texel) + half_texel;
 
 	vec4 tex = texture(atlas, atlas_base + within_tile);
-	ALBEDO = tex.rgb * COLOR.rgb;
-	ALPHA  = 1.0;   // all terrain faces are fully opaque
+	vec3 base_color = tex.rgb * COLOR.rgb;
+
+	// ── Distance fog ─────────────────────────────────────────────────────
+	// Fades terrain into the horizon sky colour to hide chunk pop-in edges.
+	vec3  cam    = INV_VIEW_MATRIX[3].xyz;
+	float dist   = length(cam - world_pos);
+	float fog_t  = clamp((dist - fog_start) / (fog_end - fog_start), 0.0, 1.0);
+	fog_t = fog_t * fog_t;   // quadratic: slow start, fast fade at far edge
+
+	ALBEDO = mix(base_color, fog_color, fog_t);
+	ALPHA  = 1.0;
 }

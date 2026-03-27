@@ -44,6 +44,9 @@ func _init_noise() -> void:
 	_noise.fractal_gain       = 0.50
 	_noise.frequency          = 0.004   # large-scale hills
 
+	# Detail layer disabled: high-frequency noise creates isolated 1-3 block
+	# pillars that appear as floating rectangles from horizontal angles.
+	# Re-enable and tune once base terrain shape is satisfactory.
 	_noise2 = FastNoiseLite.new()
 	_noise2.noise_type         = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	_noise2.seed               = world_seed ^ 0xC0FFEE
@@ -51,7 +54,7 @@ func _init_noise() -> void:
 	_noise2.fractal_octaves    = 3
 	_noise2.fractal_lacunarity = 2.2
 	_noise2.fractal_gain       = 0.45
-	_noise2.frequency          = 0.018  # medium bumps
+	_noise2.frequency          = 0.018  # medium bumps (currently unused)
 
 
 # ---------------------------------------------------------------------------
@@ -120,9 +123,10 @@ func _surface_y(wx: int, wz: int, flat_r: int) -> int:
 	var dist: float = sqrt(float(wx * wx + wz * wz))
 
 	# Large-scale + detail FBM (both centred at 0)
-	var h1: float = _noise.get_noise_2d(float(wx), float(wz))  * float(noise_scale)
-	var h2: float = _noise2.get_noise_2d(float(wx), float(wz)) * float(noise_scale) * 0.25
-	var raw: int  = base_y + int(h1 + h2)
+	var h1: float = _noise.get_noise_2d(float(wx), float(wz)) * float(noise_scale)
+	# h2 disabled (creates isolated 1-3 block pillars; re-enable when terrain looks good)
+	# var h2: float = _noise2.get_noise_2d(float(wx), float(wz)) * float(noise_scale) * 0.25
+	var raw: int  = base_y + int(h1)
 
 	# Castle flat zone + smoothstep blend
 	var blend_r: float = float(flat_r) * 1.7
