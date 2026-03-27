@@ -228,6 +228,9 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 				var bid: int = _data[ly * SIZE * SIZE + lz * SIZE + lx]
 				if bid == BT.AIR:
 					continue
+				# Only SOLID blocks emit faces (water etc. are handled separately).
+				if not BT.is_solid(bid):
+					continue
 
 				# RULE 1 — Face-Visibility: solid block + transparent neighbour.
 				# BT.is_transparent() returns false for the UNLOADED sentinel (255),
@@ -269,6 +272,9 @@ func _face_visible_at(fi: int, u: int, v: int, w: int, bid: int,
 
 	# RULE 3 — ID-Check: block type must match the quad's bid exactly.
 	if _data[ly * SIZE * SIZE + lz * SIZE + lx] != bid:
+		return false
+	# Only SOLID blocks can have visible faces here.
+	if not BT.is_solid(bid):
 		return false
 
 	# Neighbour must be transparent (AIR, water, …).
