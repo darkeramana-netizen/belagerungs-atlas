@@ -246,13 +246,17 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 					continue
 
 				var bid: int = mask[v0 * SIZE + w0]
+				var is_grass: bool = (bid == BT.GRASS)
 
 				# Extend in +w.
 				# RULE 2 — Greedy-Sperre: every new cell is re-verified against
 				# the ncache directly, not just the pre-built mask, so no stale
 				# mask entry can silently expand the quad.
 				var dw: int = 1
-				while w0 + dw < SIZE:
+				# RULE 4 — Kein Y-Merging für Gras:
+				# For fi 4/5 (+/-Z faces) the greedy w-axis maps to local Y.
+				# Avoid merging across Y so the grass-cap shading stays consistent.
+				while (not is_grass or (fi != 4 and fi != 5)) and w0 + dw < SIZE:
 					var ni: int = v0 * SIZE + w0 + dw
 					if used[ni] or mask[ni] != bid:
 						break
@@ -265,7 +269,8 @@ func _greedy_pass(fi: int, ncache: PackedByteArray,
 				# the explicit ncache visibility check before the row is accepted.
 				var dv: int = 1
 				var ok := true
-				while ok and v0 + dv < SIZE:
+				# RULE 4 (continued) — for fi 0/1 (+/-X faces) the greedy v-axis maps to local Y.
+				while ok and (not is_grass or (fi != 0 and fi != 1)) and v0 + dv < SIZE:
 					for k in dw:
 						var ni2: int = (v0 + dv) * SIZE + w0 + k
 						if used[ni2] or mask[ni2] != bid:
@@ -346,6 +351,8 @@ func _emit_quad(fi: int, u: int, v0: int, w0: int, dv: int, dw: int,
 	var order: Array = (_QUAD_ORDER[fi] as Array)
 
 	var vi: int = verts.size()
+	var quad_pos: Array[Vector3] = []
+	quad_pos.resize(4)
 
 	for oi in 4:
 		var ci: int = order[oi] as int
@@ -361,13 +368,24 @@ func _emit_quad(fi: int, u: int, v0: int, w0: int, dv: int, dw: int,
 		var v_ao: float = _vertex_ao(s1, s2, sc)
 		var ao: float   = d_ao * v_ao
 
-		verts.append(_vert_pos(fi, u, vc, wc))
+		var p: Vector3 = _vert_pos(fi, u, vc, wc)
+		verts.append(p)
+		quad_pos[oi] = p
 		norms.append(normal)
 		uv2s.append(col_uv)
 		colors.append(Color(ao, ao, ao, 1.0))
 
-	idxs.append(vi);     idxs.append(vi + 1); idxs.append(vi + 2)
-	idxs.append(vi);     idxs.append(vi + 2); idxs.append(vi + 3)
+	# Ensure clockwise winding for all faces (required for backface culling).
+	# With right-hand rule: CCW => cross points along normal; CW => opposite.
+	var cross_n: Vector3 = (quad_pos[1] - quad_pos[0]).cross(quad_pos[2] - quad_pos[0])
+	var is_ccw: bool = (cross_n.dot(normal) > 0.0)
+	if is_ccw:
+		# Flip to make it clockwise.
+		idxs.append(vi);     idxs.append(vi + 2); idxs.append(vi + 1)
+		idxs.append(vi);     idxs.append(vi + 3); idxs.append(vi + 2)
+	else:
+		idxs.append(vi);     idxs.append(vi + 1); idxs.append(vi + 2)
+		idxs.append(vi);     idxs.append(vi + 2); idxs.append(vi + 3)
 
 
 # ---------------------------------------------------------------------------

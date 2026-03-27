@@ -18,13 +18,11 @@
 //   within_tile uses half-texel inset derived from atlas_size so samples
 //     never land on atlas tile borders regardless of block or atlas dimensions.
 //
-// cull_disabled + explicit per-face discard for ALL faces:
-//   Every face: discard if camera is on the back side (dot-product test).
-//   Winding-order independent. Fixes back-of-top-face "white band" artefact
-//   visible at terrain level, and all other back-face fragments.
+// Note:
+//   Backface culling is enabled; geometry must have correct winding.
 
 shader_type spatial;
-render_mode unshaded, cull_disabled, depth_draw_opaque, shadows_disabled;
+render_mode unshaded, cull_back, depth_draw_opaque, shadows_disabled;
 
 uniform sampler2D atlas      : source_color, filter_nearest, repeat_disable;
 uniform vec2      atlas_grid = vec2(20.0, 3.0);    // (num_cols, num_rows)
@@ -47,17 +45,6 @@ void vertex() {
 void fragment() {
 	// ── Re-normalise (varying interpolation can drift off unit length) ────
 	vec3 wn = normalize(world_normal);
-
-	// ── Back-face discard (all faces) ────────────────────────────────────
-	// INV_VIEW_MATRIX[3].xyz = camera world position.
-	// Discard any fragment where the face points away from the camera.
-	// Applies to top, bottom, and side faces equally.
-	{
-		vec3 to_cam = INV_VIEW_MATRIX[3].xyz - world_pos;
-		if (dot(to_cam, wn) <= 0.0) {
-			discard;
-		}
-	}
 
 	// ── Triplanar UV selection ────────────────────────────────────────────
 	// +0.001 snap keeps us safely above the previous integer block boundary
