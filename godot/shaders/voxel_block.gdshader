@@ -19,10 +19,10 @@
 //     never land on atlas tile borders regardless of block or atlas dimensions.
 //
 // Note:
-//   Backface culling is enabled; geometry must have correct winding.
+//   Backface culling is disabled; alle Seiten werden gezeichnet.
 
 shader_type spatial;
-render_mode unshaded, cull_back, depth_draw_opaque, shadows_disabled;
+render_mode unshaded, cull_disabled, depth_draw_opaque, shadows_disabled;
 
 uniform sampler2D atlas      : source_color, filter_nearest, repeat_disable;
 uniform vec2      atlas_grid = vec2(20.0, 3.0);    // (num_cols, num_rows)
