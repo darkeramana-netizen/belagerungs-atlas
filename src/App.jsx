@@ -7212,6 +7212,14 @@ export default function App(){
         .nav-premium:hover{border-color:rgba(138,173,255,0.35);background:rgba(138,173,255,0.08);transform:translateY(-1px)}
         .nav-premium.active{background:linear-gradient(135deg,rgba(111,138,255,0.28),rgba(66,216,207,0.20));color:#eaf1ff!important;border-color:rgba(138,173,255,0.55);box-shadow:0 0 0 1px rgba(138,173,255,0.2),0 8px 24px rgba(66,216,207,0.18)}
         .panel-premium{background:linear-gradient(155deg,rgba(16,25,45,0.88),rgba(11,17,34,0.75));border:1px solid rgba(138,173,255,0.22);border-radius:14px;box-shadow:0 18px 30px rgba(0,0,0,0.26)}
+        .hero-v2{margin:16px;border:1px solid rgba(130,170,255,0.35);border-radius:16px;padding:18px;background:
+          radial-gradient(circle at 10% 10%,rgba(66,216,207,0.22),transparent 36%),
+          radial-gradient(circle at 90% 15%,rgba(111,138,255,0.32),transparent 42%),
+          linear-gradient(145deg,rgba(16,30,56,0.9),rgba(8,16,34,0.92));
+          box-shadow:0 22px 42px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.08)}
+        .hero-kpi{padding:10px 12px;border-radius:10px;background:rgba(8,16,32,0.46);border:1px solid rgba(138,173,255,0.2);text-align:center}
+        .hero-cta{padding:9px 12px;border-radius:10px;border:1px solid rgba(138,173,255,0.38);background:linear-gradient(135deg,rgba(111,138,255,0.35),rgba(66,216,207,0.24));color:#eff5ff;cursor:pointer;font-weight:600}
+        .hero-cta.alt{background:rgba(138,173,255,0.08);color:#b8cbf8}
         .castle-card:hover{transform:translateY(-3px)}
         .gold-text{color:#c9a84c;font-family:'Cinzel',serif}
         .section-title{font-family:'Cinzel',serif;letter-spacing:0.08em;font-size:11px;color:#a08848;text-transform:uppercase}
@@ -7288,6 +7296,29 @@ export default function App(){
 
       {/* ── OVERVIEW ── */}
       {tab==="overview"&&<div style={{flex:1,overflowY:"auto"}}>
+        <section className="hero-v2">
+          <div style={{display:"flex",justifyContent:"space-between",gap:"14px",alignItems:"flex-start",flexWrap:"wrap"}}>
+            <div style={{maxWidth:"620px"}}>
+              <div style={{fontSize:"11px",letterSpacing:"2px",color:"#96aee4",marginBottom:"8px"}}>COMMAND OVERVIEW · V2</div>
+              <h2 style={{margin:"0 0 8px",fontSize:"28px",lineHeight:1.15,color:"#f2f7ff",fontFamily:"'Cinzel',serif",letterSpacing:"1px"}}>Strategisches Erlebnis mit Premium-Inszenierung</h2>
+              <p style={{margin:0,color:"#b5c5eb",fontSize:"14px",lineHeight:1.7}}>
+                Entdecke Burgen wie in einem Tactical Command Center: schneller Zugriff auf Weltkarte, Kampagnen und Belagerungssimulation
+                mit klaren KPIs und hochwertiger visueller Dramaturgie.
+              </p>
+            </div>
+            <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+              <button className="hero-cta" onClick={()=>setTab("worldmap")}>🌍 Weltkarte öffnen</button>
+              <button className="hero-cta alt" onClick={()=>setTab("campaign")}>📖 Kampagne starten</button>
+              <button className="hero-cta alt" onClick={()=>{setTab("detail");setDtab("simulator");}}>⚔️ Simulator direkt</button>
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:"10px",marginTop:"14px"}}>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>FESTUNGEN</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{CASTLES.length}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>ERFOLGE</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{checkAchievements(scores,CASTLES,playStats).filter(a=>a.unlocked).length}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>BELAGERUNGEN</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{playStats?.sieges||0}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>SIEGRATE</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{playStats?.sieges?Math.round(((playStats.wins||0)/playStats.sieges)*100):0}%</div></div>
+          </div>
+        </section>
         <CastleGrid castles={CASTLES} onSelect={go} scores={scores} filter={filter} setFilter={setFilter} epochFilter={epochFilter} setEpochFilter={setEpochFilter} regionFilter={regionFilter} setRegionFilter={setRegionFilter} search={search} setSearch={setSearch} favs={favs} onFavToggle={toggleFav}/>
       </div>}
 
@@ -7347,7 +7378,7 @@ export default function App(){
           </aside>
 
           {/* Main detail area */}
-          <main style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column"}}>
+          <main className="panel-premium" style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column"}}>
             {/* Castle header */}
             <div style={{padding:"13px 16px 10px",borderBottom:"1px solid rgba(201,168,76,0.05)",background:`linear-gradient(135deg,${sel.theme.bg} 0%,rgba(12,20,40,0.88) 100%)`,flexShrink:0}}>
               <div style={{display:"flex",gap:"10px",alignItems:"flex-start"}}>
