@@ -4132,6 +4132,210 @@ DETAILED_PLANS.krak=({ac,sel,onSel})=>{
   );
 };
 
+// ── Alhambra ──────────────────────────────────────────────────────────────────
+DETAILED_PLANS.alhambra=({ac,sel,onSel})=>{
+  const W=700,H=540;
+  const S=(id,nm,ic,tp,desc,stats,weak)=>({id,name:nm,icon:ic,type:tp,desc,stats,weakness:weak});
+  const EL=[
+    S("alcazaba","Alcazaba","🏯","Militärfestung","Die älteste und westlichste Anlage der Alhambra. Militärischer Kern mit Arsenal, Kasernen und der Torre de la Vela. Erbaut unter Muhammad I. im 13. Jh.",["13. Jh.","Militärbasis","Muhammad I."],null),
+    S("torre_vela","Torre de la Vela","🗼","Hauptturm","Der höchste Turm der Alcazaba (26m). Die Glocke rief die Bauern zum Bewässern. Panoramablick über Granada und die Sierra Nevada.",["Höhe: 26m","Wachtturm","Glockenturm"],null),
+    S("mexuar","Mexuar","🏛️","Ratsaal","Der älteste der Nasridenpaläste (14. Jh.). Empfangsraum für öffentliche Audienzen und Rechtsangelegenheiten. Reich mit Azulejo-Kacheln verziert.",["14. Jh.","Audienzsaal","Azulejo-Kacheln"],null),
+    S("comares","Comares-Palast","👑","Palast","Herzstück der Nasridenherrschaft. Der berühmte Patio de los Arrayanes (Myrtenhof) mit 34m langem Reflexionsbecken. Torre de Comares mit dem Thronsaal.",["Myrtenhof","Reflexionsbecken 34m","Thronsaal"],null),
+    S("patio_lions","Löwenhof","🦁","Innenhof","Der weltberühmte Patio de los Leones mit 124 Marmorsäulen und dem Löwenbrunnen (12 Marmarlöwen). Gebaut unter Muhammad V., ca. 1370.",["124 Marmorsäulen","12 Löwen-Brunnen","~1370"],null),
+    S("harem","Harem / Königsgemächer","🌙","Privatgemächer","Die privaten Königsgemächer südlich des Löwenhofs. Sala de los Reyes, Sala de las Dos Hermanas (Saal der zwei Schwestern) mit Stalaktiten-Kuppel.",["Stalaktiten-Kuppel","Sala de las Dos Hermanas"],null),
+    S("carlos_v","Palast Karls V.","🏟️","Renaissance-Palast","Kreisförmiger Innenhof im quadratischen Außenbau, 1527 von Pedro Machuca begonnen. Ein Renaissance-Fremdkörper inmitten maurischer Architektur — nie fertiggestellt.",["Kreisrunder Hof","1527","Nie vollendet"],null),
+    S("generalife","Generalife","🌿","Gartenpalast","Der Sommerpalast der Nasridenherrscher östlich der Hauptanlage. Berühmter Patio de la Acequia: 50m langer Garten mit zentralem Wasserkanal und Springbrunnen.",["Sommerpalast","Patio de la Acequia","50m Wasserkanal"],null),
+    S("acequia","Acequia Real","💧","Wasserleitung","Der Königliche Wasserkanal kommt vom Fluss Darro, verläuft entlang des Hügelkamms und versorgt alle Brunnen, Becken und Gärten der Alhambra.",["Vom Río Darro","Gesamte Versorgung"],null),
+    S("puerta_justicia","Puerta de la Justicia","🚪","Haupttor","Das mächtige Haupttor (1348) mit Hufeisenbogen. Hand und Schlüssel in Stein gemeißelt: Hand = 5 Säulen des Islam, Schlüssel = Macht Allahs.",["1348","Hufeisenbogen","Hand & Schlüssel"],3),
+    S("medina","Medina (Stadtbereich)","🏘️","Unterstadt","Der östliche Teil der Alhambra war eine echte Stadt mit Moscheen, Bädern, Werkstätten und Wohnhäusern für tausende Einwohner.",["Moschee","Hamam","Handwerker"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glo=(id,c)=>isSel(id)?`${c}48`:`${c}1a`;
+  const st=(id,c)=>isSel(id)?c+"cc":"#9a8a6055";
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="al_bg" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stopColor="#0e0905"/>
+          <stop offset="100%" stopColor="#050402"/>
+        </radialGradient>
+        <filter id="al_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="al_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+        <linearGradient id="al_hill" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="rgba(120,60,25,0.22)"/>
+          <stop offset="100%" stopColor="rgba(80,40,15,0.08)"/>
+        </linearGradient>
+      </defs>
+      <rect width={W} height={H} fill="url(#al_bg)"/>
+      <rect width={W} height={H} fill="url(#al_stone)" opacity="0.5"/>
+
+      {/* Red hill (Sabika) */}
+      <path d="M30,500 Q25,380 40,280 Q55,180 100,130 Q150,85 260,70 Q380,58 500,65 Q590,72 630,110 Q665,150 660,240 Q655,330 640,410 Q625,480 610,510 Z"
+        fill="url(#al_hill)" stroke="rgba(140,70,30,0.2)" strokeWidth="1"/>
+
+      {/* Outer walls */}
+      <path d="M80,460 Q60,380 65,290 Q70,205 110,155 Q155,105 250,85 Q360,65 490,72 Q580,78 620,125 Q655,165 648,255 Q640,345 625,430 Q610,490 590,510 L80,510 Z"
+        fill="none" stroke={`${ac}33`} strokeWidth="2" strokeDasharray="6,3"/>
+
+      {/* Outer wall towers */}
+      {[[80,460],[68,360],[68,270],[90,185],[130,130],[195,95],[275,78],[370,68],[460,70],[540,85],[605,120],[638,185],[645,265],[635,355],[615,440]].map((t,i)=>(
+        <circle key={i} cx={t.x} cy={t.y} r="8" fill={`${ac}18`} stroke={`${ac}44`} strokeWidth="1.5"/>
+      ))}
+
+      {/* Acequia Real (water channel along top) */}
+      <path d="M55,115 Q150,72 280,62 Q410,54 530,68 Q600,78 635,108"
+        fill="none" stroke={isSel("acequia")?"#4499ddaa":"#3377aa55"} strokeWidth="4"
+        onClick={()=>hit("acequia")} style={{cursor:"pointer"}}/>
+      {isSel("acequia")&&<path d="M55,115 Q150,72 280,62 Q410,54 530,68 Q600,78 635,108" fill="none" stroke="rgba(40,100,200,0.15)" strokeWidth="16" filter="url(#al_glow)"/>}
+      <text x="300" y="52" textAnchor="middle" fill={isSel("acequia")?"#55aaee":"#336688"} fontSize="8" fontFamily="'Cinzel',serif">ACEQUIA REAL ↓</text>
+
+      {/* ALCAZABA */}
+      <rect x="68" y="145" width="120" height="130" rx="4"
+        fill={glo("alcazaba","#aa6622")} stroke={st("alcazaba","#cc8833")} strokeWidth="3"
+        onClick={()=>hit("alcazaba")} style={{cursor:"pointer"}}/>
+      {isSel("alcazaba")&&<rect x="62" y="139" width="132" height="142" rx="5" fill="rgba(160,90,30,0.08)" filter="url(#al_glow)"/>}
+      {[[68,145],[186,145],[68,273],[186,273]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-10} y={ty-10} width="20" height="20" rx="2"
+          fill={isSel("alcazaba")?"#cc883344":"#aa662222"} stroke={isSel("alcazaba")?"#cc8833":"#aa6622"} strokeWidth="1.5"/>
+      ))}
+      <text x="128" y="218" textAnchor="middle" fill={isSel("alcazaba")?ac:"#996622"} fontSize="11" fontFamily="'Cinzel',serif" fontWeight="bold">ALCAZABA</text>
+
+      {/* Torre de la Vela */}
+      <rect x="68" y="115" width="32" height="40" rx="3"
+        fill={glo("torre_vela","#ffcc44")} stroke={st("torre_vela","#ffee66")} strokeWidth="2.5"
+        onClick={()=>hit("torre_vela")} style={{cursor:"pointer"}}/>
+      {isSel("torre_vela")&&<rect x="62" y="109" width="44" height="52" rx="4" fill="rgba(220,180,40,0.1)" filter="url(#al_glow)"/>}
+      <text x="84" y="110" textAnchor="middle" fill={isSel("torre_vela")?"#ffee66":"#aa8822"} fontSize="7" fontFamily="'Cinzel',serif">VELA</text>
+
+      {/* Puerta de la Justicia */}
+      <rect x="178" y="390" width="44" height="38" rx="3"
+        fill={glo("puerta_justicia","#ee5533")} stroke={st("puerta_justicia","#ff7755")} strokeWidth="2.5"
+        onClick={()=>hit("puerta_justicia")} style={{cursor:"pointer"}}/>
+      {isSel("puerta_justicia")&&<rect x="172" y="384" width="56" height="50" rx="4" fill="rgba(200,70,40,0.1)" filter="url(#al_glow)"/>}
+      <text x="200" y="413" textAnchor="middle" fill={isSel("puerta_justicia")?"#ff7755":"#cc4422"} fontSize="8" fontFamily="'Cinzel',serif">PUERTA DE<br/>JUSTICIA ⚠</text>
+      <text x="200" y="424" textAnchor="middle" fill={isSel("puerta_justicia")?"#ff7755":"#cc4422"} fontSize="7" fontFamily="'Cinzel',serif">JUSTICIA ⚠</text>
+
+      {/* MEXUAR */}
+      <rect x="200" y="148" width="80" height="70" rx="3"
+        fill={glo("mexuar","#88aacc")} stroke={st("mexuar","#aaccee")} strokeWidth="2"
+        onClick={()=>hit("mexuar")} style={{cursor:"pointer"}}/>
+      {isSel("mexuar")&&<rect x="194" y="142" width="92" height="82" rx="4" fill="rgba(100,140,180,0.08)" filter="url(#al_glow)"/>}
+      <text x="240" y="187" textAnchor="middle" fill={isSel("mexuar")?"#aaccee":"#5577aa"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">MEXUAR</text>
+
+      {/* COMARES PALACE — Myrtenhof */}
+      <rect x="200" y="228" width="130" height="130" rx="4"
+        fill={glo("comares","#c9a84c")} stroke={st("comares","#e8cc66")} strokeWidth="3"
+        onClick={()=>hit("comares")} style={{cursor:"pointer"}}/>
+      {isSel("comares")&&<rect x="194" y="222" width="142" height="142" rx="5" fill="rgba(180,150,50,0.08)" filter="url(#al_glow)"/>}
+      {/* Reflecting pool (Patio de los Arrayanes) */}
+      <rect x="215" y="248" width="100" height="32" rx="2"
+        fill={isSel("comares")?"rgba(68,136,204,0.45)":"rgba(68,136,204,0.25)"}
+        stroke="#4488cc" strokeWidth="1.2"/>
+      <text x="265" y="268" textAnchor="middle" fill="#6699cc" fontSize="7" fontFamily="'Cinzel',serif">MYRTENHOF</text>
+      {/* Torre de Comares */}
+      <rect x="207" y="228" width="28" height="28" rx="2"
+        fill={isSel("comares")?"#e8cc6644":"#c9a84c22"} stroke={isSel("comares")?"#e8cc66":"#c9a84c"} strokeWidth="2"/>
+      <text x="221" y="245" textAnchor="middle" fill={isSel("comares")?"#e8cc66":"#aa8822"} fontSize="6" fontFamily="'Cinzel',serif">COMARES</text>
+      <text x="265" y="320" textAnchor="middle" fill={isSel("comares")?ac:"#aa8822"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">COMARES</text>
+      <text x="265" y="334" textAnchor="middle" fill={isSel("comares")?ac:"#aa8822"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">PALAST</text>
+
+      {/* PATIO DE LOS LEONES */}
+      <rect x="338" y="228" width="115" height="100" rx="4"
+        fill={glo("patio_lions","#ffaa44")} stroke={st("patio_lions","#ffcc66")} strokeWidth="2.5"
+        onClick={()=>hit("patio_lions")} style={{cursor:"pointer"}}/>
+      {isSel("patio_lions")&&<rect x="332" y="222" width="127" height="112" rx="5" fill="rgba(200,140,40,0.08)" filter="url(#al_glow)"/>}
+      {/* 124 columns hint — 4 rows of dots */}
+      {[0,1,2,3].map(row=>[0,1,2,3,4,5,6].map(col=>(
+        <circle key={`${row}_${col}`} cx={352+col*14} cy={244+row*20} r="2.5"
+          fill={isSel("patio_lions")?"#ffcc6666":"#cc993333"} stroke={isSel("patio_lions")?"#ffcc66":"#cc9933"} strokeWidth="0.5"/>
+      )))}
+      {/* Lion fountain */}
+      <circle cx="395" cy="278" r="9"
+        fill={isSel("patio_lions")?"#ffaa4466":"#ff882222"}
+        stroke={isSel("patio_lions")?"#ffcc66":"#cc8833"} strokeWidth="1.5"/>
+      <text x="395" y="282" textAnchor="middle" fill={isSel("patio_lions")?"#ffcc66":"#aa6622"} fontSize="7">🦁</text>
+      <text x="395" y="302" textAnchor="middle" fill={isSel("patio_lions")?ac:"#aa7722"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">LÖWENHOF</text>
+      <text x="395" y="314" textAnchor="middle" fill={isSel("patio_lions")?"#ffcc66":"#886622"} fontSize="7" fontFamily="'Cinzel',serif">124 Säulen</text>
+
+      {/* HAREM */}
+      <rect x="338" y="335" width="115" height="60" rx="3"
+        fill={glo("harem","#cc66aa")} stroke={st("harem","#ee88cc")} strokeWidth="2"
+        onClick={()=>hit("harem")} style={{cursor:"pointer"}}/>
+      {isSel("harem")&&<rect x="332" y="329" width="127" height="72" rx="4" fill="rgba(180,80,140,0.08)" filter="url(#al_glow)"/>}
+      <text x="395" y="368" textAnchor="middle" fill={isSel("harem")?"#ee88cc":"#994477"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">HAREM</text>
+
+      {/* PALACE OF CARLOS V */}
+      <rect x="200" y="365" width="130" height="110" rx="4"
+        fill={glo("carlos_v","#8899cc")} stroke={st("carlos_v","#aabbee")} strokeWidth="2.5"
+        onClick={()=>hit("carlos_v")} style={{cursor:"pointer"}}/>
+      {isSel("carlos_v")&&<rect x="194" y="359" width="142" height="122" rx="5" fill="rgba(100,120,180,0.08)" filter="url(#al_glow)"/>}
+      {/* Circular courtyard */}
+      <circle cx="265" cy="420" r="42"
+        fill="rgba(8,6,3,0.5)" stroke={isSel("carlos_v")?"#aabbee66":"#8899cc33"} strokeWidth="2"/>
+      <text x="265" y="415" textAnchor="middle" fill={isSel("carlos_v")?"#aabbee":"#6677aa"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">KARL V.</text>
+      <text x="265" y="430" textAnchor="middle" fill={isSel("carlos_v")?"#8899cc":"#556688"} fontSize="8" fontFamily="'Cinzel',serif">Renaissance</text>
+
+      {/* MEDINA */}
+      <rect x="458" y="200" width="140" height="200" rx="4"
+        fill={glo("medina","#7a8860")} stroke={st("medina","#9aaa78")} strokeWidth="2"
+        onClick={()=>hit("medina")} style={{cursor:"pointer"}}/>
+      {isSel("medina")&&<rect x="452" y="194" width="152" height="212" rx="5" fill="rgba(80,110,50,0.07)" filter="url(#al_glow)"/>}
+      {/* Street grid */}
+      {[230,270,310].map(y=>(
+        <line key={y} x1="465" y1={y} x2="590" y2={y} stroke={isSel("medina")?"#9aaa7833":"#7a886022"} strokeWidth="1"/>
+      ))}
+      {[500,540,575].map(x=>(
+        <line key={x} x1={x} y1="208" x2={x} y2="392" stroke={isSel("medina")?"#9aaa7833":"#7a886022"} strokeWidth="1"/>
+      ))}
+      <text x="528" y="298" textAnchor="middle" fill={isSel("medina")?ac:"#7a8860"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">MEDINA</text>
+      <text x="528" y="312" textAnchor="middle" fill={isSel("medina")?"#9aaa78":"#5a6848"} fontSize="8" fontFamily="'Cinzel',serif">Stadtbereich</text>
+
+      {/* GENERALIFE */}
+      <rect x="610" y="100" width="70" height="170" rx="4"
+        fill={glo("generalife","#448844")} stroke={st("generalife","#66aa66")} strokeWidth="2.5"
+        onClick={()=>hit("generalife")} style={{cursor:"pointer"}}/>
+      {isSel("generalife")&&<rect x="604" y="94" width="82" height="182" rx="5" fill="rgba(50,120,50,0.08)" filter="url(#al_glow)"/>}
+      {/* Patio de la Acequia water channel */}
+      <rect x="636" y="118" width="18" height="130" rx="2"
+        fill={isSel("generalife")?"rgba(68,136,204,0.45)":"rgba(68,136,204,0.22)"}
+        stroke="#4488cc" strokeWidth="1"/>
+      {[130,150,170,190,210,230].map(y=>(
+        <line key={y} x1="620" y1={y} x2="636" y2={y} stroke={isSel("generalife")?"#66aa6644":"#44884422"} strokeWidth="1.5"/>
+      ))}
+      <text x="645" y="190" textAnchor="middle" fill={isSel("generalife")?ac:"#337733"} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold" transform="rotate(-90,645,190)">GENERALIFE</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-42},42)`}>
+        <circle r="17" fill="rgba(0,0,0,0.65)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*10} y={-Math.cos(r2)*10+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      {/* Scale */}
+      <line x1="60" y1={H-22} x2="210" y2={H-22} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <line x1="60" y1={H-18} x2="60" y2={H-26} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <line x1="210" y1={H-18} x2="210" y2={H-26} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <text x="135" y={H-10} textAnchor="middle" fill={`${ac}66`} fontSize="8" fontFamily="'Cinzel',serif">≈ 300m</text>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">الحمراء ALHAMBRA</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Nasridenreich · 13.–14. Jh. · Granada, Spanien</text>
+    </svg>
+  );
+};
+
 // ── Castle Floor Plan Explore Tab ───────────────────────────────────────────
 function CastleFloorPlanTab({castle}){
   const sel=castle;
