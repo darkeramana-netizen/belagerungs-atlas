@@ -2224,7 +2224,7 @@ const CASTLE_PLANS = {
           fill={sel==="hb2"?"#e8c860":"#c9a84c"} opacity={sel==="hb2"?0.85:0.55} stroke="#e8c860" strokeWidth="0.8"/>
       ))}
       {/* St.-Annen-Kapelle */}
-      <rect x="118" y="12" width="18" height="16} rx="1" fill="rgba(232,200,96,0.3)" stroke="#e8c860" strokeWidth="1"/>
+      <rect x="118" y="12" width="18" height="16" rx="1" fill="rgba(232,200,96,0.3)" stroke="#e8c860" strokeWidth="1"/>
       <text x="127" y="23" textAnchor="middle" fill="#e8c86077" fontSize="5.5" fontFamily="serif">St. Annen</text>
       <text x="87" y="38" textAnchor="middle" fill={sel==="hb2"?"#e8c860":ac}
         fontSize="11" fontFamily="serif" fontWeight="bold" style={{cursor:"pointer"}} onClick={()=>onZone("hb2")}>HOCHBURG</text>
