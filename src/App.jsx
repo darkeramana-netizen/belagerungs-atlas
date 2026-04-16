@@ -2912,8 +2912,975 @@ function MiniLeafletMap({lat, lon, castle}){
   );
 }
 
+// ── Detailed Floor Plans (large viewBox, many clickable elements) ───────────
+const DETAILED_PLANS={};
+
+// ── Malbork ─────────────────────────────────────────────────────────────────
+DETAILED_PLANS.malbork=({ac,sel,onSel})=>{
+  const W=700,H=580;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("hb_keep","Hochburg – Hauptburg","🏯","Hochmeisterburg","Der innerste Kern von Malbork, erbaut um 1280 vom Deutschen Orden. Massiver Donjon mit Kapelle der Heiligen Anna im Erdgeschoss.",["Mauerstärke: 4m","Höhe: 28m","Erbaut: 1280"],null),
+    S("hb_chapel","Kapelle St. Anna","⛪","Kapelle","Zweigeschossige Palastkapelle unter dem Kapitelsaal. Enthält die Grablege der Hochmeister – strategisch unantastbarer Sakralraum.",["Goldmosaiken","Gotisches Gewölbe"],null),
+    S("hb_great","Großer Remter","🏛️","Palastsaal","Repräsentativer Speisesaal der Hochmeister, 30m lang. Granitsäule trägt das gesamte Sternengewölbe – Schwachstelle!",["Länge: 30m","Kapazität: 400 Ritter"],2),
+    S("mb_palace","Hochmeisterpalast","👑","Palast","Prachtbau mit vier Türmen, errichtet 1382–1399 unter Hochmeister Konrad Zöllner. Repräsentativster Raum des Ordens.",["4 Türme","Größter Palast Nordeuropas","Heizung durch Hypokausten"],null),
+    S("mb_wall","Mittelburg – Ringmauer","🧱","Curtainwall","Mittlerer Mauerring mit Zinnen und Schießscharten. Verbindet Hoch- und Vorburg. Breite Wehrgang-Plattform.",["Höhe: 12m","Dicke: 2.5m"],null),
+    S("mb_gate","Mittelburger Tor","🚪","Torhaus","Hauptzugang zur Mittelburg über Zugbrücke und Fallgitter. Doppeltes Tortürme-System mit Pechnasen.",["Zugbrücke","Fallgitter","Pechnasen"],3),
+    S("vb_outer","Vorburg – Außenwall","🏰","Vorburg","Größtes der drei Vorwerke. Enthält Werkstätten, Stallungen, Mühlen und Unterkünfte für Hunderte Knappen und Handwerker.",["400m Ausdehnung","Schmiede & Mühlen","Brauerei"],null),
+    S("vb_gate","Vordertor / Danzig-Tor","⚔️","Haupttor","Einziger Zugang zur Vorburg, geschützt durch Barbakane und tiefen Graben. Schwächster Punkt der Gesamtanlage.",["Barbakane vorgelagert","Wassergraben 8m tief"],1),
+    S("nogat","Fluss Nogat","🌊","Flussbarriere","Natürliche Ostgrenze der Burganlage. Schiffbare Verbindung zur Ostsee ermöglichte Nachschub für den Deutschen Orden.",["Breite: 60m","Schiffbar","Ostschutz"],null),
+    S("nb_gate","Nordtor","🚧","Schwachstelle","Schmaler Zugang an der Nordseite mit weniger Verteidigungstiefe. Historisch mehrfach angegriffen.",["Wenig Tiefe","Flaches Gelände"],2),
+  ];
+  const el=(id)=>EL.find(e=>e.id===id)||null;
+  const hit=(id)=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=(id)=>sel&&sel.id===id;
+  const zone=(id,fill,stroke)=>isSel(id)?`${fill}55`:`${fill}20`;
+  const str=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="m_bg" cx="50%" cy="55%" r="65%">
+          <stop offset="0%" stopColor="#100d07"/>
+          <stop offset="100%" stopColor="#050402"/>
+        </radialGradient>
+        <filter id="m_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="m_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}07`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}05`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#m_bg)"/>
+      <rect width={W} height={H} fill="url(#m_stone)" opacity="0.6"/>
+
+      {/* Nogat River (east) */}
+      <rect x="580" y="0" width="120" height={H} fill="rgba(34,100,180,0.28)" onClick={()=>hit("nogat")} style={{cursor:"pointer"}}/>
+      {isSel("nogat")&&<rect x="580" y="0" width="120" height={H} fill="rgba(34,100,180,0.18)" filter="url(#m_glow)"/>}
+      <text x="640" y="290" textAnchor="middle" fill="#4488cc" fontSize="13" fontFamily="'Cinzel',serif" transform="rotate(-90,640,290)">FLUSS NOGAT</text>
+      <line x1="580" y1="0" x2="580" y2={H} stroke="#4488cc" strokeWidth="1.5" strokeDasharray="6,3"/>
+
+      {/* Vorburg (outer ward) */}
+      <rect x="60" y="80" width="500" height="420" rx="6"
+        fill={zone("vb_outer","#a08040","#c0a050")} stroke={str("vb_outer","#c0a050")} strokeWidth="2.5"
+        onClick={()=>hit("vb_outer")} style={{cursor:"pointer"}}/>
+      {isSel("vb_outer")&&<rect x="60" y="80" width="500" height="420" rx="6" fill="rgba(180,140,40,0.08)" filter="url(#m_glow)"/>}
+      <text x="92" y="112" fill={isSel("vb_outer")?ac:"#9a8040"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold" letterSpacing="1">VORBURG</text>
+
+      {/* Vordertor */}
+      <rect x="60" y="248" width="40" height="60" rx="3"
+        fill={zone("vb_gate","#cc3322","#ee4433")} stroke={str("vb_gate","#ee4433")} strokeWidth="2.5"
+        onClick={()=>hit("vb_gate")} style={{cursor:"pointer"}}/>
+      {isSel("vb_gate")&&<rect x="56" y="244" width="48" height="68" rx="4" fill="rgba(220,50,30,0.15)" filter="url(#m_glow)"/>}
+      <text x="80" y="282" textAnchor="middle" fill={isSel("vb_gate")?"#ee4433":"#cc5544"} fontSize="8" fontFamily="'Cinzel',serif">HAUPTTOR</text>
+
+      {/* Mittelburg (middle ward) */}
+      <rect x="190" y="130" width="340" height="300" rx="5"
+        fill={zone("mb_wall","#8870a8","#9980c0")} stroke={str("mb_wall","#9980c0")} strokeWidth="2.5"
+        onClick={()=>hit("mb_wall")} style={{cursor:"pointer"}}/>
+      {isSel("mb_wall")&&<rect x="190" y="130" width="340" height="300" rx="5" fill="rgba(150,120,200,0.08)" filter="url(#m_glow)"/>}
+      <text x="210" y="158" fill={isSel("mb_wall")?ac:"#9980c0"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold" letterSpacing="1">MITTELBURG</text>
+
+      {/* Mittelburg Gate */}
+      <rect x="190" y="245" width="35" height="70" rx="3"
+        fill={zone("mb_gate","#cc5500","#ee7700")} stroke={str("mb_gate","#ee7700")} strokeWidth="2.5"
+        onClick={()=>hit("mb_gate")} style={{cursor:"pointer"}}/>
+      <text x="207" y="285" textAnchor="middle" fill={isSel("mb_gate")?"#ee7700":"#cc6600"} fontSize="7" fontFamily="'Cinzel',serif">TOR</text>
+
+      {/* Hochmeisterpalast */}
+      <rect x="220" y="160" width="180" height="110" rx="4"
+        fill={zone("mb_palace","#cc9922","#ffcc44")} stroke={str("mb_palace","#ffcc44")} strokeWidth="2.5"
+        onClick={()=>hit("mb_palace")} style={{cursor:"pointer"}}/>
+      {isSel("mb_palace")&&<rect x="215" y="155" width="190" height="120" rx="5" fill="rgba(220,180,40,0.1)" filter="url(#m_glow)"/>}
+      {/* Palace towers */}
+      {[[220,160],[398,160],[220,268],[398,268]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-10} y={ty-10} width="20" height="20" rx="2"
+          fill={isSel("mb_palace")?"#ffcc4444":"#cc992222"} stroke={isSel("mb_palace")?"#ffcc44":"#cc9922"} strokeWidth="1.5"/>
+      ))}
+      <text x="310" y="218" textAnchor="middle" fill={isSel("mb_palace")?"#ffcc44":"#aa8822"} fontSize="11" fontFamily="'Cinzel',serif" fontWeight="bold">HOCHMEISTER-</text>
+      <text x="310" y="232" textAnchor="middle" fill={isSel("mb_palace")?"#ffcc44":"#aa8822"} fontSize="11" fontFamily="'Cinzel',serif" fontWeight="bold">PALAST</text>
+
+      {/* Hochburg (inner ward) */}
+      <rect x="360" y="155" width="180" height="210" rx="4"
+        fill={zone("hb_keep","#cc4488","#ee55aa")} stroke={str("hb_keep","#ee55aa")} strokeWidth="3"
+        onClick={()=>hit("hb_keep")} style={{cursor:"pointer"}}/>
+      {isSel("hb_keep")&&<rect x="355" y="150" width="190" height="220" rx="5" fill="rgba(200,60,130,0.1)" filter="url(#m_glow)"/>}
+      <text x="450" y="180" textAnchor="middle" fill={isSel("hb_keep")?ac:"#cc4488"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold" letterSpacing="1">HOCHBURG</text>
+      {/* Corner towers */}
+      {[[360,155],[538,155],[360,363],[538,363]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-12} y={ty-12} width="24" height="24" rx="3"
+          fill={isSel("hb_keep")?"#ee55aa33":"#cc448822"} stroke={isSel("hb_keep")?"#ee55aa":"#cc4488"} strokeWidth="2"/>
+      ))}
+
+      {/* Great Remter */}
+      <rect x="375" y="195" width="150" height="55" rx="3"
+        fill={zone("hb_great","#ee4433","#ff5544")} stroke={str("hb_great","#ff5544")} strokeWidth="2"
+        onClick={()=>hit("hb_great")} style={{cursor:"pointer"}}/>
+      {isSel("hb_great")&&<rect x="370" y="190" width="160" height="65" rx="4" fill="rgba(220,60,40,0.1)" filter="url(#m_glow)"/>}
+      <text x="450" y="225" textAnchor="middle" fill={isSel("hb_great")?"#ff5544":"#cc4433"} fontSize="9" fontFamily="'Cinzel',serif">GROSSER REMTER</text>
+
+      {/* Chapel St. Anna */}
+      <rect x="375" y="262" width="70" height="85" rx="3"
+        fill={zone("hb_chapel","#5588ff","#7799ff")} stroke={str("hb_chapel","#7799ff")} strokeWidth="2"
+        onClick={()=>hit("hb_chapel")} style={{cursor:"pointer"}}/>
+      {isSel("hb_chapel")&&<rect x="370" y="257" width="80" height="95" rx="4" fill="rgba(80,120,220,0.1)" filter="url(#m_glow)"/>}
+      <text x="410" y="307" textAnchor="middle" fill={isSel("hb_chapel")?"#7799ff":"#5566cc"} fontSize="8" fontFamily="'Cinzel',serif">ST. ANNA</text>
+
+      {/* North gate */}
+      <rect x="320" y="80" width="60" height="36" rx="3"
+        fill={zone("nb_gate","#cc3322","#ee4433")} stroke={str("nb_gate","#ee4433")} strokeWidth="2"
+        onClick={()=>hit("nb_gate")} style={{cursor:"pointer"}}/>
+      {isSel("nb_gate")&&<rect x="315" y="75" width="70" height="46" rx="4" fill="rgba(200,50,30,0.12)" filter="url(#m_glow)"/>}
+      <text x="350" y="100" textAnchor="middle" fill={isSel("nb_gate")?"#ee4433":"#cc4433"} fontSize="8" fontFamily="'Cinzel',serif">NORDTOR ⚠</text>
+
+      {/* Labels for wells/stables etc. */}
+      <text x="130" y="440" fill="#7a6a40" fontSize="8" fontFamily="'Cinzel',serif">Stallungen</text>
+      <text x="130" y="455" fill="#7a6a40" fontSize="8" fontFamily="'Cinzel',serif">Mühlen</text>
+      <text x="130" y="395" fill="#7a6a40" fontSize="8" fontFamily="'Cinzel',serif">Schmieden</text>
+      <text x="130" y="200" fill="#7a6a40" fontSize="8" fontFamily="'Cinzel',serif">Brauerei</text>
+
+      {/* Scale */}
+      <line x1="80" y1={H-24} x2="230" y2={H-24} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <line x1="80" y1={H-20} x2="80" y2={H-28} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <line x1="230" y1={H-20} x2="230" y2={H-28} stroke={`${ac}44`} strokeWidth="1.5"/>
+      <text x="155" y={H-10} textAnchor="middle" fill={`${ac}66`} fontSize="8" fontFamily="'Cinzel',serif">≈ 200m</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-44},44)`}>
+        <circle r="18" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*11} y={-Math.cos(r2)*11+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      {/* Title */}
+      <text x="20" y="28" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">MARIENBURG / MALBORK</text>
+      <text x="20" y="44" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Ordensburg · 1274–1457 · Weichsel-Delta</text>
+    </svg>
+  );
+};
+
+// ── Beaumaris ────────────────────────────────────────────────────────────────
+DETAILED_PLANS.beaumaris=({ac,sel,onSel})=>{
+  const W=620,H=580;
+  const cx=W/2,cy=H/2+20;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("outer_wall","Äußere Ringmauer","🧱","Curtainwall","Äußerer Mauerring mit 16 Türmen auf einem fast perfekten Quadrat. Erbaut 1295–1330 unter Edward I. Gilt als technisch vollkommenstes konzentrisch angelegtes Schloss der Welt.",["16 Türme","Höhe: 9m","Dicke: 2m"],null),
+    S("inner_ward","Innerer Wehrhof","🏯","Innerer Ring","Der innere Mauerring bildet ein nahezu rundes Quadrat mit 6 massiven Türmen. Enthält Kapelle, Wohn- und Versorgungsgebäude.",["6 Türme","Höhe: 14m","2 Tore"],null),
+    S("north_gate","Nordtor","🚪","Haupttor","Das mächtigste Tor der Anlage. Dreigliedrig mit Torhaus, Barbakane und Zugbrücke. Angriffsrichtung des geringsten Widerstands.",["Zugbrücke","Portcullis","Barbakane"],3),
+    S("south_gate","Südtor","🚪","Tor","Südlicher Hauptzugang, leicht kleiner als das Nordtor. Ebenfalls mit Pechnasen und Mörder­löchern ausgestattet.",["Mörderlöcher","Fallgitter"],4),
+    S("dock_gate","Hafentor","⚓","Seezugang","Schmales Tor an der Südseite, das den direkten Nachschub per Schiff ermöglichte. Strategisch entscheidend für die Versorgung.",["Direkter Seeweg","Wichtig für Versorgung"],2),
+    S("moat","Gezeitengraben","🌊","Tidal Moat","Der Wassergraben um die gesamte Anlage war durch Gezeiten gefüllt. Machte eine direkte Belagerung ohne Schiffe nahezu unmöglich.",["Breite: 18m","Tidal gesteuert"],null),
+    S("killing_ground","Zwinger","⚔️","Zwingergasse","Der schmale Korridor zwischen äußerem und innerem Mauerring. Angreifer, die den äußeren Ring überwanden, gerieten in dieses Kreuzfeuer.",["Breite: 8m","Kreuzfeuer","Keine Deckung"],null),
+    S("chapel","Kapelle","⛪","Kapelle","Im Innenhof des inneren Rings gelegen. Kleiner aber solider Sakralbau im Stil der edwardianischen Gotik.",["Gotischer Stil","1320 erbaut"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glow=(id,c)=>isSel(id)?`${c}55`:`${c}20`;
+  const str2=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  // Tower helper
+  const tower=(key,tx,ty,r,c)=>(
+    <g key={key}>
+      {isSel(key)&&<circle cx={tx} cy={ty} r={r+6} fill={`${c}22`} filter="url(#b_glow)"/>}
+      <circle cx={tx} cy={ty} r={r} fill={`${c}${isSel(key)?"44":"22"}`}
+        stroke={`${c}${isSel(key)?"cc":"66"}`} strokeWidth={isSel(key)?2:1.5}/>
+    </g>
+  );
+
+  // Outer wall towers (16, evenly spaced)
+  const outerR=230,innerR=140,killW=40;
+  const outerTowers=Array.from({length:16},(_,i)=>{
+    const a=(i/16)*Math.PI*2;
+    return{x:cx+Math.cos(a)*outerR,y:cy+Math.sin(a)*outerR};
+  });
+  const innerTowers=[0,1,2,3,4,5].map(i=>{
+    const a=(i/6)*Math.PI*2-Math.PI/4;
+    return{x:cx+Math.cos(a)*innerR,y:cy+Math.sin(a)*innerR};
+  });
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="b_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#06100e"/>
+          <stop offset="100%" stopColor="#020608"/>
+        </radialGradient>
+        <filter id="b_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="b_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+        <radialGradient id="b_sea" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="rgba(20,70,140,0.35)"/>
+          <stop offset="100%" stopColor="rgba(10,40,90,0.55)"/>
+        </radialGradient>
+      </defs>
+      <rect width={W} height={H} fill="url(#b_bg)"/>
+      <rect width={W} height={H} fill="url(#b_stone)" opacity="0.5"/>
+
+      {/* Sea / moat background */}
+      <circle cx={cx} cy={cy} r={outerR+30} fill="url(#b_sea)" onClick={()=>hit("moat")} style={{cursor:"pointer"}}/>
+      {isSel("moat")&&<circle cx={cx} cy={cy} r={outerR+30} fill="rgba(30,100,180,0.12)" filter="url(#b_glow)"/>}
+      <text x={cx} y={cy-outerR-10} textAnchor="middle" fill="#4488cc" fontSize="9" fontFamily="'Cinzel',serif">GEZEITENGRABEN</text>
+
+      {/* Outer ring wall */}
+      <circle cx={cx} cy={cy} r={outerR} fill={glow("outer_wall","#7a8860")}
+        stroke={str2("outer_wall","#9aaa70")} strokeWidth="3"
+        onClick={()=>hit("outer_wall")} style={{cursor:"pointer"}}/>
+      {isSel("outer_wall")&&<circle cx={cx} cy={cy} r={outerR} fill="rgba(120,140,80,0.08)" filter="url(#b_glow)"/>}
+
+      {/* Killing ground (zwinger) */}
+      <circle cx={cx} cy={cy} r={outerR-killW} fill={glow("killing_ground","#cc4433")}
+        stroke={str2("killing_ground","#ee5544")} strokeWidth="2"
+        onClick={()=>hit("killing_ground")} style={{cursor:"pointer"}}/>
+      {isSel("killing_ground")&&<circle cx={cx} cy={cy} r={outerR-killW} fill="rgba(180,50,30,0.08)" filter="url(#b_glow)"/>}
+      <text x={cx+outerR-killW/2-16} y={cy+4} fill={isSel("killing_ground")?"#ee5544":"#7a3322"} fontSize="7" fontFamily="'Cinzel',serif">ZWINGER</text>
+
+      {/* Inner ring wall */}
+      <circle cx={cx} cy={cy} r={innerR} fill={glow("inner_ward","#8870a8")}
+        stroke={str2("inner_ward","#aa88cc")} strokeWidth="3"
+        onClick={()=>hit("inner_ward")} style={{cursor:"pointer"}}/>
+      {isSel("inner_ward")&&<circle cx={cx} cy={cy} r={innerR} fill="rgba(130,100,180,0.1)" filter="url(#b_glow)"/>}
+
+      {/* Inner ward courtyard */}
+      <circle cx={cx} cy={cy} r={innerR-30} fill="rgba(40,30,20,0.4)"/>
+
+      {/* Outer towers */}
+      {outerTowers.map((t,i)=>tower(`ot${i}`,t.x,t.y,11,"#9aaa70"))}
+
+      {/* Inner towers */}
+      {innerTowers.map((t,i)=>tower(`it${i}`,t.x,t.y,14,"#aa88cc"))}
+
+      {/* North gate */}
+      <rect x={cx-20} y={cy-outerR-8} width="40" height="36" rx="3"
+        fill={glow("north_gate","#ffcc44")} stroke={str2("north_gate","#ffdd66")} strokeWidth="2.5"
+        onClick={()=>hit("north_gate")} style={{cursor:"pointer"}}/>
+      {isSel("north_gate")&&<rect x={cx-25} y={cy-outerR-13} width="50" height="46" rx="4" fill="rgba(220,180,40,0.1)" filter="url(#b_glow)"/>}
+      <text x={cx} y={cy-outerR+44} textAnchor="middle" fill={isSel("north_gate")?"#ffdd66":"#cc9922"} fontSize="8" fontFamily="'Cinzel',serif">NORDTOR</text>
+
+      {/* South gate */}
+      <rect x={cx-20} y={cy+outerR-28} width="40" height="36" rx="3"
+        fill={glow("south_gate","#ff8844")} stroke={str2("south_gate","#ffaa66")} strokeWidth="2.5"
+        onClick={()=>hit("south_gate")} style={{cursor:"pointer"}}/>
+      {isSel("south_gate")&&<rect x={cx-25} y={cy+outerR-33} width="50" height="46" rx="4" fill="rgba(220,120,40,0.1)" filter="url(#b_glow)"/>}
+      <text x={cx} y={cy+outerR+22} textAnchor="middle" fill={isSel("south_gate")?"#ffaa66":"#cc6633"} fontSize="8" fontFamily="'Cinzel',serif">SÜDTOR</text>
+
+      {/* Dock gate */}
+      <rect x={cx+outerR-28} y={cy-18} width="36" height="36" rx="3"
+        fill={glow("dock_gate","#44aacc")} stroke={str2("dock_gate","#66ccee")} strokeWidth="2"
+        onClick={()=>hit("dock_gate")} style={{cursor:"pointer"}}/>
+      <text x={cx+outerR+14} y={cy+4} fill={isSel("dock_gate")?"#66ccee":"#3388aa"} fontSize="8" fontFamily="'Cinzel',serif">HAFEN</text>
+
+      {/* Chapel */}
+      <rect x={cx-18} y={cy-18} width="36" height="36" rx="3"
+        fill={glow("chapel","#5577ff")} stroke={str2("chapel","#7799ff")} strokeWidth="2"
+        onClick={()=>hit("chapel")} style={{cursor:"pointer"}}/>
+      <text x={cx} y={cy+4} textAnchor="middle" fill={isSel("chapel")?"#7799ff":"#445588"} fontSize="8" fontFamily="'Cinzel',serif">KAP.</text>
+
+      {/* INNER label */}
+      <text x={cx} y={cy-innerR+18} textAnchor="middle" fill={isSel("inner_ward")?ac:"#9070c0"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">INNERER HOF</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-40},40)`}>
+        <circle r="16" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*9} y={-Math.cos(r2)*9+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">BEAUMARIS CASTLE</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Konzentrisch · 1295–1330 · Anglesey, Wales</text>
+    </svg>
+  );
+};
+
+// ── Dover ────────────────────────────────────────────────────────────────────
+DETAILED_PLANS.dover=({ac,sel,onSel})=>{
+  const W=640,H=580;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("great_tower","Großer Turm (Keep)","🏯","Donjon","Einer der mächtigsten Türme Englands, erbaut 1180 unter Heinrich II. Quadratischer Kern mit Vorgebäude, 29m hoch, Mauern 6.4m dick. Gilt als nahezu unbezwingbar.",["Höhe: 29m","Mauern: 6.4m","Erbaut: 1180"],null),
+    S("forebuilding","Vorgebäude","🚪","Eingangsanlage","Dreigliedrige Eingangsanlage zum Great Tower. Kontrollierter Zugang über mehrere Torräume und eine Wendeltreppe – Angreifer müssen im Uhrzeigersinn aufsteigen.",["Rechtshändige Treppen","3 Torkammern"],3),
+    S("inner_bailey","Innerer Wehrhof","🏰","Innerer Ring","Ovaler innerer Mauerring mit 14 Türmen. Enthält den Great Tower, die Kapelle und Speicherbauten.",["14 Türme","Ovale Form"],null),
+    S("outer_bailey","Äußerer Mauerring","🧱","Äußerer Ring","Unregelmäßiger äußerer Mauerring, der dem Kliffverlauf folgt. 20 Türme. Philipps-Tor im Norden ist die historisch schwächste Stelle.",["20 Türme","Dem Kliff angepasst"],null),
+    S("north_gate","Philipps-Tor (Nord)","⚠️","Schwachstelle","Der nördliche Zugang ist die historisch anfälligste Stelle. 1216 gelang es Prinz Ludwig von Frankreich beinahe, hier einzudringen.",["Historisch angegriffen","Flacheres Gelände"],1),
+    S("coltons_gate","Colton-Tor","🚪","Südtor","Südlicher Eingang, durch zwei massige Türme flankiert. Sicherste Zugangsroute aufgrund des steilsten Kliffabschnitts.",["Steilstes Gelände","Sicherste Route"],null),
+    S("cliff","Kreidefelsklippe","⛰️","Natürliche Barriere","Senkrechte Kreideklippen auf der Ost- und Südseite machen Angriffe von dieser Seite nahezu unmöglich.",["Höhe: 100m","Vertikaler Fels"],null),
+    S("chapel","Kapelle St. Maria","⛪","Kapelle","Römisch-sächsischer Leuchtturm (Pharos) diente als Grundlage der Burgkapelle. Eines der ältesten Gebäude der Anlage.",["Römisches Fundament","Pharos-Turm"],null),
+    S("well","Brunnen im Keep","💧","Wasserversorgung","Tiefer Brunnenschacht im inneren des Great Tower sichert die autonome Wasserversorgung – entscheidend für lange Belagerungen.",["Tiefe: 40m","Belagerungssicherheit"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glo=(id,c)=>isSel(id)?`${c}44`:`${c}18`;
+  const st=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="d_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#0e0b06"/>
+          <stop offset="100%" stopColor="#050402"/>
+        </radialGradient>
+        <filter id="d_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="d_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#d_bg)"/>
+      <rect width={W} height={H} fill="url(#d_stone)" opacity="0.55"/>
+
+      {/* Cliff (east) */}
+      <path d="M540,0 Q560,100 555,200 Q565,300 550,400 Q545,500 540,580 L640,580 L640,0 Z"
+        fill="rgba(100,80,40,0.25)" stroke="rgba(140,110,50,0.4)" strokeWidth="1.5"
+        onClick={()=>hit("cliff")} style={{cursor:"pointer"}}/>
+      {isSel("cliff")&&<path d="M540,0 Q560,100 555,200 Q565,300 550,400 Q545,500 540,580 L640,580 L640,0 Z" fill="rgba(140,110,50,0.1)" filter="url(#d_glow)"/>}
+      <text x="590" y="290" textAnchor="middle" fill="#8a7040" fontSize="10" fontFamily="'Cinzel',serif" transform="rotate(90,590,290)">KREIDEKLIPPEN</text>
+
+      {/* Outer bailey (irregular polygon) */}
+      <path d="M80,100 L200,60 L420,55 L530,100 L535,200 Q540,300 530,400 L420,500 L200,510 L80,460 L60,300 Z"
+        fill={glo("outer_bailey","#7a8860")} stroke={st("outer_bailey","#9aaa70")} strokeWidth="2.5"
+        onClick={()=>hit("outer_bailey")} style={{cursor:"pointer"}}/>
+      {isSel("outer_bailey")&&<path d="M80,100 L200,60 L420,55 L530,100 L535,200 Q540,300 530,400 L420,500 L200,510 L80,460 L60,300 Z"
+        fill="rgba(100,130,70,0.07)" filter="url(#d_glow)"/>}
+      <text x="110" y="480" fill={isSel("outer_bailey")?ac:"#7a8860"} fontSize="9" fontFamily="'Cinzel',serif">ÄUSSERER RING</text>
+
+      {/* Outer towers (20) */}
+      {[{x:80,y:100},{x:130,y:65},{x:200,y:60},{x:280,y:56},{x:360,y:55},{x:420,y:55},{x:480,y:70},{x:530,y:100},{x:534,y:160},{x:535,y:220},{x:536,y:290},{x:533,y:360},{x:528,y:420},{x:500,y:480},{x:420,y:500},{x:330,y:508},{x:240,y:510},{x:155,y:505},{x:90,y:470},{x:62,y:380}].map((t,i)=>(
+        <circle key={i} cx={t.x} cy={t.y} r="10" fill={`${ac}18`} stroke={`${ac}55`} strokeWidth="1.5"/>
+      ))}
+
+      {/* Inner bailey */}
+      <ellipse cx="310" cy="290" rx="150" ry="170"
+        fill={glo("inner_bailey","#8870a8")} stroke={st("inner_bailey","#aa88cc")} strokeWidth="2.5"
+        onClick={()=>hit("inner_bailey")} style={{cursor:"pointer"}}/>
+      {isSel("inner_bailey")&&<ellipse cx="310" cy="290" rx="150" ry="170" fill="rgba(130,100,180,0.08)" filter="url(#d_glow)"/>}
+      <text x="310" y="150" textAnchor="middle" fill={isSel("inner_bailey")?ac:"#9070c0"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">INNERER HOF</text>
+
+      {/* Inner towers (14) */}
+      {[{x:165,y:220},{x:165,y:290},{x:165,y:360},{x:220,y:140},{x:310,y:127},{x:400,y:140},{x:452,y:220},{x:458,y:290},{x:452,y:360},{x:400,y:435},{x:310,y:455},{x:220,y:435},{x:190,y:170},{x:430,y:170}].map((t,i)=>(
+        <rect key={i} x={t.x-8} y={t.y-8} width="16" height="16" rx="2"
+          fill={`${ac}22`} stroke={`${ac}66`} strokeWidth="1.5"/>
+      ))}
+
+      {/* Great Tower */}
+      <rect x="265" y="240" width="90" height="90" rx="4"
+        fill={glo("great_tower","#ffcc44")} stroke={st("great_tower","#ffdd66")} strokeWidth="3"
+        onClick={()=>hit("great_tower")} style={{cursor:"pointer"}}/>
+      {isSel("great_tower")&&<rect x="258" y="233" width="104" height="104" rx="5" fill="rgba(220,180,40,0.1)" filter="url(#d_glow)"/>}
+      {[[265,240],[353,240],[265,328],[353,328]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-10} y={ty-10} width="20" height="20" rx="2"
+          fill={isSel("great_tower")?"#ffdd6644":"#cc992222"} stroke={isSel("great_tower")?"#ffdd66":"#cc9922"} strokeWidth="1.5"/>
+      ))}
+      <text x="310" y="286" textAnchor="middle" fill={isSel("great_tower")?"#ffdd66":"#aa8822"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">GREAT</text>
+      <text x="310" y="300" textAnchor="middle" fill={isSel("great_tower")?"#ffdd66":"#aa8822"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">TOWER</text>
+
+      {/* Forebuilding */}
+      <rect x="353" y="258" width="40" height="54" rx="3"
+        fill={glo("forebuilding","#ff8844")} stroke={st("forebuilding","#ffaa66")} strokeWidth="2"
+        onClick={()=>hit("forebuilding")} style={{cursor:"pointer"}}/>
+      <text x="373" y="289" textAnchor="middle" fill={isSel("forebuilding")?"#ffaa66":"#994422"} fontSize="7" fontFamily="'Cinzel',serif">VORB.</text>
+
+      {/* North gate */}
+      <rect x="280" y="55" width="60" height="34" rx="3"
+        fill={glo("north_gate","#ee3322")} stroke={st("north_gate","#ff4433")} strokeWidth="2.5"
+        onClick={()=>hit("north_gate")} style={{cursor:"pointer"}}/>
+      {isSel("north_gate")&&<rect x="274" y="49" width="72" height="46" rx="4" fill="rgba(200,40,30,0.12)" filter="url(#d_glow)"/>}
+      <text x="310" y="76" textAnchor="middle" fill={isSel("north_gate")?"#ff4433":"#cc3322"} fontSize="8" fontFamily="'Cinzel',serif">PHILIPPS-TOR ⚠</text>
+
+      {/* South gate */}
+      <rect x="265" y="500" width="60" height="32" rx="3"
+        fill={glo("coltons_gate","#44aacc")} stroke={st("coltons_gate","#66ccee")} strokeWidth="2"
+        onClick={()=>hit("coltons_gate")} style={{cursor:"pointer"}}/>
+      <text x="295" y="520" textAnchor="middle" fill={isSel("coltons_gate")?"#66ccee":"#336688"} fontSize="8" fontFamily="'Cinzel',serif">COLTON-TOR</text>
+
+      {/* Chapel */}
+      <rect x="222" y="220" width="36" height="44" rx="3"
+        fill={glo("chapel","#5577ff")} stroke={st("chapel","#7799ff")} strokeWidth="2"
+        onClick={()=>hit("chapel")} style={{cursor:"pointer"}}/>
+      <text x="240" y="246" textAnchor="middle" fill={isSel("chapel")?"#7799ff":"#445588"} fontSize="7" fontFamily="'Cinzel',serif">PHAROS</text>
+
+      {/* Well */}
+      <circle cx="290" cy="300" r="8" fill={glo("well","#44ccff")} stroke={st("well","#66ddff")} strokeWidth="1.5"
+        onClick={()=>hit("well")} style={{cursor:"pointer"}}/>
+      <text x="290" y="328" textAnchor="middle" fill={isSel("well")?"#66ddff":"#336688"} fontSize="7" fontFamily="'Cinzel',serif">BRUNN.</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-40},40)`}>
+        <circle r="16" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*9} y={-Math.cos(r2)*9+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">DOVER CASTLE</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Königliche Festung · 1180 · Kent, England</text>
+    </svg>
+  );
+};
+
+// ── Osaka ─────────────────────────────────────────────────────────────────────
+DETAILED_PLANS.osaka=({ac,sel,onSel})=>{
+  const W=640,H=600;
+  const cx=W/2,cy=H/2+20;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("tenshukaku","Tenshukaku (天守閣)","🏯","Hauptturm","Fünfstöckiger Hauptturm, erbaut 1583 von Toyotomi Hideyoshi. 58m hoch, mit geschwungenen Dächern (Irimoya) und vergoldeten Tigerdekorationen. Symbol japanischer Macht.",["Höhe: 58m","5 Stockwerke","Gold-Dekoration"],null),
+    S("honmaru","Honmaru (本丸)","🏰","Innerste Zone","Das innerste der drei konzentrischen Vierecke. Enthält den Tenshukaku, den Otemon und mehrere Yagura (Ecktürme).",["6 Yagura","Wassergraben: 30m"],null),
+    S("ninomaru","Ninomaru (二の丸)","🧱","Zweite Zone","Mittlerer Mauerring. Enthält Verwaltungsgebäude und dient als Pufferzone. Breiterer Wassergraben.",["Breite: 400m","Steinmauern: 14m"],null),
+    S("sannomaru","Sannomaru (三の丸)","🟤","Äußere Zone","Äußerster Ring. Ehemalige Stadtteile der Vasallen. Im 17. Jh. mit Wassergraben und Steinwällen gesichert.",["Größte Zone","Stadtartig angelegt"],null),
+    S("otemon","Otemon (大手門)","🚪","Haupttor","Das prächtigste Tor der Anlage. Doppeltes Torhaus-System mit riesigen Eingangspfosten. Direkter Angriffspunkt.",["Riesige Holztore","Wachttürme beidseitig"],3),
+    S("sakuramon","Sakuramon (桜門)","🚪","Tor","Das Kirschblütentor. Zweites Haupttor mit den berühmten 'Sanraku'-Dekorationen. Führt direkt zum Honmaru.",["Stein-Fundament","Kirschblüten-Motiv"],4),
+    S("moat_inner","Innerer Wassergraben","🌊","Wassergraben","Innerer Graben trennt Honmaru von Ninomaru. Breite 30m, tiefe Steinböschungen machen Überwinden sehr schwer.",["Breite: 30m","Steinböschung"],null),
+    S("moat_outer","Äußerer Wassergraben","🌊","Wassergraben","Äußerer Graben. Historisch gefüllt, heute teilweise trocken. Schützte ursprünglich die gesamte Burg.",["Breite: 50m","2.5km Umfang"],null),
+    S("yagura_ne","Nordost-Yagura","🗼","Eckturm","Sogenannte 'Taubenturm' – wichtigster Eckturm im Nordosten. Diente als Lager und Beobachtungsposten.",["3 Stockwerke","Nachschublager"],null),
+    S("kin_tiger","Goldener Tiger","⭐","Dekoration","Die goldenen Tigerfiguren auf den Dachgiebeln sind Symbol der Toyotomi-Macht. Reine Repräsentation.",["24-karätiges Gold","Toyotomi-Symbol"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glo=(id,c)=>isSel(id)?`${c}44`:`${c}1a`;
+  const st=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  const ringRects=[
+    {id:"sannomaru",w:560,h:520,c:"#8a7040"},
+    {id:"ninomaru",w:400,h:360,c:"#7a8060"},
+    {id:"honmaru",w:240,h:220,c:"#9080c0"},
+  ];
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="o_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#0a0c06"/>
+          <stop offset="100%" stopColor="#040502"/>
+        </radialGradient>
+        <filter id="o_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="o_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#o_bg)"/>
+      <rect width={W} height={H} fill="url(#o_stone)" opacity="0.55"/>
+
+      {/* Concentric rings + moats */}
+      {ringRects.map((r,i)=>{
+        const x=cx-r.w/2, y=cy-r.h/2;
+        const moatW=i===0?12:18;
+        return(
+          <g key={r.id}>
+            {/* Moat */}
+            {i<2&&<rect x={x-moatW} y={y-moatW} width={r.w+moatW*2} height={r.h+moatW*2} rx="6"
+              fill={`rgba(30,80,160,${i===0?0.2:0.3})`}
+              stroke={`rgba(50,120,200,${i===0?0.3:0.45})`} strokeWidth="1.5"
+              onClick={()=>hit(i===0?"moat_outer":"moat_inner")} style={{cursor:"pointer"}}/>}
+            {/* Wall */}
+            <rect x={x} y={y} width={r.w} height={r.h} rx="4"
+              fill={glo(r.id,r.c)} stroke={st(r.id,r.c)} strokeWidth={i===2?3:2}
+              onClick={()=>hit(r.id)} style={{cursor:"pointer"}}/>
+            {isSel(r.id)&&<rect x={x-4} y={y-4} width={r.w+8} height={r.h+8} rx="5"
+              fill={`${r.c}08`} filter="url(#o_glow)"/>}
+          </g>
+        );
+      })}
+
+      {/* Zone labels */}
+      <text x={cx-265} y={cy-248} fill={isSel("sannomaru")?ac:"#8a7040"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">三の丸 SANNOMARU</text>
+      <text x={cx-185} y={cy-168} fill={isSel("ninomaru")?ac:"#7a8060"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">二の丸 NINOMARU</text>
+      <text x={cx-108} y={cy-100} fill={isSel("honmaru")?ac:"#9080c0"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">本丸 HONMARU</text>
+
+      {/* Honmaru corner yagura */}
+      {[[cx-120,cy-110],[cx+120,cy-110],[cx-120,cy+110],[cx+120,cy+110]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-9} y={ty-9} width="18" height="18" rx="2"
+          fill={isSel("yagura_ne")&&i===0?"#cc884444":"#88664422"} stroke={isSel("yagura_ne")&&i===0?"#cc8844":"#88664455"} strokeWidth="1.5"
+          onClick={i===0?()=>hit("yagura_ne"):undefined} style={i===0?{cursor:"pointer"}:{}}/>
+      ))}
+      {isSel("yagura_ne")&&<rect x={cx-129} y={cy-119} width="36" height="36" rx="4" fill="rgba(180,120,40,0.1)" filter="url(#o_glow)"/>}
+      <text x={cx-120} y={cy-128} textAnchor="middle" fill={isSel("yagura_ne")?"#cc8844":"#66440044"} fontSize="7" fontFamily="'Cinzel',serif">YAGURA</text>
+
+      {/* Tenshukaku */}
+      <rect x={cx-28} y={cy-32} width="56" height="64" rx="3"
+        fill={glo("tenshukaku","#ffcc44")} stroke={st("tenshukaku","#ffee66")} strokeWidth="3"
+        onClick={()=>hit("tenshukaku")} style={{cursor:"pointer"}}/>
+      {isSel("tenshukaku")&&<rect x={cx-35} y={cy-39} width="70" height="78" rx="4" fill="rgba(220,180,40,0.12)" filter="url(#o_glow)"/>}
+      {/* Roof lines */}
+      <line x1={cx-28} y1={cy-18} x2={cx+28} y2={cy-18} stroke={isSel("tenshukaku")?"#ffee66":"#aa882255"} strokeWidth="1"/>
+      <line x1={cx-28} y1={cy+4} x2={cx+28} y2={cy+4} stroke={isSel("tenshukaku")?"#ffee66":"#aa882255"} strokeWidth="1"/>
+      <text x={cx} y={cy-8} textAnchor="middle" fill={isSel("tenshukaku")?"#ffee66":"#aa8822"} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">天守閣</text>
+      <text x={cx} y={cy+8} textAnchor="middle" fill={isSel("tenshukaku")?"#ffcc44":"#887722"} fontSize="7" fontFamily="'Cinzel',serif">TENSHU-</text>
+      <text x={cx} y={cy+20} textAnchor="middle" fill={isSel("tenshukaku")?"#ffcc44":"#887722"} fontSize="7" fontFamily="'Cinzel',serif">KAKU</text>
+
+      {/* Otemon (main gate, south) */}
+      <rect x={cx-22} y={cy+110} width="44" height="30" rx="3"
+        fill={glo("otemon","#ee4433")} stroke={st("otemon","#ff5544")} strokeWidth="2.5"
+        onClick={()=>hit("otemon")} style={{cursor:"pointer"}}/>
+      {isSel("otemon")&&<rect x={cx-27} y={cy+105} width="54" height="40" rx="4" fill="rgba(200,50,30,0.1)" filter="url(#o_glow)"/>}
+      <text x={cx} y={cy+129} textAnchor="middle" fill={isSel("otemon")?"#ff5544":"#cc3322"} fontSize="8" fontFamily="'Cinzel',serif">大手門</text>
+
+      {/* Sakuramon (north gate to honmaru) */}
+      <rect x={cx-22} y={cy-140} width="44" height="28" rx="3"
+        fill={glo("sakuramon","#ff8844")} stroke={st("sakuramon","#ffaa66")} strokeWidth="2"
+        onClick={()=>hit("sakuramon")} style={{cursor:"pointer"}}/>
+      {isSel("sakuramon")&&<rect x={cx-27} y={cy-145} width="54" height="38" rx="4" fill="rgba(200,110,40,0.1)" filter="url(#o_glow)"/>}
+      <text x={cx} y={cy-148} textAnchor="middle" fill={isSel("sakuramon")?"#ffaa66":"#cc6633"} fontSize="8" fontFamily="'Cinzel',serif">桜門</text>
+
+      {/* Moat labels */}
+      <text x={cx+215} y={cy} fill="#3a88cc" fontSize="8" fontFamily="'Cinzel',serif" transform={`rotate(-90,${cx+215},${cy})`}>ÄUSSERER GRABEN</text>
+      <text x={cx+133} y={cy} fill="#4499dd" fontSize="7" fontFamily="'Cinzel',serif" transform={`rotate(-90,${cx+133},${cy})`}>INNERER GRABEN</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-40},40)`}>
+        <circle r="16" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*9} y={-Math.cos(r2)*9+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">大阪城 OSAKA-JO</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Toyotomi-Burg · 1583 · Osaka, Japan</text>
+    </svg>
+  );
+};
+
+// ── Stirling ──────────────────────────────────────────────────────────────────
+DETAILED_PLANS.stirling=({ac,sel,onSel})=>{
+  const W=640,H=580;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("rock","Vulkanfels","⛰️","Natürliche Barriere","Stirling thront auf einem erloschenen Vulkankegel, 75m über der Umgebung. Drei Seiten bilden senkrechte Felswände – ein natürlicher Donjon.",["Höhe: 75m","3 Seiten unzugänglich"],null),
+    S("great_hall","Großer Saal","🏛️","Repräsentationsbau","Der größte mittelalterliche Saal Schottlands, erbaut 1503 unter James IV. 42m lang, Hammerbalkendecke. Dreh- und Angelpunkt des schottischen Hofes.",["Länge: 42m","Hammerbalkendecke","1503 erbaut"],null),
+    S("palace","Königspalast","👑","Palast","Renaissancepalast aus den 1540er-Jahren. Außenwände mit einzigartigen Renaissance-Skulpturen ('Stirling Heads'). Repräsentativster Renaissancebau Schottlands.",["Stirling Heads","Renaissance-Stil","1540er"],null),
+    S("chapel_royal","Kapelle Royal","⛪","Kapelle","Königliche Kapelle, 1594 von James VI erbaut für die Taufe seines Sohnes. Hochwertige Innenausstattung aus Eichenholz.",["1594 erbaut","Königliche Taufe"],null),
+    S("forework","Forework-Torhaus","🚪","Haupttor","Das spektakuläre Torhaus an der einzig angreifbaren Südseite. Flanktürme, Zugbrücke und Barbakane. Einzige reale Angriffsroute.",["Zugbrücke","Barbakane","2 Flanktürme"],2),
+    S("esplanade","Esplanade","⚔️","Vorplatz","Der breite Vorplatz vor dem Forework. Historisch freies Schussfeld. Hier finden heute die Edinburgh-Tattoo-ähnlichen Zeremonien statt.",["Freies Schussfeld","Angriffsroute"],1),
+    S("nether_bailey","Nether Bailey","🏰","Unterer Hof","Unterer Burghof, ursprünglich Verwaltungszentrum. Enthält das Große Magazin und das Mühlengebäude.",["Magazin","Stallungen"],null),
+    S("great_kitchens","Große Küchen","🍖","Versorgung","Ausgedehnte Küchenanlage, fähig Hunderte Hofleute zu versorgen. Strategisch wichtig für lange Belagerungen.",["4 Feuerstellen","Große Vorratskammern"],null),
+    S("crag","Crag & Tail","🌄","Geologie","Die charakteristische Geländeform: Burg auf dem 'Crag' (Fels), Altstadt auf dem abfallenden 'Tail' (Schwanz) dahinter.",["Eiszeit-Geologie","Natürlicher Schutz"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glo=(id,c)=>isSel(id)?`${c}44`:`${c}1a`;
+  const st=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="s_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#080a0e"/>
+          <stop offset="100%" stopColor="#030405"/>
+        </radialGradient>
+        <filter id="s_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="s_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#s_bg)"/>
+      <rect width={W} height={H} fill="url(#s_stone)" opacity="0.55"/>
+
+      {/* Crag & Tail terrain */}
+      <path d="M120,480 Q100,420 90,350 Q80,280 110,220 Q130,160 170,120 Q220,70 300,55 Q380,42 450,60 Q510,75 540,110 Q570,145 560,200 Q550,260 520,300 Q490,340 460,370 Q430,400 400,430 Q360,465 300,480 Q240,495 180,490 Z"
+        fill={glo("rock","#6a5a30")} stroke={st("rock","#8a7848")} strokeWidth="2"
+        onClick={()=>hit("rock")} style={{cursor:"pointer"}}/>
+      {isSel("rock")&&<path d="M120,480 Q100,420 90,350 Q80,280 110,220 Q130,160 170,120 Q220,70 300,55 Q380,42 450,60 Q510,75 540,110 Q570,145 560,200 Q550,260 520,300 Q490,340 460,370 Q430,400 400,430 Q360,465 300,480 Q240,495 180,490 Z"
+        fill="rgba(100,80,40,0.1)" filter="url(#s_glow)"/>}
+      <text x="150" y="455" fill={isSel("rock")?ac:"#7a6838"} fontSize="9" fontFamily="'Cinzel',serif">VULKANFELS</text>
+
+      {/* Esplanade */}
+      <rect x="190" y="420" width="210" height="65" rx="4"
+        fill={glo("esplanade","#cc4433")} stroke={st("esplanade","#ee5544")} strokeWidth="2"
+        onClick={()=>hit("esplanade")} style={{cursor:"pointer"}}/>
+      {isSel("esplanade")&&<rect x="185" y="415" width="220" height="75" rx="5" fill="rgba(180,50,30,0.1)" filter="url(#s_glow)"/>}
+      <text x="295" y="457" textAnchor="middle" fill={isSel("esplanade")?"#ee5544":"#cc4433"} fontSize="10" fontFamily="'Cinzel',serif">ESPLANADE ⚠</text>
+
+      {/* Forework gatehouse */}
+      <rect x="245" y="390" width="100" height="46" rx="4"
+        fill={glo("forework","#ff8844")} stroke={st("forework","#ffaa66")} strokeWidth="2.5"
+        onClick={()=>hit("forework")} style={{cursor:"pointer"}}/>
+      {isSel("forework")&&<rect x="239" y="384" width="112" height="58" rx="5" fill="rgba(200,110,40,0.12)" filter="url(#s_glow)"/>}
+      {/* Flanking towers */}
+      <rect x="233" y="388" width="22" height="42" rx="3" fill={glo("forework","#ff8844")} stroke={st("forework","#ffaa66")} strokeWidth="1.5" onClick={()=>hit("forework")} style={{cursor:"pointer"}}/>
+      <rect x="335" y="388" width="22" height="42" rx="3" fill={glo("forework","#ff8844")} stroke={st("forework","#ffaa66")} strokeWidth="1.5" onClick={()=>hit("forework")} style={{cursor:"pointer"}}/>
+      <text x="295" y="418" textAnchor="middle" fill={isSel("forework")?"#ffaa66":"#cc7733"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">FOREWORK</text>
+
+      {/* Nether Bailey */}
+      <path d="M210,380 L210,290 Q215,260 240,250 L360,250 Q385,260 390,290 L390,380 Z"
+        fill={glo("nether_bailey","#7a8060")} stroke={st("nether_bailey","#9aaa70")} strokeWidth="2"
+        onClick={()=>hit("nether_bailey")} style={{cursor:"pointer"}}/>
+      {isSel("nether_bailey")&&<path d="M210,380 L210,290 Q215,260 240,250 L360,250 Q385,260 390,290 L390,380 Z"
+        fill="rgba(100,130,70,0.07)" filter="url(#s_glow)"/>}
+      <text x="300" y="325" textAnchor="middle" fill={isSel("nether_bailey")?ac:"#7a8060"} fontSize="9" fontFamily="'Cinzel',serif">NETHER</text>
+      <text x="300" y="340" textAnchor="middle" fill={isSel("nether_bailey")?ac:"#7a8060"} fontSize="9" fontFamily="'Cinzel',serif">BAILEY</text>
+
+      {/* Great Hall */}
+      <rect x="220" y="180" width="170" height="62" rx="4"
+        fill={glo("great_hall","#ffcc44")} stroke={st("great_hall","#ffee66")} strokeWidth="2.5"
+        onClick={()=>hit("great_hall")} style={{cursor:"pointer"}}/>
+      {isSel("great_hall")&&<rect x="214" y="174" width="182" height="74" rx="5" fill="rgba(220,180,40,0.1)" filter="url(#s_glow)"/>}
+      <text x="305" y="214" textAnchor="middle" fill={isSel("great_hall")?"#ffee66":"#aa8822"} fontSize="11" fontFamily="'Cinzel',serif" fontWeight="bold">GROSSER SAAL</text>
+
+      {/* Palace */}
+      <rect x="348" y="140" width="130" height="130" rx="4"
+        fill={glo("palace","#aa44cc")} stroke={st("palace","#cc66ee")} strokeWidth="2.5"
+        onClick={()=>hit("palace")} style={{cursor:"pointer"}}/>
+      {isSel("palace")&&<rect x="342" y="134" width="142" height="142" rx="5" fill="rgba(150,50,180,0.1)" filter="url(#s_glow)"/>}
+      {[[348,140],[476,140],[348,268],[476,268]].map(([tx,ty],i)=>(
+        <rect key={i} x={tx-10} y={ty-10} width="20" height="20" rx="2"
+          fill={isSel("palace")?"#cc66ee33":"#aa44cc22"} stroke={isSel("palace")?"#cc66ee":"#aa44cc"} strokeWidth="1.5"/>
+      ))}
+      <text x="413" y="202" textAnchor="middle" fill={isSel("palace")?"#cc66ee":"#884499"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">KÖNIGS-</text>
+      <text x="413" y="218" textAnchor="middle" fill={isSel("palace")?"#cc66ee":"#884499"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">PALAST</text>
+
+      {/* Chapel Royal */}
+      <rect x="220" y="110" width="110" height="62" rx="4"
+        fill={glo("chapel_royal","#5577ff")} stroke={st("chapel_royal","#7799ff")} strokeWidth="2"
+        onClick={()=>hit("chapel_royal")} style={{cursor:"pointer"}}/>
+      {isSel("chapel_royal")&&<rect x="214" y="104" width="122" height="74" rx="5" fill="rgba(70,100,220,0.1)" filter="url(#s_glow)"/>}
+      <text x="275" y="144" textAnchor="middle" fill={isSel("chapel_royal")?"#7799ff":"#4455aa"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">KAPELLE</text>
+      <text x="275" y="158" textAnchor="middle" fill={isSel("chapel_royal")?"#7799ff":"#4455aa"} fontSize="9" fontFamily="'Cinzel',serif">ROYAL</text>
+
+      {/* Great Kitchens */}
+      <rect x="220" y="250" width="110" height="55" rx="3"
+        fill={glo("great_kitchens","#44aa88")} stroke={st("great_kitchens","#66ccaa")} strokeWidth="2"
+        onClick={()=>hit("great_kitchens")} style={{cursor:"pointer"}}/>
+      <text x="275" y="282" textAnchor="middle" fill={isSel("great_kitchens")?"#66ccaa":"#338866"} fontSize="9" fontFamily="'Cinzel',serif">GR. KÜCHEN</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-40},40)`}>
+        <circle r="16" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*9} y={-Math.cos(r2)*9+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">STIRLING CASTLE</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Schottische Königsburg · 1100er · Stirling, Schottland</text>
+    </svg>
+  );
+};
+
+// ── Red Fort ──────────────────────────────────────────────────────────────────
+DETAILED_PLANS.red_fort=({ac,sel,onSel})=>{
+  const W=660,H=580;
+  const S=(id,name,icon,type,desc,stats,weakness)=>({id,name,icon,type,desc,stats,weakness});
+  const EL=[
+    S("lahore_gate","Lahori-Tor (West)","🚪","Haupttor","Das Haupttor der Festung, erbaut 1648 unter Shah Jahan. Massiver roter Sandsteinbogen, flankiert von achteckigen Türmen. Heute Eingang zu nationalen Zeremonien.",["Roter Sandstein","1648 erbaut","Nationales Symbol"],3),
+    S("delhi_gate","Delhi-Tor (Süd)","🚪","Südtor","Das architektonisch prächtigere Tor, einst für den Kaiser reserviert. Kleine Elefanten in Stein gemeißelt – Symbol kaiserlicher Macht.",["Kaiserlicher Eingang","Steinelefanten"],4),
+    S("diwan_am","Diwan-i-Am","🏛️","Audienzsaal","'Halle der Allgemeinen Audienz'. Offener Säulenraum, wo der Kaiser öffentliche Audienzen abhielt. 60 Sandsteinpfeiler. Thronalkov mit Marmor.",["60 Säulen","Marmor-Thron","Öffentlich zugänglich"],null),
+    S("diwan_khas","Diwan-i-Khas","💎","Privataudienzsaal","'Halle der Privaten Audienz'. Geheimer Treffpunkt für VIPs. Enthielt einst den Pfauenthron ('Takht-e-Tavus') – wertvollsten Thron der Welt.",["Pfauenthron","Persienschrift","Nur Adel"],null),
+    S("hammam","Hammam","🛁","Bad","Kaiserliche Badeanlage mit kalten, lauwarmen und heißen Räumen. Inlaid-Marmor und Blumenmotive. Privat für den Kaiser und Haremsdamen.",["3 Kammern","Marmorinlays","Kaiserlich"],null),
+    S("moti_masjid","Moti Masjid","🕌","Moschee","'Perlenmoschee', erbaut 1659 von Aurangzeb. Reinweißer Marmor, drei Kuppeln. Privatmoschee des Kaisers – kein gewöhnlicher Zutritt.",["Weißer Marmor","3 Kuppeln","1659 erbaut"],null),
+    S("rang_mahal","Rang Mahal","🌸","Palast","'Palast der Farben'. Einst bunt bemalt und vergoldet. Residenz der kaiserlichen Damen. Lotusförmiges Wasserbecken im Zentrum.",["Ehemals bunt","Lotusbassin","Haremstrakt"],null),
+    S("walls","Mauern & Bastionen","🧱","Befestigung","Massive Sandsteinmauern, 16–33m hoch, 2.4km Umfang. Acht achteckige Bastionen an den Ecken und entlang der Mauern.",["Höhe: 16-33m","Umfang: 2.4km","Roter Sandstein"],null),
+    S("yamuna","Yamuna-Fluss","🌊","Natürliche Barriere","Der heilige Fluss schützte historisch die Ostseite der Festung. Heute ca. 1km entfernt, da der Fluss seinen Lauf verändert hat.",["Ehemals Ostschutz","Heiliger Fluss"],null),
+  ];
+  const el=id=>EL.find(e=>e.id===id)||null;
+  const hit=id=>onSel(sel&&sel.id===id?null:el(id));
+  const isSel=id=>sel&&sel.id===id;
+  const glo=(id,c)=>isSel(id)?`${c}44`:`${c}1a`;
+  const st=(id,c)=>isSel(id)?c+"cc":"#8a7a6055";
+
+  // Main fort bounding box
+  const fx=100,fy=60,fw=440,fh=460;
+  const cx=fx+fw/2, cy=fy+fh/2;
+
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="rf_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#0e0805"/>
+          <stop offset="100%" stopColor="#060402"/>
+        </radialGradient>
+        <filter id="rf_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="rf_stone" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="transparent"/>
+          <rect x="1" y="1" width="8" height="8" fill={`${ac}06`} rx="1"/>
+          <rect x="11" y="11" width="8" height="8" fill={`${ac}04`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#rf_bg)"/>
+      <rect width={W} height={H} fill="url(#rf_stone)" opacity="0.55"/>
+
+      {/* Yamuna river (east) */}
+      <rect x="570" y="0" width="90" height={H} fill="rgba(34,100,180,0.2)"
+        onClick={()=>hit("yamuna")} style={{cursor:"pointer"}}/>
+      <text x="615" y="300" textAnchor="middle" fill="#4488cc" fontSize="10" fontFamily="'Cinzel',serif" transform="rotate(-90,615,300)">YAMUNA-FLUSS</text>
+
+      {/* Main walls (irregular octagon) */}
+      <path d={`M${fx+30},${fy} L${fx+fw-30},${fy} L${fx+fw},${fy+30} L${fx+fw},${fy+fh-30} L${fx+fw-30},${fy+fh} L${fx+30},${fy+fh} L${fx},${fy+fh-30} L${fx},${fy+30} Z`}
+        fill={glo("walls","#cc4422")} stroke={st("walls","#ee5533")} strokeWidth="3"
+        onClick={()=>hit("walls")} style={{cursor:"pointer"}}/>
+      {isSel("walls")&&<path d={`M${fx+30},${fy} L${fx+fw-30},${fy} L${fx+fw},${fy+30} L${fx+fw},${fy+fh-30} L${fx+fw-30},${fy+fh} L${fx+30},${fy+fh} L${fx},${fy+fh-30} L${fx},${fy+30} Z`}
+        fill="rgba(180,50,30,0.07)" filter="url(#rf_glow)"/>}
+
+      {/* Corner bastions (octagonal) */}
+      {[[fx+30,fy],[fx+fw-30,fy],[fx+fw,fy+30],[fx+fw,fy+fh-30],[fx+fw-30,fy+fh],[fx+30,fy+fh],[fx,fy+fh-30],[fx,fy+30]].map(([tx,ty],i)=>(
+        <circle key={i} cx={tx} cy={ty} r="14"
+          fill={`${ac}${isSel("walls")?"33":"18"}`} stroke={`${ac}${isSel("walls")?"88":"44"}`} strokeWidth="1.5"/>
+      ))}
+
+      {/* Inner courtyard */}
+      <rect x={fx+50} y={fy+50} width={fw-100} height={fh-100} rx="3" fill="rgba(20,12,5,0.5)"/>
+
+      {/* Lahore Gate (west) */}
+      <rect x={fx-18} y={cy-30} width="46" height="60" rx="4"
+        fill={glo("lahore_gate","#ff8844")} stroke={st("lahore_gate","#ffaa66")} strokeWidth="2.5"
+        onClick={()=>hit("lahore_gate")} style={{cursor:"pointer"}}/>
+      {isSel("lahore_gate")&&<rect x={fx-24} y={cy-36} width="58" height="72" rx="5" fill="rgba(200,110,40,0.12)" filter="url(#rf_glow)"/>}
+      <text x={fx-8} y={cy+4} textAnchor="middle" fill={isSel("lahore_gate")?"#ffaa66":"#cc7733"} fontSize="7" fontFamily="'Cinzel',serif" fontWeight="bold">LAHORI</text>
+      <text x={fx-8} y={cy+16} textAnchor="middle" fill={isSel("lahore_gate")?"#ffaa66":"#cc7733"} fontSize="7" fontFamily="'Cinzel',serif" fontWeight="bold">TOR</text>
+
+      {/* Delhi Gate (south) */}
+      <rect x={cx-30} y={fy+fh-18} width="60" height="46" rx="4"
+        fill={glo("delhi_gate","#ff6644")} stroke={st("delhi_gate","#ff8866")} strokeWidth="2.5"
+        onClick={()=>hit("delhi_gate")} style={{cursor:"pointer"}}/>
+      {isSel("delhi_gate")&&<rect x={cx-36} y={fy+fh-24} width="72" height="58" rx="5" fill="rgba(200,80,40,0.1)" filter="url(#rf_glow)"/>}
+      <text x={cx} y={fy+fh+20} textAnchor="middle" fill={isSel("delhi_gate")?"#ff8866":"#cc5533"} fontSize="9" fontFamily="'Cinzel',serif">DELHI-TOR ⚠</text>
+
+      {/* Diwan-i-Am */}
+      <rect x={fx+55} y={fy+180} width="145" height="80" rx="4"
+        fill={glo("diwan_am","#ffcc44")} stroke={st("diwan_am","#ffee66")} strokeWidth="2.5"
+        onClick={()=>hit("diwan_am")} style={{cursor:"pointer"}}/>
+      {isSel("diwan_am")&&<rect x={fx+49} y={fy+174} width="157" height="92" rx="5" fill="rgba(220,180,40,0.1)" filter="url(#rf_glow)"/>}
+      {/* Columns */}
+      {[0,1,2,3,4].map(i=>(
+        <rect key={i} x={fx+72+i*24} y={fy+186} width="6" height="68" rx="1"
+          fill={isSel("diwan_am")?"#ffee6644":"#aa882222"} stroke={isSel("diwan_am")?"#ffee66":"#aa8822"} strokeWidth="1"/>
+      ))}
+      <text x={fx+127} y={fy+224} textAnchor="middle" fill={isSel("diwan_am")?"#ffee66":"#aa8822"} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">DIWAN-i-AM</text>
+
+      {/* Diwan-i-Khas */}
+      <rect x={fx+220} y={fy+160} width="100" height="90" rx="4"
+        fill={glo("diwan_khas","#cc88ff")} stroke={st("diwan_khas","#ee99ff")} strokeWidth="2.5"
+        onClick={()=>hit("diwan_khas")} style={{cursor:"pointer"}}/>
+      {isSel("diwan_khas")&&<rect x={fx+214} y={fy+154} width="112" height="102" rx="5" fill="rgba(180,100,230,0.1)" filter="url(#rf_glow)"/>}
+      <text x={fx+270} y={fy+208} textAnchor="middle" fill={isSel("diwan_khas")?"#ee99ff":"#9955cc"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">DIWAN-i-</text>
+      <text x={fx+270} y={fy+222} textAnchor="middle" fill={isSel("diwan_khas")?"#ee99ff":"#9955cc"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">KHAS</text>
+
+      {/* Rang Mahal */}
+      <rect x={fx+55} y={fy+280} width="120" height="85" rx="4"
+        fill={glo("rang_mahal","#ff6699")} stroke={st("rang_mahal","#ff88bb")} strokeWidth="2"
+        onClick={()=>hit("rang_mahal")} style={{cursor:"pointer"}}/>
+      {isSel("rang_mahal")&&<rect x={fx+49} y={fy+274} width="132" height="97" rx="5" fill="rgba(200,80,120,0.1)" filter="url(#rf_glow)"/>}
+      <text x={fx+115} y={fy+326} textAnchor="middle" fill={isSel("rang_mahal")?"#ff88bb":"#cc4477"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">RANG MAHAL</text>
+
+      {/* Hammam */}
+      <rect x={fx+220} y={fy+270} width="90" height="75" rx="4"
+        fill={glo("hammam","#44aacc")} stroke={st("hammam","#66ccee")} strokeWidth="2"
+        onClick={()=>hit("hammam")} style={{cursor:"pointer"}}/>
+      <text x={fx+265} y={fy+311} textAnchor="middle" fill={isSel("hammam")?"#66ccee":"#3388aa"} fontSize="9" fontFamily="'Cinzel',serif" fontWeight="bold">HAMMAM</text>
+
+      {/* Moti Masjid */}
+      <rect x={fx+330} y={fy+260} width="85" height="80" rx="4"
+        fill={glo("moti_masjid","#eeeeff")} stroke={st("moti_masjid","#ffffff")} strokeWidth="2"
+        onClick={()=>hit("moti_masjid")} style={{cursor:"pointer"}}/>
+      {/* Three domes */}
+      {[fx+355,fx+372,fx+389].map((dx,i)=>(
+        <ellipse key={i} cx={dx} cy={fy+270} rx="10" ry="7" fill={isSel("moti_masjid")?"#eeeeff55":"#ccccdd22"} stroke={isSel("moti_masjid")?"#ffffff":"#8888aa"} strokeWidth="1"/>
+      ))}
+      <text x={fx+372} y={fy+308} textAnchor="middle" fill={isSel("moti_masjid")?"#ffffff":"#9999bb"} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">MOTI</text>
+      <text x={fx+372} y={fy+320} textAnchor="middle" fill={isSel("moti_masjid")?"#ffffff":"#9999bb"} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">MASJID</text>
+
+      {/* Compass */}
+      <g transform={`translate(${W-44},44)`}>
+        <circle r="16" fill="rgba(0,0,0,0.6)" stroke={`${ac}44`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#8a7a60"],["O",90,"#8a7a60"],["W",270,"#8a7a60"]].map(([l,a,c])=>{
+          const r2=a*Math.PI/180;
+          return<text key={l} x={Math.sin(r2)*9} y={-Math.cos(r2)*9+4}
+            textAnchor="middle" fill={c} fontSize="8" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+
+      <text x="20" y="26" fill={ac} fontSize="15" fontFamily="'Cinzel',serif" fontWeight="bold">LAL QILA – RED FORT</text>
+      <text x="20" y="42" fill="#9a8a60" fontSize="9" fontFamily="'Cinzel',serif">Mogul-Festung · 1648 · Delhi, Indien</text>
+    </svg>
+  );
+};
+
+// ── Castle Floor Plan Explore Tab ───────────────────────────────────────────
+function CastleFloorPlanTab({castle}){
+  const sel=castle;
+  const [selEl,setSelEl]=useState(null);
+  const plan=DETAILED_PLANS[sel.id];
+
+  const infoPanel=(el)=>{
+    if(!el)return(
+      <div style={{padding:"16px",color:"#6a5a3a",fontFamily:"'Cinzel',serif",fontSize:"12px",textAlign:"center",letterSpacing:"0.5px"}}>
+        <div style={{fontSize:"24px",marginBottom:"8px",opacity:0.4}}>🏰</div>
+        Element anklicken<br/>für Details
+      </div>
+    );
+    return(
+      <div style={{padding:"14px",animation:"fadeIn 0.15s ease"}}>
+        <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",paddingBottom:"8px",borderBottom:`1px solid ${sel.theme.accent}22`}}>
+          <span style={{fontSize:"20px"}}>{el.icon||"🏛️"}</span>
+          <div>
+            <div style={{fontSize:"13px",fontWeight:"bold",color:"#f0e6cc",fontFamily:"'Cinzel',serif",lineHeight:1.2}}>{el.name}</div>
+            {el.type&&<div style={{fontSize:"10px",color:sel.theme.accent,letterSpacing:"1px",marginTop:"2px"}}>{el.type}</div>}
+          </div>
+        </div>
+        {el.desc&&<p style={{fontSize:"12px",color:"#c8b890",lineHeight:1.6,margin:"0 0 10px"}}>{el.desc}</p>}
+        {el.stats&&<div style={{display:"flex",flexWrap:"wrap",gap:"5px"}}>
+          {el.stats.map((s,i)=>(
+            <div key={i} style={{padding:"4px 8px",background:`${sel.theme.accent}12`,border:`1px solid ${sel.theme.accent}30`,borderRadius:"4px",fontSize:"10px",color:sel.theme.accent,fontFamily:"'Cinzel',serif"}}>{s}</div>
+          ))}
+        </div>}
+        {el.weakness!=null&&<div style={{marginTop:"8px",padding:"6px 8px",background:"rgba(180,40,20,0.12)",border:"1px solid rgba(180,40,20,0.25)",borderRadius:"4px",fontSize:"11px",color:"#dd7755"}}>
+          ⚠ Schwachstelle — Angriffswert {el.weakness}/10
+        </div>}
+      </div>
+    );
+  };
+
+  return(
+    <div style={{animation:"fadeIn 0.2s ease"}}>
+      <div style={{display:"flex",gap:"14px",height:"calc(100vh - 220px)",minHeight:"520px"}}>
+        {/* Main plan area */}
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:"8px",minWidth:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+            <span style={{fontSize:"11px",color:"#9a8a6a",fontFamily:"'Cinzel',serif",letterSpacing:"0.5px"}}>
+              Mausrad · Zoomen &nbsp;|&nbsp; Ziehen · Verschieben &nbsp;|&nbsp; Klicken · Details
+            </span>
+            <button onClick={()=>setSelEl(null)}
+              style={{marginLeft:"auto",padding:"4px 10px",fontSize:"10px",fontFamily:"'Cinzel',serif",
+                background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",
+                color:"#9a8a6a",borderRadius:"5px",cursor:"pointer"}}>Auswahl aufheben</button>
+          </div>
+          <PanZoomFloorPlan accent={sel.theme.accent} height={0} style={{flex:1}}>
+            {plan
+              ? plan({ac:sel.theme.accent,sel:selEl,onSel:setSelEl})
+              : <GenericDetailedPlan castle={sel} ac={sel.theme.accent} sel={selEl} onSel={setSelEl}/>
+            }
+          </PanZoomFloorPlan>
+        </div>
+        {/* Side info panel */}
+        <div style={{width:"220px",flexShrink:0,background:"rgba(8,6,3,0.95)",border:`1px solid ${sel.theme.accent}20`,borderRadius:"8px",overflow:"hidden",display:"flex",flexDirection:"column"}}>
+          <div style={{padding:"8px 12px",borderBottom:`1px solid ${sel.theme.accent}18`,fontSize:"10px",color:sel.theme.accent,fontFamily:"'Cinzel',serif",letterSpacing:"2px"}}>ELEMENT</div>
+          <div style={{flex:1,overflowY:"auto"}}>{infoPanel(selEl)}</div>
+          <div style={{borderTop:`1px solid ${sel.theme.accent}15`,padding:"8px 12px"}}>
+            <div style={{fontSize:"10px",color:"#6a5a3a",letterSpacing:"1px",marginBottom:"4px"}}>LEGENDE</div>
+            {[{c:"#8888ff",l:"Türme"},{c:"#88ccff",l:"Tore"},{c:"#ffcc44",l:"Hauptgebäude"},{c:"#44bb88",l:"Höfe"},{c:"#cc4433",l:"Schwachstellen"}].map(lg=>(
+              <div key={lg.l} style={{display:"flex",alignItems:"center",gap:"5px",marginBottom:"3px"}}>
+                <div style={{width:"10px",height:"10px",borderRadius:"2px",background:lg.c,flexShrink:0}}/>
+                <span style={{fontSize:"10px",color:"#9a8a68"}}>{lg.l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Generic detailed plan (used when no DETAILED_PLANS entry exists)
+function GenericDetailedPlan({castle,ac,sel,onSel}){
+  const zones=castle.zones||[];
+  const W=600,H=500;
+  const cx=W/2,cy=H/2;
+  const layers=Math.min(4,Math.ceil(zones.length/4));
+  return(
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height:"100%",display:"block"}}>
+      <defs>
+        <radialGradient id="dp_bg" cx="50%" cy="50%" r="65%">
+          <stop offset="0%" stopColor="#110d06"/>
+          <stop offset="100%" stopColor="#060402"/>
+        </radialGradient>
+        <filter id="dp_glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <pattern id="dp_stone" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+          <rect width="30" height="30" fill="transparent"/>
+          <rect x="1" y="1" width="13" height="13" fill={`${ac}06`} rx="1"/>
+          <rect x="16" y="16" width="13" height="13" fill={`${ac}05`} rx="1"/>
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#dp_bg)"/>
+      <rect width={W} height={H} fill="url(#dp_stone)" opacity="0.6"/>
+      {/* Concentric curtain walls */}
+      {[...Array(layers)].map((_,li)=>{
+        const r=60+li*70;
+        return<rect key={li} x={cx-r} y={cy-r} width={r*2} height={r*2} rx="8"
+          fill="none" stroke={`${ac}${li===0?"55":"33"}`} strokeWidth={li===0?3:2}/>;
+      })}
+      {/* Zones */}
+      {zones.map((z,i)=>{
+        const angle=(i/zones.length)*Math.PI*2-Math.PI/2;
+        const layer=Math.floor(i/(zones.length/layers));
+        const r=80+layer*70;
+        const zx=cx+Math.cos(angle)*r*0.6;
+        const zy=cy+Math.sin(angle)*r*0.6;
+        const isS=sel===z.id;
+        return(
+          <g key={z.id} onClick={()=>onSel(isS?null:{id:z.id,name:z.l,icon:"🏛️",type:"Zone",desc:z.d,weakness:z.a<=2?z.a:undefined,stats:[`Verteidigung ${z.a}/10`]})}
+            style={{cursor:"pointer"}}>
+            {isS&&<circle cx={zx} cy={zy} r="28" fill={`${z.c}22`} filter="url(#dp_glow)"/>}
+            <circle cx={zx} cy={zy} r="22" fill={`${z.c}${isS?"30":"18"}`}
+              stroke={`${z.c}${isS?"cc":"55"}`} strokeWidth={isS?2:1}/>
+            <text x={zx} y={zy-2} textAnchor="middle" fill={isS?z.c:"#c8b890"}
+              fontSize="9" fontFamily="'Cinzel',serif" fontWeight={isS?"bold":"normal"}>{z.l.slice(0,10)}</text>
+            <text x={zx} y={zy+9} textAnchor="middle" fill={isS?"#dd6633":"#8a7a60"}
+              fontSize="8">{z.a<=2?"⚠ Schwach":""}</text>
+          </g>
+        );
+      })}
+      {/* Center keep */}
+      <rect x={cx-25} y={cy-25} width="50" height="50" rx="4"
+        fill={`${ac}22`} stroke={`${ac}88`} strokeWidth="2.5"/>
+      <text x={cx} y={cy+5} textAnchor="middle" fill={ac} fontSize="10" fontFamily="'Cinzel',serif" fontWeight="bold">KEEP</text>
+      {/* Compass */}
+      <g transform={`translate(${W-36},36)`}>
+        <circle r="14" fill="rgba(0,0,0,0.5)" stroke={`${ac}40`} strokeWidth="1"/>
+        {[["N",0,"#f0e6cc"],["S",180,"#c8b890"],["O",90,"#c8b890"],["W",270,"#c8b890"]].map(([l,a,c])=>{
+          const rad=a*Math.PI/180;
+          return<text key={l} x={Math.sin(rad)*9} y={-Math.cos(rad)*9+3.5}
+            textAnchor="middle" fill={c} fontSize="7" fontFamily="'Cinzel',serif" fontWeight="bold">{l}</text>;
+        })}
+      </g>
+    </svg>
+  );
+}
+
 // ── Pan+Zoom Floor Plan Container ───────────────────────────────────────────
-function PanZoomFloorPlan({children, accent, height=540}){
+function PanZoomFloorPlan({children, accent, height=540, style={}}){
   const containerRef=useRef(null);
   const [tr,setTr]=useState({x:0,y:0,s:1});
   const drag=useRef(null);
@@ -2973,11 +3940,11 @@ function PanZoomFloorPlan({children, accent, height=540}){
 
   return(
     <div ref={containerRef}
-      style={{position:"relative",height:`${height}px`,
+      style={{position:"relative",...(height>0?{height:`${height}px`}:{flex:1,minHeight:0}),
         background:"rgba(6,4,2,0.98)",border:`1px solid ${accent}28`,
         borderRadius:"10px",overflow:"hidden",
         boxShadow:`0 6px 32px rgba(0,0,0,0.75), inset 0 0 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.6)`,
-        cursor:drag.current?"grabbing":"grab"}}
+        cursor:drag.current?"grabbing":"grab",...style}}
       onMouseDown={onMouseDown} onMouseMove={onMouseMove}
       onMouseUp={onMouseUp} onMouseLeave={onMouseUp}
       onClickCapture={onClickCapture}>
@@ -7824,7 +8791,7 @@ export default function App(){
       };
 
   const sc=avg(sel);
-  const DTABS=[{id:"map",l:"🗺 Karte"},{id:"stats",l:"📊 Wertung"},{id:"roleplay",l:"🎭 Belagerung"},{id:"simulator",l:"⚔️ Simulator"},{id:"whatif",l:"🌀 Was wäre wenn"},{id:"ai",l:"🤖 Berater"},{id:"compare",l:"⚡ Vergleich"},{id:"history",l:"📜 Geschichte"},{id:"lexikon",l:"📚 Lexikon"}];
+  const DTABS=[{id:"map",l:"🗺 Karte"},{id:"grundriss",l:"🏰 Grundriss"},{id:"stats",l:"📊 Wertung"},{id:"roleplay",l:"🎭 Belagerung"},{id:"simulator",l:"⚔️ Simulator"},{id:"whatif",l:"🌀 Was wäre wenn"},{id:"ai",l:"🤖 Berater"},{id:"compare",l:"⚡ Vergleich"},{id:"history",l:"📜 Geschichte"},{id:"lexikon",l:"📚 Lexikon"}];
   const NAVTABS=[{id:"overview",l:"🏰 Übersicht"},{id:"worldmap",l:"🌍 Karte"},{id:"detail",l:`${sel.icon} ${sel.name.split(" ")[0]}`},{id:"campaign",l:"📖 Kampagne"},{id:"tournament",l:"🗡️ Turnier"},{id:"build",l:"🏗️ Bauen"},{id:"timeline",l:"📅 Zeit"},{id:"globalstats",l:"📊 Atlas"},{id:"achievements",l:"🏆 Erfolge"},{id:"highscores",l:"🎖️ Scores"}];
 
   return(
@@ -8517,6 +9484,7 @@ export default function App(){
             {/* Detail content */}
             <div style={{flex:1,padding:"14px 16px",animation:"fadeIn .2s ease",overflowY:"auto"}}>
               {dtab==="map"&&<CastleMapTab castle={sel}/>}
+              {dtab==="grundriss"&&<CastleFloorPlanTab castle={sel}/>}
 
               {dtab==="stats"&&(
                 <div className="grid-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
