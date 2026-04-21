@@ -1997,86 +1997,80 @@ const CASTLE_PLANS = {
 
   castle_sorrow: ({ac,sel,onZone}) => (
     <g>
-      {/* Landscape */}
-      <rect x="0" y="0" width="220" height="200" fill="rgba(20,12,18,0.6)"/>
-      {/* Rolling hills */}
-      <path d="M 0 160 Q 55 148 110 155 Q 165 162 220 150 L 220 200 L 0 200 Z"
-        fill="rgba(35,20,30,0.5)"/>
-      {/* Outer ward — large, with multiple towers */}
-      <rect x="20" y="45" width="180" height="135"
-        fill={sel==="rm"?"rgba(150,80,120,0.2)":"rgba(100,50,80,0.07)"}
-        stroke={`${ac}66`} strokeWidth="4.5"
-        style={{cursor:"pointer"}} onClick={()=>onZone("rm")}/>
-      {/* Wall towers — 8 total */}
-      {[[20,45],[110,45],[200,45],[200,112],[200,180],[110,180],[20,180],[20,112]].map(([x,y],i)=>(
-        <rect key={i} x={x-7} y={y-7} width="14" height="14" rx="2"
-          fill={`${ac}33`} stroke={`${ac}77`} strokeWidth="1.2"/>
+      {/* parchment background */}
+      <rect x="0" y="0" width="220" height="200" fill="rgba(48,35,18,0.18)"/>
+      {[16,28,40,52,64,76,88,100,112,124].map((y,i)=>(
+        <path key={i} d={`M 0 ${y} Q 55 ${y-7} 110 ${y+1} Q 165 ${y+9} 220 ${y-2}`} fill="none" stroke="rgba(78,56,28,0.16)" strokeWidth="0.7"/>
       ))}
-      <text x="110" y="62" textAnchor="middle" fill={`${ac}55`} fontSize="8" fontFamily="serif"
-        style={{cursor:"pointer"}} onClick={()=>onZone("rm")}>RINGMAUER (mehrere Türme)</text>
-      {/* Bastion Tower — added 15th c., dominates NE corner */}
-      <path d="M 182 28 L 218 28 L 220 65 L 182 65 Z"
-        fill={sel==="bt2"?"rgba(200,80,50,0.45)":"rgba(160,60,35,0.22)"}
-        stroke="#cc5533" strokeWidth="3"
-        style={{cursor:"pointer"}} onClick={()=>onZone("bt2")}/>
-      {/* Cannon ports */}
-      {[[188,38],[200,38],[212,38],[188,50],[200,50],[212,50]].map(([x,y],i)=>(
-        <circle key={i} cx={x} cy={y} r="2.5" fill="#cc5533" opacity="0.6"/>
+
+      {/* fortress hill and outer ring (similar silhouette to reference) */}
+      <path d="M 20 146 Q 10 125 18 104 Q 28 74 56 54 Q 86 30 132 26 Q 175 23 203 39 Q 215 46 211 66 Q 204 82 188 93 Q 194 112 182 130 Q 166 154 130 162 Q 88 171 56 165 Q 29 160 20 146 Z"
+        fill={sel==="am"?"rgba(138,106,63,0.24)":"rgba(95,72,40,0.10)"}
+        stroke={`${ac}77`} strokeWidth="5" style={{cursor:"pointer"}} onClick={()=>onZone("am")}/>
+      <path d="M 26 142 Q 18 124 26 106 Q 36 79 61 61 Q 88 41 130 37 Q 168 34 194 47 Q 203 53 199 67 Q 191 80 175 90 Q 179 106 170 121 Q 156 141 126 149 Q 90 156 63 152 Q 35 149 26 142 Z"
+        fill="none" stroke={`${ac}33`} strokeWidth="1.1" strokeDasharray="2,2"/>
+      <text x="112" y="22" textAnchor="middle" fill={`${ac}66`} fontSize="7.5" fontFamily="serif" style={{cursor:"pointer"}} onClick={()=>onZone("am")}>ÄUSSERE RINGMAUER</text>
+
+      {/* city quarter / market like reference lower city */}
+      {Array.from({length:46},(_,i)=>{
+        const x=22+(i%11)*10+((Math.floor(i/11)%2)*2);
+        const y=118+Math.floor(i/11)*9;
+        return <rect key={i} x={x} y={y} width="7.4" height="5.6" fill="rgba(98,78,50,0.24)" stroke="rgba(130,100,68,0.20)" strokeWidth="0.35"/>;
+      })}
+      <text x="72" y="116" textAnchor="middle" fill={`${ac}55`} fontSize="6.7" fontFamily="serif">HÄUSER UND WERKSTÄTTEN</text>
+      <text x="82" y="133" textAnchor="middle" fill={`${ac}55`} fontSize="7.2" fontFamily="serif">MARKTPLATZ</text>
+
+      {/* harbor basin and river edge */}
+      <path d="M 18 150 Q 10 162 18 176 Q 33 190 54 188 L 63 172 L 58 156 L 43 146 Z"
+        fill={sel==="hf"?"rgba(77,143,191,0.42)":"rgba(60,112,152,0.18)"}
+        stroke="#4d8fbf" strokeWidth="1.9" style={{cursor:"pointer"}} onClick={()=>onZone("hf")}/>
+      <rect x="28" y="162" width="25" height="14" fill="rgba(86,152,198,0.18)" stroke="#4d8fbf" strokeWidth="0.8"/>
+      <text x="41" y="171" textAnchor="middle" fill="#4d8fbf" fontSize="6.7" fontFamily="serif" style={{cursor:"pointer"}} onClick={()=>onZone("hf")}>HAFEN</text>
+
+      {/* core castle with 3 courtyards, horizontally organized */}
+      <path d="M 55 108 L 63 69 L 96 60 L 102 102 L 83 116 Z"
+        fill={sel==="ub"?"rgba(185,137,82,0.36)":"rgba(145,101,57,0.16)"}
+        stroke={`${ac}bb`} strokeWidth="2.6" style={{cursor:"pointer"}} onClick={()=>onZone("ub")}/>
+      <text x="83" y="87" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">UNTERER</text>
+      <text x="83" y="95" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">BURGHOF</text>
+
+      <path d="M 101 106 L 108 64 L 143 58 L 147 104 L 126 118 Z"
+        fill={sel==="mb"?"rgba(197,150,88,0.36)":"rgba(160,115,66,0.16)"}
+        stroke={`${ac}cc`} strokeWidth="2.6" style={{cursor:"pointer"}} onClick={()=>onZone("mb")}/>
+      <text x="126" y="86" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">MITTLERER</text>
+      <text x="126" y="94" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">BURGHOF</text>
+
+      <path d="M 145 105 L 152 66 L 180 71 L 183 104 L 170 119 Z"
+        fill={sel==="ob"?"rgba(216,173,112,0.36)":"rgba(170,124,74,0.18)"}
+        stroke={`${ac}dd`} strokeWidth="2.6" style={{cursor:"pointer"}} onClick={()=>onZone("ob")}/>
+      <text x="168" y="87" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">OBERER</text>
+      <text x="168" y="95" textAnchor="middle" fill={`${ac}dd`} fontSize="7.4" fontFamily="serif">BURGHOF</text>
+
+      {/* bergfried cluster */}
+      <rect x="177" y="82" width="24" height="22" rx="2"
+        fill={sel==="bf"?"rgba(232,198,138,0.5)":"rgba(192,154,92,0.24)"}
+        stroke="#e8c68a" strokeWidth="2.1" style={{cursor:"pointer"}} onClick={()=>onZone("bf")}/>
+      {[ [177,82],[201,82],[177,104],[201,104] ].map(([x,y],i)=>(
+        <rect key={i} x={x-2.5} y={y-2.5} width="5" height="5" fill="#e8c68a" opacity="0.7"/>
       ))}
-      <text x="200" y="32" textAnchor="middle" fill="#cc5533" fontSize="8" fontWeight="bold"
-        style={{cursor:"pointer"}} onClick={()=>onZone("bt2")}>💥</text>
-      <text x="200" y="42" textAnchor="middle" fill="#cc5533" fontSize="7"
-        style={{cursor:"pointer"}} onClick={()=>onZone("bt2")}>BASTIONS-</text>
-      <text x="200" y="51" textAnchor="middle" fill="#cc5533" fontSize="7"
-        style={{cursor:"pointer"}} onClick={()=>onZone("bt2")}>TURM</text>
-      <text x="200" y="60" textAnchor="middle" fill="rgba(200,80,50,0.5)" fontSize="6">(15. Jh.)</text>
-      {/* Fortified gatehouse — south */}
-      <rect x="88" y="178" width="44" height="18" rx="2"
-        fill={sel==="th2"?"rgba(150,80,120,0.45)":"rgba(120,60,95,0.22)"}
-        stroke={`${ac}99`} strokeWidth="2.5"
-        style={{cursor:"pointer"}} onClick={()=>onZone("th2")}/>
-      <text x="110" y="190" textAnchor="middle" fill={`${ac}88`} fontSize="7" fontFamily="serif"
-        style={{cursor:"pointer"}} onClick={()=>onZone("th2")}>BEFEST. TORHAUS</text>
-      {/* Inner court — HQ */}
-      <rect x="52" y="72" width="116" height="88" rx="2"
-        fill={sel==="hq"?"rgba(120,60,95,0.28)":"rgba(90,45,72,0.1)"}
-        stroke={`${ac}88`} strokeWidth="3.5"
-        style={{cursor:"pointer"}} onClick={()=>onZone("hq")}/>
-      {/* Buildings inside */}
-      <rect x="62" y="82" width="40" height="28" rx="1" fill="rgba(80,40,65,0.3)" stroke={`${ac}33`} strokeWidth="0.6"/>
-      <text x="82" y="100" textAnchor="middle" fill={`${ac}44`} fontSize="7">Ordensrat</text>
-      <rect x="118" y="82" width="40" height="28" rx="1" fill="rgba(80,40,65,0.3)" stroke={`${ac}33`} strokeWidth="0.6"/>
-      <text x="138" y="100" textAnchor="middle" fill={`${ac}44`} fontSize="7">Waffenlager</text>
-      <text x="110" y="128" textAnchor="middle" fill={`${ac}77`} fontSize="8" fontFamily="serif"
-        style={{cursor:"pointer"}} onClick={()=>onZone("hq")}>HAUPTQUARTIER</text>
-      {/* Open flank weakness */}
-      <circle cx="110" cy="155" r="12"
-        fill={sel==="ow"?"rgba(200,60,60,0.35)":"rgba(160,45,45,0.15)"}
-        stroke="#cc4444" strokeWidth="2"
-        style={{cursor:"pointer"}} onClick={()=>onZone("ow")}/>
-      <text x="110" y="153" textAnchor="middle" fill="#cc4444" fontSize="8" fontWeight="bold"
-        style={{cursor:"pointer"}} onClick={()=>onZone("ow")}>⚠</text>
-      <text x="110" y="162" textAnchor="middle" fill="rgba(180,50,50,0.5)" fontSize="6"
-        style={{cursor:"pointer"}} onClick={()=>onZone("ow")}>Offene Fläche</text>
-      {/* Signal fire NW */}
-      <circle cx="28" cy="32" r="9"
-        fill={sel==="sf"?"rgba(200,130,40,0.45)":"rgba(160,100,30,0.2)"}
-        stroke="#cc8833" strokeWidth="1.8"
-        style={{cursor:"pointer"}} onClick={()=>onZone("sf")}/>
-      <text x="28" y="30" textAnchor="middle" fill="#cc8833" fontSize="8"
-        style={{cursor:"pointer"}} onClick={()=>onZone("sf")}>🔥</text>
-      <text x="28" y="40" textAnchor="middle" fill="rgba(200,130,40,0.5)" fontSize="6"
-        style={{cursor:"pointer"}} onClick={()=>onZone("sf")}>Signal</text>
-      {/* Connection lines to other castles */}
-      <path d="M 20 45 L 5 20" stroke="rgba(200,130,40,0.2)" strokeWidth="1" strokeDasharray="3,3"/>
-      <text x="5" y="15" fill="rgba(200,130,40,0.3)" fontSize="6">↗ Gravecrest</text>
-      <path d="M 200 45 L 215 20" stroke="rgba(200,130,40,0.2)" strokeWidth="1" strokeDasharray="3,3"/>
-      <text x="175" y="15" fill="rgba(200,130,40,0.3)" fontSize="6">↗ S. Bergfried</text>
+      <text x="189" y="95" textAnchor="middle" fill="#e8c68a" fontSize="7.3" fontWeight="bold" style={{cursor:"pointer"}} onClick={()=>onZone("bf")}>BERGFRIED</text>
+
+      {/* gate axis weakness near south-east */}
+      <path d="M 103 164 L 138 160 L 146 172 L 111 177 Z"
+        fill={sel==="st"?"rgba(204,85,68,0.46)":"rgba(170,70,58,0.22)"}
+        stroke="#cc5544" strokeWidth="1.8" style={{cursor:"pointer"}} onClick={()=>onZone("st")}/>
+      <text x="124" y="171" textAnchor="middle" fill="#cc5544" fontSize="6.9" fontWeight="bold" style={{cursor:"pointer"}} onClick={()=>onZone("st")}>STADT-/RARG-TOR ⚠</text>
+
+      {/* map labels to mimic original drawing */}
+      <text x="115" y="56" textAnchor="middle" fill={`${ac}55`} fontSize="6.5" fontFamily="serif">PALAS · ZEUGHAUS · KEMENATEN · VOGTEI</text>
+      <text x="142" y="121" textAnchor="middle" fill={`${ac}55`} fontSize="6.5" fontFamily="serif">BURGKAPELLE · ZISTERNE · PULVERTURM</text>
+      <text x="25" y="193" fill="rgba(96,126,156,0.5)" fontSize="7.5" fontFamily="serif">RIVER WESER</text>
+
       {/* Compass + title */}
       <text x="196" y="100" textAnchor="middle" fill={`${ac}55`} fontSize="10" fontFamily="serif">N</text>
       <line x1="196" y1="103" x2="196" y2="120" stroke={`${ac}33`} strokeWidth="1"/>
       <text x="110" y="197" textAnchor="middle" fill={`${ac}55`} fontSize="8"
-        fontFamily="serif" letterSpacing="2">CASTLE SORROW — ORDO CUSTODUM</text>
+        fontFamily="serif" letterSpacing="1.6">BURGFESTE DRACHENSTEIN (1150–1580)</text>
     </g>
   ),
 
@@ -2947,7 +2941,7 @@ const GEO = {
   nimrod:          lonlatToXY( 35.71, 33.25, "Nimrod"),
   // Persönliche Burg
   schwarzer_bergfried: lonlatToXY(10.50, 47.80, "Schwarzer Bergfried"),
-  castle_sorrow:       lonlatToXY(10.80, 47.65, "Castle Sorrow"),
+  castle_sorrow:       lonlatToXY(10.80, 47.65, "Burgfeste Drachenstein"),
   gravecrest:          lonlatToXY(10.25, 47.92, "Gravecrest"),
   // Batch 3
   kerak:               lonlatToXY(35.70, 31.18, "Kerak"),
@@ -3405,7 +3399,7 @@ function SorrowlandMap({castles,onSelect,selected}){
   // Positions on a 600×320 canvas — triangular arrangement
   const POS={
     schwarzer_bergfried:{x:300,y:80,  label:"Schwarzer Bergfried"},
-    castle_sorrow:      {x:160,y:230, label:"Castle Sorrow"},
+    castle_sorrow:      {x:160,y:230, label:"Burgfeste Drachenstein"},
     gravecrest:         {x:440,y:230, label:"Gravecrest"},
   };
   return(
@@ -5343,8 +5337,8 @@ const CAMPAIGNS = [
     castles:["schwarzer_bergfried","castle_sorrow","gravecrest"],
     story:[
       "870 n.Chr. Großmeister Aldric von Dunmoor hält ein versiegeltes Bündel Karten. Sie zeigen Ruinen einer untergegangenen Zivilisation — Ruinen die beweisen würden, dass drei Königreiche auf geraubtem Land stehen. Er blickt auf den Schwarzen Bergfried und sagt: 'Hier hinein. Bis die Welt bereit ist.' Er weiß: Die Welt wird nie bereit sein.",
-      "1050 n.Chr. Castle Sorrow erhebt sich. Großmeister Harwin der Gründer hat erkannt dass ein Turm allein den Orden nicht schützt. Der Ordensrat tagt erstmals hinter verschlossenen Türen. Bischof Aldous von Veldrath schreibt an den Papst: 'Dieser Orden hütet etwas Gefährliches. Ich weiß es — aber ich kann es nicht beweisen.'",
-      "1312 n.Chr. Castle Sorrow ist gefallen. Kirchentruppen halten die Mauern. Die überlebenden Ritter fliehen nach Gravecrest — dem Ort der auf keiner Karte steht. Ritterhauptmann Oswin schließt das Tor. Unten stehen 600 Soldaten. Oben 80 Ritter. Und irgendwo zwischen den Steinen: der Weg zurück.",
+      "1050 n.Chr. Burgfeste Drachenstein erhebt sich. Großmeister Harwin der Gründer hat erkannt dass ein Turm allein den Orden nicht schützt. Der Ordensrat tagt erstmals hinter verschlossenen Türen. Bischof Aldous von Veldrath schreibt an den Papst: 'Dieser Orden hütet etwas Gefährliches. Ich weiß es — aber ich kann es nicht beweisen.'",
+      "1312 n.Chr. Burgfeste Drachenstein ist gefallen. Kirchentruppen halten die Mauern. Die überlebenden Ritter fliehen nach Gravecrest — dem Ort der auf keiner Karte steht. Ritterhauptmann Oswin schließt das Tor. Unten stehen 600 Soldaten. Oben 80 Ritter. Und irgendwo zwischen den Steinen: der Weg zurück.",
     ],
     choices:[
       // Kapitel 1: Schwarzer Bergfried
@@ -5356,7 +5350,7 @@ const CAMPAIGNS = [
           {label:"🔥 Falsche Karten erstellen", effect:"bonus", desc:"Du lässt Fälschungen anfertigen. Der Herzog ist zufrieden — für jetzt. Und du hast Zeit.", siegeBonus:2},
         ],
       },
-      // Kapitel 2: Castle Sorrow
+      // Kapitel 2: Burgfeste Drachenstein
       {
         question:"Großmeisterin Sera von Dunmoor hat 11 Monate gehalten. Ihre Männer sind erschöpft. Ein Ratsmitglied flüstert: 'Gebt ihnen ein Dokument — nur eines. Dann ist Frieden.' Was entscheidest du?",
         options:[
