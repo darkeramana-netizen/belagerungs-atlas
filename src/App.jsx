@@ -2076,6 +2076,79 @@ const CASTLE_PLANS = {
     </g>
   ),
 
+  ashenveil: ({ac,sel,onZone}) => (
+    <g>
+      {/* swamp rivers */}
+      <rect x="0" y="0" width="220" height="200" fill="rgba(20,30,22,0.55)"/>
+      <path d="M 0 34 Q 38 22 76 31 Q 116 40 154 30 Q 184 23 220 35 L 220 50 Q 182 60 145 54 Q 103 47 64 57 Q 30 66 0 56 Z" fill="rgba(96,140,170,0.45)"/>
+      <path d="M 0 172 Q 50 160 102 170 Q 156 182 220 168 L 220 200 L 0 200 Z" fill="rgba(92,132,160,0.45)"/>
+      <path d="M 0 76 Q 16 89 22 109 Q 26 131 18 152 Q 12 168 0 176 Z" fill="rgba(92,132,160,0.4)"/>
+      <path d="M 220 62 Q 206 79 200 104 Q 196 129 205 152 Q 210 168 220 178 Z" fill="rgba(92,132,160,0.4)"/>
+
+      {/* outer rectangular swamp-fort wall */}
+      <rect x="24" y="44" width="172" height="124"
+        fill={sel==="og"?"rgba(110,140,95,0.20)":"rgba(80,110,70,0.08)"}
+        stroke={`${ac}88`} strokeWidth="5"
+        style={{cursor:"pointer"}} onClick={()=>onZone("og")}/>
+      {[ [24,44],[110,44],[196,44],[196,106],[196,168],[110,168],[24,168],[24,106] ].map(([x,y],i)=>(
+        <rect key={i} x={x-6} y={y-6} width="12" height="12" rx="1.5" fill={`${ac}44`} stroke={`${ac}99`} strokeWidth="1"/>
+      ))}
+      <text x="110" y="38" textAnchor="middle" fill={`${ac}66`} fontSize="7.5" fontFamily="serif" style={{cursor:"pointer"}} onClick={()=>onZone("og")}>OFFENER GANG / MAUERKRANZ</text>
+
+      {/* left stable wing */}
+      <rect x="34" y="56" width="54" height="92"
+        fill={sel==="ms"?"rgba(156,138,98,0.30)":"rgba(120,102,72,0.14)"}
+        stroke={`${ac}aa`} strokeWidth="2.5" style={{cursor:"pointer"}} onClick={()=>onZone("ms")}/>
+      <text x="61" y="84" textAnchor="middle" fill={`${ac}dd`} fontSize="7.3" fontFamily="serif">GROSSE</text>
+      <text x="61" y="92" textAnchor="middle" fill={`${ac}dd`} fontSize="7.3" fontFamily="serif">REITHALLE</text>
+      <text x="61" y="108" textAnchor="middle" fill={`${ac}cc`} fontSize="7.1" fontFamily="serif">MARSTALL</text>
+
+      {/* center covered courtyard */}
+      <rect x="90" y="70" width="58" height="62"
+        fill={sel==="ih"?"rgba(127,155,116,0.34)":"rgba(95,125,88,0.16)"}
+        stroke={`${ac}bb`} strokeWidth="3" style={{cursor:"pointer"}} onClick={()=>onZone("ih")}/>
+      {Array.from({length:5},(_,i)=><line key={i} x1={92+i*12} y1="70" x2={92+i*12} y2="132" stroke="rgba(120,85,55,0.32)" strokeWidth="1.4"/>)}
+      {Array.from({length:4},(_,i)=><line key={`h${i}`} x1="90" y1={82+i*12} x2="148" y2={82+i*12} stroke="rgba(120,85,55,0.3)" strokeWidth="1.2"/>)}
+      <text x="119" y="98" textAnchor="middle" fill={`${ac}dd`} fontSize="7.3" fontFamily="serif">ÜBERDACHTER</text>
+      <text x="119" y="106" textAnchor="middle" fill={`${ac}dd`} fontSize="7.3" fontFamily="serif">INNENHOF</text>
+
+      {/* armor complex */}
+      <rect x="92" y="54" width="54" height="18"
+        fill={sel==="rk"?"rgba(127,140,116,0.35)":"rgba(94,104,88,0.18)"}
+        stroke={`${ac}aa`} strokeWidth="2" style={{cursor:"pointer"}} onClick={()=>onZone("rk")}/>
+      <text x="119" y="66" textAnchor="middle" fill={`${ac}cc`} fontSize="7.1" fontFamily="serif">RÜSTKAMMER+</text>
+
+      {/* right wing + gatebridge */}
+      <rect x="150" y="56" width="36" height="92" fill="rgba(95,92,80,0.14)" stroke={`${ac}88`} strokeWidth="2"/>
+      <rect x="151" y="58" width="16" height="24" fill="rgba(80,76,62,0.3)" stroke={`${ac}44`} strokeWidth="0.7"/>
+      <text x="159" y="72" textAnchor="middle" fill={`${ac}77`} fontSize="6.4">Mannsch.</text>
+      <rect x="169" y="58" width="16" height="24" fill="rgba(80,76,62,0.3)" stroke={`${ac}44`} strokeWidth="0.7"/>
+      <text x="177" y="72" textAnchor="middle" fill={`${ac}77`} fontSize="6.4">Kernsp.</text>
+
+      <rect x="186" y="90" width="16" height="24"
+        fill={sel==="zb"?"rgba(204,85,68,0.45)":"rgba(170,70,58,0.22)"}
+        stroke="#cc5544" strokeWidth="1.8" style={{cursor:"pointer"}} onClick={()=>onZone("zb")}/>
+      <text x="194" y="103" textAnchor="middle" fill="#cc5544" fontSize="6.7" fontWeight="bold" style={{cursor:"pointer"}} onClick={()=>onZone("zb")}>TOR</text>
+      <rect x="202" y="96" width="16" height="12" fill="rgba(190,150,96,0.22)" stroke="rgba(206,168,106,0.6)" strokeWidth="1"/>
+      <text x="210" y="104" textAnchor="middle" fill="rgba(206,168,106,0.85)" fontSize="6">ZUGBR.</text>
+
+      {/* well */}
+      <circle cx="96" cy="140" r="7"
+        fill={sel==="br"?"rgba(77,143,191,0.45)":"rgba(62,108,148,0.2)"}
+        stroke="#4d8fbf" strokeWidth="1.8" style={{cursor:"pointer"}} onClick={()=>onZone("br")}/>
+      <circle cx="96" cy="140" r="2.2" fill="#9bc8e8"/>
+      <text x="96" y="152" textAnchor="middle" fill="#4d8fbf" fontSize="6.4" style={{cursor:"pointer"}} onClick={()=>onZone("br")}>BRUNNEN</text>
+
+      {/* swamp weakpoint */}
+      <ellipse cx="40" cy="176" rx="18" ry="9"
+        fill={sel==="sw"?"rgba(79,124,90,0.42)":"rgba(64,102,72,0.2)"}
+        stroke="#4f7c5a" strokeWidth="1.5" style={{cursor:"pointer"}} onClick={()=>onZone("sw")}/>
+      <text x="40" y="178" textAnchor="middle" fill="#6ea380" fontSize="6.5" fontWeight="bold" style={{cursor:"pointer"}} onClick={()=>onZone("sw")}>SUMPF ⚠</text>
+
+      <text x="110" y="197" textAnchor="middle" fill={`${ac}66`} fontSize="7.6" fontFamily="serif" letterSpacing="1.4">BURG ASHENVEIL — SUMPFBURG</text>
+    </g>
+  ),
+
   gravecrest: ({ac,sel,onZone}) => (
     <g>
       {/* Mountain landscape */}
@@ -5636,6 +5709,7 @@ const GEO = {
   // Persönliche Burg
   schwarzer_bergfried: lonlatToXY(10.50, 47.80, "Schwarzer Bergfried"),
   castle_sorrow:       lonlatToXY(10.80, 47.65, "Burgfeste Drachenstein"),
+  ashenveil:           lonlatToXY(10.55, 47.52, "Burg Ashenveil"),
   gravecrest:          lonlatToXY(10.25, 47.92, "Gravecrest"),
   // Batch 3
   kerak:               lonlatToXY(35.70, 31.18, "Kerak"),
@@ -5802,6 +5876,9 @@ function RealWorldMap({castles,onSelect,selected}){
       // Sorrowland Order
       {from:"schwarzer_bergfried",to:"castle_sorrow",color:"rgba(138,138,154,0.5)",label:"Ordo Custodum"},
       {from:"castle_sorrow",to:"gravecrest",color:"rgba(138,138,154,0.5)",label:"Ordo Custodum"},
+      {from:"castle_sorrow",to:"ashenveil",color:"rgba(138,138,154,0.5)",label:"Ordo Custodum"},
+      {from:"ashenveil",to:"gravecrest",color:"rgba(138,138,154,0.42)",label:"Moorroute"},
+      {from:"schwarzer_bergfried",to:"ashenveil",color:"rgba(138,138,154,0.35)",label:"Signalfeuer"},
       {from:"schwarzer_bergfried",to:"gravecrest",color:"rgba(138,138,154,0.35)",label:"Signalfeuer"},
     ];
 
@@ -6089,11 +6166,12 @@ function useWeather(){
 
 function SorrowlandMap({castles,onSelect,selected}){
   const [hov,setHov]=useState(null);
-  const sl=castles.filter(c=>["schwarzer_bergfried","castle_sorrow","gravecrest"].includes(c.id));
+  const sl=castles.filter(c=>["schwarzer_bergfried","castle_sorrow","gravecrest","ashenveil"].includes(c.id));
   // Positions on a 600×320 canvas — triangular arrangement
   const POS={
     schwarzer_bergfried:{x:300,y:80,  label:"Schwarzer Bergfried"},
     castle_sorrow:      {x:160,y:230, label:"Burgfeste Drachenstein"},
+    ashenveil:          {x:300,y:268, label:"Burg Ashenveil"},
     gravecrest:         {x:440,y:230, label:"Gravecrest"},
   };
   return(
@@ -6129,7 +6207,10 @@ function SorrowlandMap({castles,onSelect,selected}){
         {[
           ["schwarzer_bergfried","castle_sorrow"],
           ["schwarzer_bergfried","gravecrest"],
+          ["schwarzer_bergfried","ashenveil"],
           ["castle_sorrow","gravecrest"],
+          ["castle_sorrow","ashenveil"],
+          ["ashenveil","gravecrest"],
         ].map(([a,b],i)=>{
           const pa=POS[a], pb=POS[b];
           const isActive=hov===a||hov===b;
@@ -8172,13 +8253,14 @@ const CAMPAIGNS = [
     id:"sorrowland_chronicles",
     name:"Chroniken von Sorrowland",
     icon:"⬛",
-    desc:"Die vollständige Geschichte des Ordo Custodum — vom ersten Eid bis zur finalen Belagerung. Drei Burgen, ein Geheimnis, unzählige Feinde.",
+    desc:"Die vollständige Geschichte des Ordo Custodum — vom ersten Eid bis zur finalen Belagerung. Vier Burgen, ein Geheimnis, unzählige Feinde.",
     era:"9.–15. Jahrhundert",
     difficulty:"legendär",
-    castles:["schwarzer_bergfried","castle_sorrow","gravecrest"],
+    castles:["schwarzer_bergfried","castle_sorrow","ashenveil","gravecrest"],
     story:[
       "870 n.Chr. Großmeister Aldric von Dunmoor hält ein versiegeltes Bündel Karten. Sie zeigen Ruinen einer untergegangenen Zivilisation — Ruinen die beweisen würden, dass drei Königreiche auf geraubtem Land stehen. Er blickt auf den Schwarzen Bergfried und sagt: 'Hier hinein. Bis die Welt bereit ist.' Er weiß: Die Welt wird nie bereit sein.",
       "1050 n.Chr. Burgfeste Drachenstein erhebt sich. Großmeister Harwin der Gründer hat erkannt dass ein Turm allein den Orden nicht schützt. Der Ordensrat tagt erstmals hinter verschlossenen Türen. Bischof Aldous von Veldrath schreibt an den Papst: 'Dieser Orden hütet etwas Gefährliches. Ich weiß es — aber ich kann es nicht beweisen.'",
+      "1248 n.Chr. Burg Ashenveil entsteht im Moor. Marschallin Elyra lässt den Innenhof überdachen, damit Schmiede und Rüstkammer auch im Dauerregen arbeiten. Von hier aus laufen die stillen Nachschubrouten, die den Orden in langen Kriegen am Leben halten.",
       "1312 n.Chr. Burgfeste Drachenstein ist gefallen. Kirchentruppen halten die Mauern. Die überlebenden Ritter fliehen nach Gravecrest — dem Ort der auf keiner Karte steht. Ritterhauptmann Oswin schließt das Tor. Unten stehen 600 Soldaten. Oben 80 Ritter. Und irgendwo zwischen den Steinen: der Weg zurück.",
     ],
     choices:[
@@ -8200,9 +8282,18 @@ const CAMPAIGNS = [
           {label:"💰 Geheimen Entsatz kaufen", effect:"risky", desc:"Söldner sind keine Ritter. Aber 200 Mann von außen könnten die Belagerung brechen.", siegeBonus:1},
         ],
       },
-      // Kapitel 3: Gravecrest
+      // Kapitel 3: Ashenveil
       {
-        question:"Alle drei Burgen des Ordens sind belagert. Gravecrest hält noch. Die verbotenen Karten sind in deinen Händen. Was tust du?",
+        question:"Ashenveil steht im Dauerregen. Der Moorboden wird weich, die Zugbrücken klemmen, und Seuchen drohen im Lager. Was befiehlst du?",
+        options:[
+          {label:"🛠️ Brücken und Bohlen sofort verstärken", effect:"bonus", desc:"Du stabilisierst die Zugänge. Der Feind verliert Schwung, dein Innenhof bleibt mobil.", siegeBonus:2},
+          {label:"🧪 Lagerhygiene priorisieren", effect:"neutral", desc:"Weniger Seuchen, bessere Moral — aber weniger Männer auf der Mauer.", siegeBonus:1},
+          {label:"⚔️ Ausfall bei Nacht durchs Moor", effect:"risky", desc:"Mutig, aber gefährlich. Bei Erfolg brennst du ihre Belagerungstürme nieder.", siegeBonus:0},
+        ],
+      },
+      // Kapitel 4: Gravecrest
+      {
+        question:"Alle vier Burgen des Ordens sind belagert. Gravecrest hält noch. Die verbotenen Karten sind in deinen Händen. Was tust du?",
         options:[
           {label:"🔥 Verbrennen — das Geheimnis stirbt hier", effect:"neutral", desc:"Der Orden überlebt vielleicht. Das Wissen ist für immer weg. Drei Königreiche bleiben legitim.", siegeBonus:0},
           {label:"🗺️ Verstecken — in den Ruinen selbst", effect:"bonus", desc:"Du versteckst die Karten an dem Ort den sie beschreiben. Das Geheimnis wartet auf die nächste Generation.", siegeBonus:2},
@@ -9252,14 +9343,14 @@ const ACHIEVEMENTS = [
   {id:"crusader",      cat:"🏰",name:"Kreuzritter",        desc:"Krak des Chevaliers eingenommen",      icon:"✝️", check:(s,c,p)=>s.krak?.won},
   {id:"last_stand",    cat:"🏰",name:"Letztes Aufgebot",   desc:"Masada eingenommen",                  icon:"🪨", check:(s,c,p)=>s.masada?.won},
   {id:"dragon_slayer", cat:"🏰",name:"Drachenbezwinger",   desc:"Barad-dûr oder Isengard eingenommen",  icon:"🐉", check:(s,c,p)=>s.barad_dur?.won||s.isengard?.won},
-  {id:"guardian",      cat:"🏰",name:"Hüter des Ordens",   desc:"Alle 3 Sorrowland-Burgen belagert",    icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried&&s.castle_sorrow&&s.gravecrest},
+  {id:"guardian",      cat:"🏰",name:"Hüter des Ordens",   desc:"Alle 4 Sorrowland-Burgen belagert",    icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried&&s.castle_sorrow&&s.ashenveil&&s.gravecrest},
   {id:"walls_of_fire", cat:"🏰",name:"Mauern aus Feuer",   desc:"Helms Klamm eingenommen",              icon:"⚡", check:(s,c,p)=>s.helmsdeep?.won},
 
   // Kampagnen
   {id:"campaigner",    cat:"📖",name:"Kampagnenkämpfer",   desc:"Erste Kampagne abgeschlossen",         icon:"📖", check:(s,c,p)=>p.campaignsDone>=1},
   {id:"veteran",       cat:"📖",name:"Veteran",            desc:"Alle 5 Kampagnen abgeschlossen",       icon:"🎖️", check:(s,c,p)=>p.campaignsDone>=5},
   {id:"adventurer",    cat:"📖",name:"Abenteurer",         desc:"10 Adventure-Entscheidungen getroffen",icon:"🎲", check:(s,c,p)=>p.choicesMade>=10},
-  {id:"silentio",      cat:"📖",name:"In Silentio Vigilamus",desc:"Sorrowland-Kampagne abgeschlossen",  icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried?.won&&s.castle_sorrow?.won&&s.gravecrest?.won},
+  {id:"silentio",      cat:"📖",name:"In Silentio Vigilamus",desc:"Sorrowland-Kampagne abgeschlossen",  icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried?.won&&s.castle_sorrow?.won&&s.ashenveil?.won&&s.gravecrest?.won},
   {id:"storyteller",   cat:"📖",name:"Chronist",           desc:"30 Adventure-Entscheidungen getroffen",icon:"📜", check:(s,c,p)=>p.choicesMade>=30},
 
   // Strategie
@@ -9282,7 +9373,7 @@ const ACHIEVEMENTS = [
   {id:"completionist", cat:"🌍",name:"Perfekter Atlas",     desc:"50 Burgen belagert",                   icon:"🏆", check:(s,c,p)=>Object.keys(s).length>=50},
 
   // Geheime Achievements
-  {id:"secret_order",  cat:"⬛",name:"???",                 desc:"Alle drei Ordo-Burgen in einer Session",icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried&&s.castle_sorrow&&s.gravecrest},
+  {id:"secret_order",  cat:"⬛",name:"???",                 desc:"Alle vier Ordo-Burgen in einer Session",icon:"⬛", check:(s,c,p)=>s.schwarzer_bergfried&&s.castle_sorrow&&s.ashenveil&&s.gravecrest},
   {id:"pacifist",      cat:"⬛",name:"Friedensfürst",       desc:"10 Belagerungen — aber nur Kapitulation akzeptiert",icon:"🕊️",check:(s,c,p)=>p.sieges>=10&&(p.wins||0)===0},
   {id:"distance_calc", cat:"⬛",name:"Kartograph",          desc:"Entfernung zwischen 5 Burgenpaaren berechnet",icon:"📏",check:(s,c,p)=>p.distancesCalc>=5},
 ];

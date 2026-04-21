@@ -12,6 +12,7 @@ export const COORDS = {
   windsor:        {x:44, y:19},   // England
   bodiam:         {x:45, y:20},   // SE England
   alhambra:       {x:43, y:31},   // Spanien
+  ashenveil:      {x:47, y:23},   // Sorrowland-Moor
   // ── NAHER OSTEN ─────────────────────────────────────
   constantinople: {x:57, y:28},   // Bosphorus
   rhodes:         {x:57, y:32},   // Ägäis
@@ -943,6 +944,27 @@ components:[
  siegeCtx:"Die Belagerer haben Fluss und Handelswege gekappt. 2.400 Mann greifen Burgfeste Drachenstein von Süden und Osten an. Hält die dreifache Kernburg bis Entsatz aus Gravecrest eintrifft?",
  defender:"Festungskommandant von Drachenstein"},
 
+{id:"ashenveil",name:"Burg Ashenveil",sub:"Die Sumpfburg des Ordens",era:"13.–16. Jh.",year:1320,loc:"Sorrowland-Moor",type:"real",epoch:"Mittelalter",region:"europa",icon:"🐊",
+ theme:{bg:"#0b120e",accent:"#6f8c62",glow:"rgba(110,150,95,0.16)"},
+ ratings:{walls:87,supply:90,position:91,garrison:76,morale:88},
+ desc:"Auf Inselboden im Moor errichtete Rechteckfestung mit Graben, Zugbrücken und überdachtem Innenhof. Dient als Logistik- und Rückzugsbastion des Ordens in nassen Grenzgebieten.",
+ history:"Nach den Ordenskriegen wurde Ashenveil als vierte Bastion gegründet, um Wasserwege, Sumpfpfade und geheime Nachschubrouten zu sichern. Die Festung wuchs aus einem Holzfort zu einer steinernen Kastenburg mit doppelten Torachsen, Rüstkammern und Stallungen.",
+ verdict:"Ashenveil ist weniger monumentaler Kern als Drachenstein — aber als Sumpffestung extrem zäh. Feinde verlieren im Moor oft mehr Männer als an der Mauer.",
+ zones:[
+   {id:"og",l:"Offener Gang",x:50,y:26,r:40,c:"#8a9a7a",a:4,d:"Umlaufender Wehrgang mit Sicht auf Wasserarme und Moorpfade."},
+   {id:"ms",l:"Marstall & Reithalle",x:32,y:47,r:15,c:"#9c8a62",a:4,d:"Pferde, Futterkammern und Stallungen sichern schnelle Reiterangriffe im Umland."},
+   {id:"ih",l:"Überdachter Innenhof",x:56,y:56,r:18,c:"#7f9b74",a:5,d:"Zentraler Hof mit Holzstegen und schneller Truppenverlegung."},
+   {id:"rk",l:"Rüstkammer-Komplex",x:58,y:40,r:12,c:"#7f8c74",a:5,d:"Erweiterte Rüstkammern, Schmieden und Waffenlager."},
+   {id:"br",l:"Brunnen",x:48,y:70,r:8,c:"#4d8fbf",a:3,d:"Süßwasserbrunnen im Innenkern — kritisch für lange Belagerungen."},
+   {id:"zb",l:"Zugbrücke/Torhaus ⚠",x:84,y:52,r:10,c:"#cc5544",a:2,d:"Haupttor mit Zugbrücke. Bei Sabotage droht direkter Einbruch."},
+   {id:"sw",l:"Sumpfgraben ⚠",x:20,y:78,r:12,c:"#4f7c5a",a:2,d:"Natürliche Verteidigung, aber auch Risiko: Krankheiten und weicher Boden."},
+ ],
+ strengths:["Moorlage mit natürlichem Wasserhindernis","Überdachter Innenhof für ganzjährige Mobilität","Starke Logistik: Marstall, Lager, Schmieden","Mehrere Tor-/Brückenachsen zur Verzögerung von Sturmangriffen"],
+ weaknesses:["Dauerfeuchte belastet Mauern und Vorräte","Zugbrückenmechanik als kritischer Ausfallpunkt","Sumpfkrankheiten können Moral und Kampfkraft senken"],
+ attackTips:["Brückenmechanik sabotieren","Sumpfzufahrten mit Bohlenwegen sichern","Rüstkammern und Lager durch Brandwaffen unter Druck setzen","Lange Belagerung mit Seuchen-/Versorgungsdruck"],
+ siegeCtx:"Eine Koalition aus Grenzbaronen schiebt Belagerungstürme auf Bohlenwegen durchs Moor. Ashenveil muss halten, bis Drachenstein Entsatz über den Nordkanal sendet.",
+ defender:"Marschallin Elyra von Ashenveil"},
+
 {id:"gravecrest",name:"Gravecrest",sub:"Der Schild des Ordens",era:"12. Jh.",year:1150,loc:"Sorrowland",type:"real",epoch:"Mittelalter",region:"europa",icon:"⛰️",
  theme:{bg:"#080c0a",accent:"#7aaa88",glow:"rgba(100,160,120,0.15)"},
  ratings:{walls:92,supply:72,position:97,garrison:68,morale:92},
@@ -1559,4 +1581,3 @@ components:[
  attackTips:["Musketen — mittelalterliche Verteidigung machtlos","Sahara-Flanke nutzen: unerwarteter Anmarsch","Niger-Übergang mit Booten am Abend","Markt sofort nehmen — Versorgung unterbrechen"],
  siegeCtx:"1591 — Marokkanische Söldner mit Musketen. 4.000 gegen 30.000 Songhai-Krieger. Du hast den Technologievorteil. Gao liegt vor dir — Lehmziegelmauern, keine Kanonen. Geschichte wird gemacht.",defender:"Askia Ishaq II."},
 ];
-
