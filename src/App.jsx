@@ -9981,6 +9981,10 @@ export default function App(){
         setupBorder:"1px solid rgba(201,168,76,0.25)",
         heroBorder:"1px solid rgba(201,168,76,0.35)",
         heroBg:"radial-gradient(circle at 10% 10%,rgba(201,168,76,0.16),transparent 36%),radial-gradient(circle at 90% 15%,rgba(232,200,120,0.18),transparent 42%),linear-gradient(145deg,rgba(30,20,12,0.9),rgba(14,10,6,0.92))",
+        accent:"rgba(201,168,76,0.75)",
+        accentSoft:"rgba(201,168,76,0.28)",
+        textMuted:"#cbb38b",
+        textStrong:"#f8edd8",
       }
     : {
         appBg:"radial-gradient(circle at 12% -10%, rgba(111,138,255,0.26) 0%, rgba(10,14,30,0) 42%), radial-gradient(circle at 88% -10%, rgba(64,224,208,0.15) 0%, rgba(10,14,30,0) 48%), linear-gradient(150deg,#070a14 0%,#080d1b 45%,#05070f 100%)",
@@ -9991,6 +9995,10 @@ export default function App(){
         setupBorder:"1px solid rgba(138,173,255,0.25)",
         heroBorder:"1px solid rgba(130,170,255,0.35)",
         heroBg:"radial-gradient(circle at 10% 10%,rgba(66,216,207,0.22),transparent 36%),radial-gradient(circle at 90% 15%,rgba(111,138,255,0.32),transparent 42%),linear-gradient(145deg,rgba(16,30,56,0.9),rgba(8,16,34,0.92))",
+        accent:"rgba(138,173,255,0.78)",
+        accentSoft:"rgba(138,173,255,0.28)",
+        textMuted:"#9cb0de",
+        textStrong:"#f1f6ff",
       };
 
   const sc=avg(sel);
@@ -9998,30 +10006,22 @@ export default function App(){
   const NAVTABS=[{id:"overview",l:"🏰 Übersicht"},{id:"worldmap",l:"🌍 Karte"},{id:"detail",l:`${sel.icon} ${sel.name.split(" ")[0]}`},{id:"campaign",l:"📖 Kampagne"},{id:"tournament",l:"🗡️ Turnier"},{id:"build",l:"🏗️ Bauen"},{id:"timeline",l:"📅 Zeit"},{id:"globalstats",l:"📊 Atlas"},{id:"achievements",l:"🏆 Erfolge"},{id:"highscores",l:"🎖️ Scores"}];
 
   return(
-    <div className="app-shell" style={{height:"100vh",overflow:"hidden",background:uiTheme.appBg,color:uiTheme.appColor,fontFamily:"'Inter','Segoe UI',system-ui,sans-serif",display:"flex",flexDirection:"column"}}>
+    <div className="app-shell" style={{height:"100vh",overflow:"hidden",background:uiTheme.appBg,color:uiTheme.appColor,fontFamily:"'Inter','Segoe UI',system-ui,sans-serif",display:"flex",flexDirection:"column","--ui-accent":uiTheme.accent,"--ui-accent-soft":uiTheme.accentSoft,"--ui-muted":uiTheme.textMuted,"--ui-strong":uiTheme.textStrong}}>
       <style>{`
         *{box-sizing:border-box}
-        ::selection{background:rgba(111,138,255,0.35);color:#fff}
-
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar{width:5px;height:5px}
-        ::-webkit-scrollbar-track{background:rgba(7,11,24,0.8)}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#6f8aff,#42d8cf);border-radius:3px}
+        ::-webkit-scrollbar{width:4px;height:4px}
+        ::-webkit-scrollbar-track{background:#070b18}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#6f8aff,#42d8cf);border-radius:2px}
         ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#9baeff,#63e9df)}
-
-        input::placeholder{color:#5a6a9a}
-        select option{background:#0e1628;color:#d8e6ff}
-
-        /* ── Base button ── */
-        button{transition:all 0.18s cubic-bezier(.4,0,.2,1)}
-        button:hover{filter:brightness(1.18)}
-        button:active{transform:scale(0.96)!important}
-
-        /* ── Keyframes ── */
-        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes fadeInLeft{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-        @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+        input::placeholder{color:#6e7ca8}
+        select option{background:#101a2e;color:#d8e6ff}
+        button{transition:all 0.15s ease}
+        button:hover{filter:brightness(1.15)}
+        button:active{transform:scale(0.97)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
         @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
         @keyframes pf{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(2.5)}}
         @keyframes pulse{0%,100%{opacity:0.3}50%{opacity:0.75}}
@@ -10099,318 +10099,60 @@ export default function App(){
         .cinzel{font-family:'Cinzel',serif!important;letter-spacing:0.05em}
         .cinzel-lg{font-family:'Cinzel',serif!important;letter-spacing:0.12em}
         input,textarea,select{font-family:inherit}
+        .castle-card{transition:transform 0.18s ease,border-color 0.18s ease,box-shadow 0.18s ease,background 0.18s ease}
 
-        /* ── App background ── */
-        .app-shell::before{
-          content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-          background:
-            linear-gradient(rgba(111,138,255,0.04) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(111,138,255,0.032) 1px,transparent 1px);
-          background-size:40px 40px;
-          mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%)
-        }
-        .app-shell::after{
-          content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-          background:
-            radial-gradient(circle at 15% 85%,rgba(66,216,207,0.06) 0%,transparent 40%),
-            radial-gradient(circle at 85% 20%,rgba(111,138,255,0.07) 0%,transparent 38%);
-        }
+        .app-shell::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:linear-gradient(rgba(143,167,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(143,167,255,0.045) 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(circle at center,black 35%,transparent 90%)}
         .app-shell > *{position:relative;z-index:1}
-
-        /* ── Glassmorphism ── */
-        .glass{
-          background:linear-gradient(160deg,rgba(20,32,58,0.88),rgba(12,20,40,0.72));
-          backdrop-filter:blur(14px);
-          -webkit-backdrop-filter:blur(14px);
-          border:1px solid rgba(138,173,255,0.2);
-          box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.07)
-        }
-
-        /* ── Typography helpers ── */
+        .glass{background:linear-gradient(160deg,rgba(18,28,52,0.82),rgba(12,20,40,0.62));backdrop-filter:blur(10px);border:1px solid var(--ui-accent-soft);box-shadow:0 14px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)}
         .premium-title{font-family:'Cinzel',serif;letter-spacing:0.2em;text-transform:uppercase}
-        .gradient-text{
-          background:linear-gradient(135deg,#f0e6cc 0%,#c9a84c 40%,#f0e6cc 70%,#6f8aff 100%);
-          background-size:200% auto;
-          -webkit-background-clip:text;
-          -webkit-text-fill-color:transparent;
-          background-clip:text;
-          animation:shimmer 4s linear infinite;
-        }
-
-        /* ── Navigation ── */
-        .nav-premium{
-          position:relative;border:1px solid transparent;border-radius:10px;
-          margin:6px 3px;padding:0 11px!important;height:38px!important;
-          display:flex;align-items:center;justify-content:center;
-          font-size:12px!important;font-weight:600;
-          transition:all .22s cubic-bezier(.4,0,.2,1);
-          overflow:hidden;
-        }
-        .nav-premium::before{
-          content:'';position:absolute;inset:0;border-radius:10px;
-          background:linear-gradient(135deg,rgba(111,138,255,0.12),rgba(66,216,207,0.08));
-          opacity:0;transition:opacity .22s ease;
-        }
-        .nav-premium:hover::before{opacity:1}
-        .nav-premium:hover{
-          border-color:rgba(138,173,255,0.4);
-          transform:translateY(-1px);
-          box-shadow:0 4px 16px rgba(111,138,255,0.15);
-        }
-        .nav-premium.active{
-          background:linear-gradient(135deg,rgba(111,138,255,0.32),rgba(66,216,207,0.22));
-          color:#eaf5ff!important;
-          border-color:rgba(138,173,255,0.6);
-          box-shadow:0 0 0 1px rgba(138,173,255,0.22),0 6px 24px rgba(66,216,207,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
-          animation:borderGlow 3s ease infinite;
-        }
-
-        /* ── Panels ── */
-        .panel-premium{
-          background:linear-gradient(155deg,rgba(16,25,48,0.9),rgba(11,17,34,0.78));
-          border:1px solid rgba(138,173,255,0.2);
-          border-radius:14px;
-          box-shadow:0 18px 36px rgba(0,0,0,0.3)
-        }
-
-        /* ── Hero section ── */
-        .hero-v2{
-          margin:16px;
-          border-radius:20px;
-          padding:22px;
-          background:
-            radial-gradient(circle at 8% 12%,rgba(66,216,207,0.18),transparent 32%),
-            radial-gradient(circle at 92% 18%,rgba(111,138,255,0.26),transparent 38%),
-            radial-gradient(circle at 50% 90%,rgba(66,216,207,0.06),transparent 40%),
-            linear-gradient(145deg,rgba(18,32,60,0.94),rgba(8,16,36,0.96));
-          box-shadow:
-            0 24px 48px rgba(0,0,0,0.36),
-            0 0 0 1px rgba(111,138,255,0.22),
-            inset 0 1px 0 rgba(255,255,255,0.08),
-            inset 0 -1px 0 rgba(66,216,207,0.06);
-          position:relative;overflow:hidden;
-        }
-        .hero-v2::before{
-          content:'';position:absolute;top:-1px;left:10%;right:10%;height:1px;
-          background:linear-gradient(90deg,transparent,rgba(138,173,255,0.5),rgba(66,216,207,0.5),transparent);
-        }
-
-        /* ── KPI Cards ── */
-        .hero-kpi{
-          padding:12px 14px;
-          border-radius:12px;
-          background:linear-gradient(135deg,rgba(10,20,40,0.7),rgba(8,14,28,0.5));
-          border:1px solid rgba(138,173,255,0.18);
-          text-align:center;
-          transition:all .22s ease;
-          position:relative;overflow:hidden;
-          animation:kpiPop 0.5s cubic-bezier(.4,0,.2,1) both;
-        }
-        .hero-kpi::before{
-          content:'';position:absolute;top:0;left:0;right:0;height:2px;
-          background:linear-gradient(90deg,rgba(111,138,255,0.6),rgba(66,216,207,0.6));
-          transform:scaleX(0);transform-origin:left;
-          transition:transform .3s ease;
-        }
-        .hero-kpi:hover{
-          border-color:rgba(138,173,255,0.38);
-          background:linear-gradient(135deg,rgba(16,28,56,0.85),rgba(12,20,40,0.65));
-          box-shadow:0 6px 24px rgba(0,0,0,0.3),0 0 0 1px rgba(111,138,255,0.2);
-          transform:translateY(-2px);
-        }
-        .hero-kpi:hover::before{transform:scaleX(1)}
-
-        /* ── CTA Buttons ── */
-        .hero-cta{
-          padding:10px 16px;
-          border-radius:11px;
-          border:1px solid rgba(138,173,255,0.42);
-          background:linear-gradient(135deg,rgba(111,138,255,0.38),rgba(66,216,207,0.26));
-          color:#eff5ff;cursor:pointer;font-weight:600;
-          position:relative;overflow:hidden;
-          transition:all .22s cubic-bezier(.4,0,.2,1);
-          box-shadow:0 4px 16px rgba(111,138,255,0.2);
-        }
-        .hero-cta::before{
-          content:'';position:absolute;inset:0;
-          background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0));
-          opacity:0;transition:opacity .2s;
-        }
-        .hero-cta:hover{
-          transform:translateY(-2px)!important;
-          box-shadow:0 8px 28px rgba(111,138,255,0.35),0 0 0 1px rgba(138,173,255,0.55);
-          border-color:rgba(138,173,255,0.65);
-          filter:none!important;
-        }
-        .hero-cta:hover::before{opacity:1}
-        .hero-cta.alt{
-          background:rgba(138,173,255,0.1);
-          color:#c0d0f8;
-          box-shadow:none;
-          border-color:rgba(138,173,255,0.28);
-        }
-        .hero-cta.alt:hover{
-          background:rgba(138,173,255,0.18);
-          box-shadow:0 4px 20px rgba(111,138,255,0.2);
-        }
-
-        /* ── Mini cards ── */
-        .hero-mini-card{
-          padding:11px 12px;
-          border-radius:13px;
-          background:linear-gradient(135deg,rgba(10,18,34,0.7),rgba(8,14,28,0.5));
-          border:1px solid rgba(138,173,255,0.16);
-          display:flex;align-items:center;justify-content:space-between;gap:10px;
-          transition:all .2s ease;
-        }
-        .hero-mini-card:hover{
-          border-color:rgba(138,173,255,0.34);
-          background:linear-gradient(135deg,rgba(14,24,46,0.8),rgba(10,18,36,0.6));
-          box-shadow:0 4px 18px rgba(0,0,0,0.25);
-          transform:translateY(-1px);
-        }
-        .hero-mini-card button{
-          padding:6px 10px;border-radius:8px;
-          border:1px solid rgba(138,173,255,0.3);
-          background:rgba(111,138,255,0.14);
-          color:#d4e2ff;font-size:11px;cursor:pointer;
-          white-space:nowrap;font-weight:600;
-          transition:all .18s ease;
-        }
-        .hero-mini-card button:hover{
-          background:rgba(111,138,255,0.28);
-          border-color:rgba(138,173,255,0.5);
-          transform:translateY(-1px)!important;
-          filter:none!important;
-        }
-
-        /* ── Layout ── */
-        .content-wrap{max-width:1320px;margin:0 auto;width:100%}
+        .nav-premium{position:relative;border:1px solid transparent;border-radius:10px;margin:6px 4px;padding:0 12px!important;height:38px!important;display:flex;align-items:center;justify-content:center;font-size:12px!important;font-weight:600;transition:all .2s ease}
+        .nav-premium:hover{border-color:var(--ui-accent-soft);background:color-mix(in oklab,var(--ui-accent) 12%, transparent);transform:translateY(-1px)}
+        .nav-premium.active{background:linear-gradient(135deg,color-mix(in oklab,var(--ui-accent) 32%, transparent),rgba(66,216,207,0.20));color:var(--ui-strong)!important;border-color:var(--ui-accent);box-shadow:0 0 0 1px color-mix(in oklab,var(--ui-accent) 32%, transparent),0 8px 24px rgba(66,216,207,0.18)}
+        .panel-premium{background:linear-gradient(155deg,rgba(16,25,45,0.88),rgba(11,17,34,0.75));border:1px solid var(--ui-accent-soft);border-radius:14px;box-shadow:0 18px 30px rgba(0,0,0,0.26)}
+        .hero-v2{margin:16px;border:1px solid rgba(130,170,255,0.35);border-radius:16px;padding:18px;background:
+          radial-gradient(circle at 10% 10%,rgba(66,216,207,0.22),transparent 36%),
+          radial-gradient(circle at 90% 15%,rgba(111,138,255,0.32),transparent 42%),
+          linear-gradient(145deg,rgba(16,30,56,0.9),rgba(8,16,34,0.92));
+          box-shadow:0 22px 42px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.08)}
+        .hero-kpi{padding:10px 12px;border-radius:10px;background:rgba(8,16,32,0.46);border:1px solid var(--ui-accent-soft);text-align:center}
+        .hero-cta{padding:9px 12px;border-radius:10px;border:1px solid var(--ui-accent);background:linear-gradient(135deg,color-mix(in oklab,var(--ui-accent) 42%, transparent),rgba(66,216,207,0.24));color:var(--ui-strong);cursor:pointer;font-weight:600}
+        .hero-cta.alt{background:color-mix(in oklab,var(--ui-accent) 10%, transparent);color:var(--ui-muted)}
+        .hero-mini-card{padding:10px;border-radius:12px;background:rgba(9,16,31,0.52);border:1px solid var(--ui-accent-soft);display:flex;align-items:center;justify-content:space-between;gap:8px}
+        .hero-mini-card button{padding:6px 8px;border-radius:8px;border:1px solid var(--ui-accent-soft);background:color-mix(in oklab,var(--ui-accent) 14%, transparent);color:var(--ui-strong);font-size:11px;cursor:pointer}
+        .content-wrap{max-width:1280px;margin:0 auto;width:100%}
         .mobile-quickbar{display:none}
-        .soft-card{
-          border-radius:16px;
-          background:linear-gradient(155deg,rgba(14,22,44,0.82),rgba(10,16,32,0.65));
-          border:1px solid rgba(138,173,255,0.18);
-          box-shadow:0 12px 28px rgba(0,0,0,0.22)
-        }
-
-        /* ── Filter bar ── */
-        .filter-bar{position:relative}
-        .filter-pill{
-          display:inline-flex;align-items:center;
-          padding:5px 14px;
-          font-size:11px;letter-spacing:0.6px;
-          border-radius:20px;cursor:pointer;
-          font-family:inherit;
-          transition:all .18s cubic-bezier(.4,0,.2,1);
-        }
-        .filter-pill:hover{transform:translateY(-1px)!important;filter:none!important}
-        .filter-pill.active{
-          box-shadow:0 2px 14px rgba(201,168,76,0.25),inset 0 1px 0 rgba(255,255,255,0.1);
-        }
-
-        /* ── Search input ── */
-        .search-input:focus{
-          outline:none!important;
-          border-color:rgba(201,168,76,0.55)!important;
-          box-shadow:0 0 0 3px rgba(201,168,76,0.12),0 0 12px rgba(201,168,76,0.1)!important;
-        }
-        .search-input{box-sizing:border-box;max-width:100%}
-
-        /* ── Region headers ── */
-        .region-bar{
-          position:relative;
-          display:flex;align-items:center;gap:14px;
-          margin-bottom:16px;padding:10px 14px;
-          border-radius:10px;
-          background:linear-gradient(135deg,rgba(14,22,40,0.6),rgba(10,16,30,0.4));
-          border:1px solid rgba(255,255,255,0.06);
-          border-left-width:3px;
-          overflow:hidden;
-        }
-        .region-bar::after{
-          content:'';position:absolute;right:0;top:0;bottom:0;width:60%;
-          background:linear-gradient(90deg,transparent,rgba(0,0,0,0.2));
-          pointer-events:none;
-        }
-
-        /* ── Score display ── */
+        .soft-card{border-radius:14px;background:linear-gradient(155deg,rgba(14,22,41,0.78),rgba(10,16,31,0.62));border:1px solid var(--ui-accent-soft);box-shadow:0 10px 24px rgba(0,0,0,0.2)}
+        .castle-card:hover{transform:translateY(-3px)}
         .gold-text{color:#c9a84c;font-family:'Cinzel',serif}
         .section-title{font-family:'Cinzel',serif;letter-spacing:0.08em;font-size:11px;color:#a08848;text-transform:uppercase}
-
-        /* ── Mobile quick bar ── */
         @media(max-width:768px){
           .mobile-quickbar{
             display:flex;position:fixed;left:10px;right:10px;bottom:10px;z-index:450;
-            gap:8px;padding:9px;border-radius:14px;
-            background:linear-gradient(155deg,rgba(10,18,38,0.97),rgba(8,14,28,0.95));
-            border:1px solid rgba(138,173,255,0.26);
-            box-shadow:0 16px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(66,216,207,0.08)
+            gap:8px;padding:8px;border-radius:12px;
+            background:linear-gradient(155deg,rgba(10,18,36,0.95),rgba(8,14,28,0.92));
+            border:1px solid rgba(138,173,255,0.24);box-shadow:0 14px 24px rgba(0,0,0,0.35)
           }
           .mobile-quickbar button{
-            flex:1;border-radius:9px;
-            border:1px solid rgba(138,173,255,0.28);
-            background:linear-gradient(135deg,rgba(111,138,255,0.15),rgba(66,216,207,0.08));
-            color:#e8f0ff;padding:9px 6px;font-size:12px;font-weight:600;
-          }
-          .mobile-quickbar button:hover{
-            background:linear-gradient(135deg,rgba(111,138,255,0.26),rgba(66,216,207,0.16));
-            filter:none!important;
+            flex:1;border-radius:8px;border:1px solid rgba(138,173,255,0.28);
+            background:rgba(138,173,255,0.1);color:#e8f0ff;padding:8px 6px;font-size:12px
           }
         }
       `}</style>
 
       {/* ── HEADER ── */}
-      <header className="glass" style={{
-        height:"64px",display:"flex",alignItems:"stretch",
-        borderBottom:uiTheme.headerBorder,background:uiTheme.headerBg,
-        position:"sticky",top:0,zIndex:300,flexShrink:0,
-        boxShadow:"0 4px 24px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.04)"
-      }}>
-        {/* Logo area */}
-        <div style={{
-          display:"flex",alignItems:"center",gap:"11px",
-          padding:"0 18px",flexShrink:0,
-          borderRight:"1px solid rgba(138,173,255,0.1)",
-          background:"linear-gradient(90deg,rgba(111,138,255,0.06),transparent)",
-          position:"relative",
-        }}>
-          <div style={{
-            width:"36px",height:"36px",borderRadius:"10px",
-            background:"linear-gradient(135deg,rgba(111,138,255,0.18),rgba(66,216,207,0.12))",
-            border:"1px solid rgba(138,173,255,0.28)",
-            display:"flex",alignItems:"center",justifyContent:"center",
-            boxShadow:"0 0 16px rgba(111,138,255,0.18),inset 0 1px 0 rgba(255,255,255,0.1)",
-            flexShrink:0,
-          }}>
-            <span style={{fontSize:"18px",animation:"logoFloat 3s ease-in-out infinite"}}>⚔️</span>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:"2px"}}>
-            <span className="header-title premium-title" style={{
-              fontSize:"13px",fontWeight:"700",color:"#f1f5ff",whiteSpace:"nowrap",
-              textShadow:"0 0 20px rgba(111,138,255,0.5),0 0 40px rgba(66,216,207,0.2)",
-              letterSpacing:"0.18em",
-            }}>BELAGERUNGS-ATLAS</span>
-            <span style={{fontSize:"9px",color:"#6a80b8",letterSpacing:"2.5px",fontFamily:"'Cinzel',serif",opacity:0.85}}>
-              {CASTLES.length} FESTUNGEN
-            </span>
+      <header className="glass" style={{height:"62px",display:"flex",alignItems:"stretch",borderBottom:uiTheme.headerBorder,background:uiTheme.headerBg,position:"sticky",top:0,zIndex:300,flexShrink:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:"10px",padding:"0 16px",borderRight:"1px solid rgba(201,168,76,0.1)",flexShrink:0}}>
+          <span style={{fontSize:"18px",filter:"drop-shadow(0 0 6px rgba(201,168,76,0.4))"}}>⚔️</span>
+          <div style={{display:"flex",flexDirection:"column",gap:"1px"}}>
+            <span className="header-title premium-title" style={{fontSize:"13px",fontWeight:"700",color:"#f1f5ff",whiteSpace:"nowrap",textShadow:"0 0 18px rgba(111,138,255,0.45)"}}>BELAGERUNGS-ATLAS</span>
+            <span style={{fontSize:"9px",color:"#8ea2d8",letterSpacing:"2px",fontFamily:"'Cinzel',serif"}}>{CASTLES.length} FESTUNGEN</span>
           </div>
         </div>
 
         {/* Nav tabs */}
         <div className="nav-tabs" style={{display:"flex",height:"100%",flex:1,overflowX:"auto",padding:"0 4px"}}>
           {NAVTABS.map(t=>(
-            <button
-              className={`nav-premium ${tab===t.id?"active":""}`}
-              key={t.id} onClick={()=>setTab(t.id)}
-              style={{
-                background:"transparent",border:"none",
-                color:tab===t.id?"#ebf4ff":"#7a8ab0",
-                cursor:"pointer",whiteSpace:"nowrap",
-                fontFamily:tab===t.id?"'Cinzel',serif":"inherit",
-                letterSpacing:tab===t.id?"0.04em":"normal",
-              }}
-            >{t.l}</button>
+            <button className={`nav-premium ${tab===t.id?"active":""}`} key={t.id} onClick={()=>setTab(t.id)} style={{background:"transparent",border:"none",color:tab===t.id?"#ebf2ff":"#9aa9d0",cursor:"pointer",whiteSpace:"nowrap",fontFamily:tab===t.id?"'Cinzel',serif":"inherit"}}>{t.l}</button>
           ))}
         </div>
 
@@ -10497,90 +10239,40 @@ export default function App(){
       {tab==="overview"&&<div style={{flex:1,overflowY:"auto"}}>
         <div className="content-wrap">
         <section className="hero-v2" style={{border:uiTheme.heroBorder,background:uiTheme.heroBg}}>
-          {/* Top row */}
-          <div style={{display:"flex",justifyContent:"space-between",gap:"16px",alignItems:"flex-start",flexWrap:"wrap"}}>
-            <div style={{maxWidth:"640px"}}>
-              <div style={{
-                display:"inline-flex",alignItems:"center",gap:"6px",
-                fontSize:"10px",letterSpacing:"3px",color:"#6a82be",marginBottom:"10px",
-                padding:"3px 10px",borderRadius:"20px",
-                background:"rgba(111,138,255,0.08)",border:"1px solid rgba(111,138,255,0.2)",
-              }}>
-                <span style={{width:"5px",height:"5px",borderRadius:"50%",background:"#6f8aff",boxShadow:"0 0 6px #6f8aff",flexShrink:0,animation:"pulse 2s ease infinite"}}/>
-                INTERAKTIVER FESTUNGS-ATLAS
-              </div>
-              <h2 style={{
-                margin:"0 0 10px",
-                fontSize:"32px",lineHeight:1.12,
-                fontFamily:"'Cinzel',serif",
-                letterSpacing:"0.03em",
-                background:"linear-gradient(135deg,#f5f0ff 0%,#c8d8ff 35%,#42d8cf 65%,#a0b8ff 100%)",
-                backgroundSize:"200% auto",
-                WebkitBackgroundClip:"text",
-                WebkitTextFillColor:"transparent",
-                backgroundClip:"text",
-                animation:"shimmer 5s linear infinite",
-              }}>100 Burgen & Festungen der Geschichte</h2>
-              <p style={{margin:"0 0 4px",color:"#8aa4d8",fontSize:"14px",lineHeight:1.75}}>
-                Von Krak des Chevaliers bis Minas Tirith — erlebe mittelalterliche Belagerungskunst,
-                historische Analysen und taktische Simulationen auf einem Level.
+          <div style={{display:"flex",justifyContent:"space-between",gap:"14px",alignItems:"flex-start",flexWrap:"wrap"}}>
+            <div style={{maxWidth:"620px"}}>
+              <div style={{fontSize:"11px",letterSpacing:"2px",color:"#96aee4",marginBottom:"8px"}}>COMMAND OVERVIEW · V2</div>
+              <h2 style={{margin:"0 0 8px",fontSize:"28px",lineHeight:1.15,color:"#f2f7ff",fontFamily:"'Cinzel',serif",letterSpacing:"1px"}}>Strategisches Erlebnis mit Premium-Inszenierung</h2>
+              <p style={{margin:0,color:"#b5c5eb",fontSize:"14px",lineHeight:1.7}}>
+                Entdecke Burgen wie in einem Tactical Command Center: schneller Zugriff auf Weltkarte, Kampagnen und Belagerungssimulation
+                mit klaren KPIs und hochwertiger visueller Dramaturgie.
               </p>
             </div>
-            <div style={{display:"flex",gap:"8px",flexWrap:"wrap",alignItems:"flex-start",paddingTop:"4px"}}>
-              <button className="hero-cta" onClick={()=>setTab("worldmap")}>🌍 Weltkarte</button>
-              <button className="hero-cta alt" onClick={()=>setTab("campaign")}>📖 Kampagne</button>
-              <button className="hero-cta alt" onClick={()=>{setTab("detail");setDtab("simulator");}}>⚔️ Simulator</button>
+            <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+              <button className="hero-cta" onClick={()=>setTab("worldmap")}>🌍 Weltkarte öffnen</button>
+              <button className="hero-cta alt" onClick={()=>setTab("campaign")}>📖 Kampagne starten</button>
+              <button className="hero-cta alt" onClick={()=>{setTab("detail");setDtab("simulator");}}>⚔️ Simulator direkt</button>
             </div>
           </div>
-
-          {/* KPI row */}
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:"10px",marginTop:"18px"}}>
-            {[
-              {label:"FESTUNGEN",value:CASTLES.length,icon:"🏰",color:"#7ab0ff"},
-              {label:"ERFOLGE",value:checkAchievements(scores,CASTLES,playStats).filter(a=>a.unlocked).length,icon:"🏆",color:"#f0c040"},
-              {label:"BELAGERUNGEN",value:playStats?.sieges||0,icon:"⚔️",color:"#e07050"},
-              {label:"SIEGRATE",value:`${playStats?.sieges?Math.round(((playStats.wins||0)/playStats.sieges)*100):0}%`,icon:"📈",color:"#5ad0a0"},
-            ].map((kpi,i)=>(
-              <div key={kpi.label} className="hero-kpi" style={{animationDelay:`${i*80}ms`}}>
-                <div style={{fontSize:"16px",marginBottom:"5px"}}>{kpi.icon}</div>
-                <div style={{
-                  fontSize:"24px",fontWeight:"800",
-                  color:kpi.color,lineHeight:1,marginBottom:"4px",
-                  fontFamily:"'Cinzel',serif",
-                  textShadow:`0 0 20px ${kpi.color}55`,
-                }}>{kpi.value}</div>
-                <div style={{fontSize:"10px",color:"#5a6a9a",letterSpacing:"1.5px"}}>{kpi.label}</div>
-              </div>
-            ))}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:"10px",marginTop:"14px"}}>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>FESTUNGEN</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{CASTLES.length}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>ERFOLGE</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{checkAchievements(scores,CASTLES,playStats).filter(a=>a.unlocked).length}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>BELAGERUNGEN</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{playStats?.sieges||0}</div></div>
+            <div className="hero-kpi"><div style={{fontSize:"11px",color:"#8ea2d8",letterSpacing:"1px"}}>SIEGRATE</div><div style={{fontSize:"22px",fontWeight:"700",color:"#ebf3ff"}}>{playStats?.sieges?Math.round(((playStats.wins||0)/playStats.sieges)*100):0}%</div></div>
           </div>
-
-          {/* Top castles */}
-          <div style={{marginTop:"16px"}}>
-            <div style={{
-              fontSize:"10px",letterSpacing:"2.5px",color:"#6a80b8",
-              marginBottom:"10px",display:"flex",alignItems:"center",gap:"8px"
-            }}>
-              <span style={{flex:1,height:"1px",background:"linear-gradient(90deg,rgba(111,138,255,0.3),transparent)"}}/>
-              ✦ TOP FESTUNGEN · SCHNELLSTART ✦
-              <span style={{flex:1,height:"1px",background:"linear-gradient(270deg,rgba(111,138,255,0.3),transparent)"}}/>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:"9px"}}>
-              {topCastles.map((c,i)=>(
-                <div key={c.id} className="hero-mini-card" style={{animationDelay:`${200+i*60}ms`,animation:"cardIn 0.4s ease both"}}>
-                  <div style={{display:"flex",gap:"10px",alignItems:"center",minWidth:0}}>
-                    <div style={{
-                      width:"38px",height:"38px",borderRadius:"10px",flexShrink:0,
-                      background:`linear-gradient(135deg,${c.theme.accent}22,${c.theme.bg})`,
-                      border:`1px solid ${c.theme.accent}30`,
-                      display:"flex",alignItems:"center",justifyContent:"center",
-                      fontSize:"20px",
-                    }}>{c.icon}</div>
+          <div style={{marginTop:"12px"}}>
+            <div style={{fontSize:"10px",letterSpacing:"2px",color:"#8ea2d8",marginBottom:"8px"}}>TOP FESTUNGEN · SCHNELLSTART</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:"8px"}}>
+              {topCastles.map(c=>(
+                <div key={c.id} className="hero-mini-card">
+                  <div style={{display:"flex",gap:"8px",alignItems:"center",minWidth:0}}>
+                    <span style={{fontSize:"18px"}}>{c.icon}</span>
                     <div style={{minWidth:0}}>
-                      <div style={{fontSize:"12px",color:"#eff5ff",fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:"'Cinzel',serif"}}>{c.name}</div>
-                      <div style={{fontSize:"10px",color:"#5a6e9a",marginTop:"1px"}}>{c.epoch} · <span style={{color:rCol(avg(c)),fontWeight:"bold"}}>{avg(c)}</span></div>
+                      <div style={{fontSize:"12px",color:"#eff5ff",fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}</div>
+                      <div style={{fontSize:"10px",color:"#8ea2d8"}}>{c.epoch} · Score {avg(c)}</div>
                     </div>
                   </div>
-                  <button onClick={()=>{setSel(c);setTab("detail");setDtab("stats");}}>Öffnen →</button>
+                  <button onClick={()=>{setSel(c);setTab("detail");setDtab("stats");}}>Öffnen</button>
                 </div>
               ))}
             </div>
